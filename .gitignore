@@ -1,0 +1,11 @@
+*.pyc
+.DS_Store
+__pycache__/
+.idea
+.pytest_cache
+.coverage
+venv
+build/
+musicxml.egg-info
+dist
+
