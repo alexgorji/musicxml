@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
 from musicxml.xmlelement.core import XMLElement
 from musicxml.xsd.xsdcomplextype import *
+from musicxml.xsd.xsdsimpletype import *
 from musicxml.xsd.xsdtree import XSDTree
 
 # xml score partwise
@@ -10,6 +11,7 @@ xsd_tree_score_partwise_part = XSDTree(musicxml_xsd_et_root.find(f".//{ns}elemen
 
 
 class XMLScorePartwise(XMLElement):
+    TYPE = XSDComplexTypeScorePartwise
     XSD_TREE = XSDTree(musicxml_xsd_et_root.find(f".//{ns}element[@name='score-partwise']"))
 
     def write(self, path, intelligent_choice=False):
@@ -18,24 +20,13 @@ class XMLScorePartwise(XMLElement):
             file.write(self.to_string(intelligent_choice=intelligent_choice))
 
     @property
-    def type_(self):
-        if self._type is None:
-            self._type = XSDComplexTypeScorePartwise
-        return self._type
-
-    @property
     def __doc__(self):
         return self.XSD_TREE.get_doc()
 
 
 class XMLPart(XMLElement):
+    TYPE = XSDComplexTypePart
     XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(f".//{ns}element[@name='score-partwise']//{ns}element")[0])
-
-    @property
-    def type_(self):
-        if self._type is None:
-            self._type = XSDComplexTypePart
-        return self._type
 
     @property
     def __doc__(self):
@@ -43,13 +34,8 @@ class XMLPart(XMLElement):
 
 
 class XMLMeasure(XMLElement):
+    TYPE = XSDComplexTypeMeasure
     XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(f".//{ns}element[@name='score-partwise']//{ns}element")[1])
-
-    @property
-    def type_(self):
-        if self._type is None:
-            self._type = XSDComplexTypeMeasure
-        return self._type
 
     @property
     def __doc__(self):
@@ -57,13 +43,8 @@ class XMLMeasure(XMLElement):
 
 
 class XMLDirective(XMLElement):
+    TYPE = XSDComplexTypeDirective
     XSD_TREE = XSDTree(musicxml_xsd_et_root.find(".//{*}complexType[@name='attributes']//{*}element[@name='directive']"))
-
-    @property
-    def type_(self):
-        if self._type is None:
-            self._type = XSDComplexTypeDirective
-        return self._type
 
     @property
     def __doc__(self):
@@ -75,6 +56,7 @@ class XMLDirective(XMLElement):
 
 class XMLP(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="p" type="empty" />
 """
@@ -82,14 +64,15 @@ class XMLP(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pp" type="empty" />
 """
@@ -97,14 +80,15 @@ class XMLPp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPpp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ppp" type="empty" />
 """
@@ -112,14 +96,15 @@ class XMLPpp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPppp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pppp" type="empty" />
 """
@@ -127,14 +112,15 @@ class XMLPppp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPpppp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ppppp" type="empty" />
 """
@@ -142,14 +128,15 @@ class XMLPpppp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPppppp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pppppp" type="empty" />
 """
@@ -157,14 +144,15 @@ class XMLPppppp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLF(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="f" type="empty" />
 """
@@ -172,14 +160,15 @@ class XMLF(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFf(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ff" type="empty" />
 """
@@ -187,14 +176,15 @@ class XMLFf(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFff(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fff" type="empty" />
 """
@@ -202,14 +192,15 @@ class XMLFff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFfff(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ffff" type="empty" />
 """
@@ -217,14 +208,15 @@ class XMLFfff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFffff(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fffff" type="empty" />
 """
@@ -232,14 +224,15 @@ class XMLFffff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFfffff(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ffffff" type="empty" />
 """
@@ -247,14 +240,15 @@ class XMLFfffff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="mp" type="empty" />
 """
@@ -262,14 +256,15 @@ class XMLMp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMf(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="mf" type="empty" />
 """
@@ -277,14 +272,15 @@ class XMLMf(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSf(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sf" type="empty" />
 """
@@ -292,14 +288,15 @@ class XMLSf(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSfp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sfp" type="empty" />
 """
@@ -307,14 +304,15 @@ class XMLSfp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSfpp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sfpp" type="empty" />
 """
@@ -322,14 +320,15 @@ class XMLSfpp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fp" type="empty" />
 """
@@ -337,14 +336,15 @@ class XMLFp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRf(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rf" type="empty" />
 """
@@ -352,14 +352,15 @@ class XMLRf(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRfz(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rfz" type="empty" />
 """
@@ -367,14 +368,15 @@ class XMLRfz(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSfz(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sfz" type="empty" />
 """
@@ -382,14 +384,15 @@ class XMLSfz(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSffz(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sffz" type="empty" />
 """
@@ -397,14 +400,15 @@ class XMLSffz(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFz(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fz" type="empty" />
 """
@@ -412,14 +416,15 @@ class XMLFz(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLN(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="n" type="empty" />
 """
@@ -427,14 +432,15 @@ class XMLN(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPf(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pf" type="empty" />
 """
@@ -442,14 +448,15 @@ class XMLPf(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSfzp(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sfzp" type="empty" />
 """
@@ -457,14 +464,15 @@ class XMLSfzp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherDynamics(XMLElement):
     
+    TYPE = XSDComplexTypeOtherText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-dynamics" type="other-text" />
 """
@@ -472,14 +480,15 @@ class XMLOtherDynamics(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiChannel(XMLElement):
     
+    TYPE = XSDSimpleTypeMidi16
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-channel" type="midi-16" minOccurs="0">
     <xs:annotation>
@@ -491,14 +500,15 @@ class XMLMidiChannel(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiName(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-name" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -510,14 +520,15 @@ class XMLMidiName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiBank(XMLElement):
     
+    TYPE = XSDSimpleTypeMidi16384
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-bank" type="midi-16384" minOccurs="0">
     <xs:annotation>
@@ -529,14 +540,15 @@ class XMLMidiBank(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiProgram(XMLElement):
     
+    TYPE = XSDSimpleTypeMidi128
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-program" type="midi-128" minOccurs="0">
     <xs:annotation>
@@ -548,14 +560,15 @@ class XMLMidiProgram(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiUnpitched(XMLElement):
     
+    TYPE = XSDSimpleTypeMidi128
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-unpitched" type="midi-128" minOccurs="0">
     <xs:annotation>
@@ -567,14 +580,15 @@ class XMLMidiUnpitched(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVolume(XMLElement):
     
+    TYPE = XSDSimpleTypePercent
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="volume" type="percent" minOccurs="0">
     <xs:annotation>
@@ -586,14 +600,15 @@ class XMLVolume(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPan(XMLElement):
     
+    TYPE = XSDSimpleTypeRotationDegrees
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pan" type="rotation-degrees" minOccurs="0">
     <xs:annotation>
@@ -605,14 +620,15 @@ class XMLPan(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLElevation(XMLElement):
     
+    TYPE = XSDSimpleTypeRotationDegrees
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="elevation" type="rotation-degrees" minOccurs="0">
     <xs:annotation>
@@ -624,14 +640,15 @@ class XMLElevation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDisplayText(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="display-text" type="formatted-text" />
 """
@@ -639,14 +656,15 @@ class XMLDisplayText(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccidentalText(XMLElement):
     
+    TYPE = XSDComplexTypeAccidentalText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accidental-text" type="accidental-text" />
 """
@@ -654,14 +672,15 @@ class XMLAccidentalText(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLIpa(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ipa" type="xs:string">
     <xs:annotation>
@@ -673,14 +692,15 @@ class XMLIpa(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMute(XMLElement):
     
+    TYPE = XSDSimpleTypeMute
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="mute" type="mute" />
 """
@@ -688,14 +708,15 @@ class XMLMute(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSemiPitched(XMLElement):
     
+    TYPE = XSDSimpleTypeSemiPitched
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="semi-pitched" type="semi-pitched" />
 """
@@ -703,14 +724,15 @@ class XMLSemiPitched(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherPlay(XMLElement):
     
+    TYPE = XSDComplexTypeOtherPlay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-play" type="other-play" />
 """
@@ -718,14 +740,15 @@ class XMLOtherPlay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDivisions(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveDivisions
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="divisions" type="positive-divisions" minOccurs="0">
     <xs:annotation>
@@ -737,14 +760,15 @@ class XMLDivisions(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKey(XMLElement):
     
+    TYPE = XSDComplexTypeKey
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="key" type="key" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -756,14 +780,15 @@ class XMLKey(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTime(XMLElement):
     
+    TYPE = XSDComplexTypeTime
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="time" type="time" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -775,14 +800,15 @@ class XMLTime(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaves(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staves" type="xs:nonNegativeInteger" minOccurs="0">
     <xs:annotation>
@@ -794,14 +820,15 @@ class XMLStaves(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartSymbol(XMLElement):
     
+    TYPE = XSDComplexTypePartSymbol
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-symbol" type="part-symbol" minOccurs="0">
     <xs:annotation>
@@ -813,14 +840,15 @@ class XMLPartSymbol(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstruments(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instruments" type="xs:nonNegativeInteger" minOccurs="0">
     <xs:annotation>
@@ -832,14 +860,15 @@ class XMLInstruments(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLClef(XMLElement):
     
+    TYPE = XSDComplexTypeClef
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="clef" type="clef" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -851,14 +880,15 @@ class XMLClef(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffDetails(XMLElement):
     
+    TYPE = XSDComplexTypeStaffDetails
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-details" type="staff-details" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -870,14 +900,15 @@ class XMLStaffDetails(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTranspose(XMLElement):
     
+    TYPE = XSDComplexTypeTranspose
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="transpose" type="transpose" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -889,14 +920,15 @@ class XMLTranspose(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLForPart(XMLElement):
     
+    TYPE = XSDComplexTypeForPart
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="for-part" type="for-part" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -908,14 +940,15 @@ class XMLForPart(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMeasureStyle(XMLElement):
     
+    TYPE = XSDComplexTypeMeasureStyle
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="measure-style" type="measure-style" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -927,14 +960,15 @@ class XMLMeasureStyle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartClef(XMLElement):
     
+    TYPE = XSDComplexTypePartClef
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-clef" type="part-clef" minOccurs="0">
     <xs:annotation>
@@ -946,14 +980,15 @@ class XMLPartClef(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartTranspose(XMLElement):
     
+    TYPE = XSDComplexTypePartTranspose
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-transpose" type="part-transpose">
     <xs:annotation>
@@ -965,14 +1000,15 @@ class XMLPartTranspose(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTimeRelation(XMLElement):
     
+    TYPE = XSDSimpleTypeTimeRelation
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="time-relation" type="time-relation" minOccurs="0" />
 """
@@ -980,14 +1016,15 @@ class XMLTimeRelation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKeyOctave(XMLElement):
     
+    TYPE = XSDComplexTypeKeyOctave
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="key-octave" type="key-octave" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -999,14 +1036,15 @@ class XMLKeyOctave(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMultipleRest(XMLElement):
     
+    TYPE = XSDComplexTypeMultipleRest
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="multiple-rest" type="multiple-rest" />
 """
@@ -1014,14 +1052,15 @@ class XMLMultipleRest(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMeasureRepeat(XMLElement):
     
+    TYPE = XSDComplexTypeMeasureRepeat
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="measure-repeat" type="measure-repeat" />
 """
@@ -1029,14 +1068,15 @@ class XMLMeasureRepeat(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeatRepeat(XMLElement):
     
+    TYPE = XSDComplexTypeBeatRepeat
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beat-repeat" type="beat-repeat" />
 """
@@ -1044,14 +1084,15 @@ class XMLBeatRepeat(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSlash(XMLElement):
     
+    TYPE = XSDComplexTypeSlash
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="slash" type="slash" />
 """
@@ -1059,14 +1100,15 @@ class XMLSlash(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffType(XMLElement):
     
+    TYPE = XSDSimpleTypeStaffType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-type" type="staff-type" minOccurs="0" />
 """
@@ -1074,14 +1116,15 @@ class XMLStaffType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffLines(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-lines" type="xs:nonNegativeInteger">
     <xs:annotation>
@@ -1093,14 +1136,15 @@ class XMLStaffLines(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLineDetail(XMLElement):
     
+    TYPE = XSDComplexTypeLineDetail
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="line-detail" type="line-detail" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -1108,14 +1152,15 @@ class XMLLineDetail(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffTuning(XMLElement):
     
+    TYPE = XSDComplexTypeStaffTuning
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-tuning" type="staff-tuning" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -1123,14 +1168,15 @@ class XMLStaffTuning(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCapo(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="capo" type="xs:nonNegativeInteger" minOccurs="0">
     <xs:annotation>
@@ -1142,14 +1188,15 @@ class XMLCapo(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffSize(XMLElement):
     
+    TYPE = XSDComplexTypeStaffSize
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-size" type="staff-size" minOccurs="0" />
 """
@@ -1157,14 +1204,15 @@ class XMLStaffSize(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInterchangeable(XMLElement):
     
+    TYPE = XSDComplexTypeInterchangeable
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="interchangeable" type="interchangeable" minOccurs="0" />
 """
@@ -1172,14 +1220,15 @@ class XMLInterchangeable(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSenzaMisura(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="senza-misura" type="xs:string">
     <xs:annotation>
@@ -1191,14 +1240,15 @@ class XMLSenzaMisura(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBarStyle(XMLElement):
     
+    TYPE = XSDComplexTypeBarStyleColor
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bar-style" type="bar-style-color" minOccurs="0" />
 """
@@ -1206,14 +1256,15 @@ class XMLBarStyle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWavyLine(XMLElement):
     
+    TYPE = XSDComplexTypeWavyLine
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="wavy-line" type="wavy-line" minOccurs="0" />
 """
@@ -1221,14 +1272,15 @@ class XMLWavyLine(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSegno(XMLElement):
     
+    TYPE = XSDComplexTypeSegno
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="segno" type="segno" minOccurs="0" />
 """
@@ -1236,14 +1288,15 @@ class XMLSegno(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCoda(XMLElement):
     
+    TYPE = XSDComplexTypeCoda
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="coda" type="coda" minOccurs="0" />
 """
@@ -1251,14 +1304,15 @@ class XMLCoda(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFermata(XMLElement):
     
+    TYPE = XSDComplexTypeFermata
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fermata" type="fermata" minOccurs="0" maxOccurs="2" />
 """
@@ -1266,14 +1320,15 @@ class XMLFermata(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEnding(XMLElement):
     
+    TYPE = XSDComplexTypeEnding
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ending" type="ending" minOccurs="0" />
 """
@@ -1281,14 +1336,15 @@ class XMLEnding(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRepeat(XMLElement):
     
+    TYPE = XSDComplexTypeRepeat
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="repeat" type="repeat" minOccurs="0" />
 """
@@ -1296,14 +1352,15 @@ class XMLRepeat(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccordionHigh(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accordion-high" type="empty" minOccurs="0">
     <xs:annotation>
@@ -1315,14 +1372,15 @@ class XMLAccordionHigh(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccordionMiddle(XMLElement):
     
+    TYPE = XSDSimpleTypeAccordionMiddle
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accordion-middle" type="accordion-middle" minOccurs="0">
     <xs:annotation>
@@ -1334,14 +1392,15 @@ class XMLAccordionMiddle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccordionLow(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accordion-low" type="empty" minOccurs="0">
     <xs:annotation>
@@ -1353,14 +1412,15 @@ class XMLAccordionLow(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBassSeparator(XMLElement):
     
+    TYPE = XSDComplexTypeStyleText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bass-separator" type="style-text" minOccurs="0">
     <xs:annotation>
@@ -1372,14 +1432,15 @@ class XMLBassSeparator(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBassStep(XMLElement):
     
+    TYPE = XSDComplexTypeBassStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bass-step" type="bass-step" />
 """
@@ -1387,14 +1448,15 @@ class XMLBassStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBassAlter(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonyAlter
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bass-alter" type="harmony-alter" minOccurs="0">
     <xs:annotation>
@@ -1406,14 +1468,15 @@ class XMLBassAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDegreeValue(XMLElement):
     
+    TYPE = XSDComplexTypeDegreeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="degree-value" type="degree-value" />
 """
@@ -1421,14 +1484,15 @@ class XMLDegreeValue(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDegreeAlter(XMLElement):
     
+    TYPE = XSDComplexTypeDegreeAlter
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="degree-alter" type="degree-alter" />
 """
@@ -1436,14 +1500,15 @@ class XMLDegreeAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDegreeType(XMLElement):
     
+    TYPE = XSDComplexTypeDegreeType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="degree-type" type="degree-type" />
 """
@@ -1451,14 +1516,15 @@ class XMLDegreeType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDirectionType(XMLElement):
     
+    TYPE = XSDComplexTypeDirectionType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="direction-type" type="direction-type" maxOccurs="unbounded" />
 """
@@ -1466,14 +1532,15 @@ class XMLDirectionType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOffset(XMLElement):
     
+    TYPE = XSDComplexTypeOffset
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="offset" type="offset" minOccurs="0" />
 """
@@ -1481,14 +1548,15 @@ class XMLOffset(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSound(XMLElement):
     
+    TYPE = XSDComplexTypeSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sound" type="sound" minOccurs="0" />
 """
@@ -1496,14 +1564,15 @@ class XMLSound(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLListening(XMLElement):
     
+    TYPE = XSDComplexTypeListening
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="listening" type="listening" minOccurs="0" />
 """
@@ -1511,14 +1580,15 @@ class XMLListening(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRehearsal(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedTextId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rehearsal" type="formatted-text-id" maxOccurs="unbounded">
     <xs:annotation>
@@ -1530,14 +1600,15 @@ class XMLRehearsal(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWords(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedTextId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="words" type="formatted-text-id">
     <xs:annotation>
@@ -1549,14 +1620,15 @@ class XMLWords(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSymbol(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedSymbolId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="symbol" type="formatted-symbol-id">
     <xs:annotation>
@@ -1568,14 +1640,15 @@ class XMLSymbol(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWedge(XMLElement):
     
+    TYPE = XSDComplexTypeWedge
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="wedge" type="wedge" />
 """
@@ -1583,14 +1656,15 @@ class XMLWedge(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDynamics(XMLElement):
     
+    TYPE = XSDComplexTypeDynamics
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dynamics" type="dynamics" maxOccurs="unbounded" />
 """
@@ -1598,14 +1672,15 @@ class XMLDynamics(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDashes(XMLElement):
     
+    TYPE = XSDComplexTypeDashes
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dashes" type="dashes" />
 """
@@ -1613,14 +1688,15 @@ class XMLDashes(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBracket(XMLElement):
     
+    TYPE = XSDComplexTypeBracket
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bracket" type="bracket" />
 """
@@ -1628,14 +1704,15 @@ class XMLBracket(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPedal(XMLElement):
     
+    TYPE = XSDComplexTypePedal
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pedal" type="pedal" />
 """
@@ -1643,14 +1720,15 @@ class XMLPedal(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronome(XMLElement):
     
+    TYPE = XSDComplexTypeMetronome
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome" type="metronome" />
 """
@@ -1658,14 +1736,15 @@ class XMLMetronome(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOctaveShift(XMLElement):
     
+    TYPE = XSDComplexTypeOctaveShift
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="octave-shift" type="octave-shift" />
 """
@@ -1673,14 +1752,15 @@ class XMLOctaveShift(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHarpPedals(XMLElement):
     
+    TYPE = XSDComplexTypeHarpPedals
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="harp-pedals" type="harp-pedals" />
 """
@@ -1688,14 +1768,15 @@ class XMLHarpPedals(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDamp(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="damp" type="empty-print-style-align-id">
     <xs:annotation>
@@ -1707,14 +1788,15 @@ class XMLDamp(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDampAll(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="damp-all" type="empty-print-style-align-id">
     <xs:annotation>
@@ -1726,14 +1808,15 @@ class XMLDampAll(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEyeglasses(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="eyeglasses" type="empty-print-style-align-id">
     <xs:annotation>
@@ -1745,14 +1828,15 @@ class XMLEyeglasses(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStringMute(XMLElement):
     
+    TYPE = XSDComplexTypeStringMute
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="string-mute" type="string-mute" />
 """
@@ -1760,14 +1844,15 @@ class XMLStringMute(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLScordatura(XMLElement):
     
+    TYPE = XSDComplexTypeScordatura
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="scordatura" type="scordatura" />
 """
@@ -1775,14 +1860,15 @@ class XMLScordatura(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLImage(XMLElement):
     
+    TYPE = XSDComplexTypeImage
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="image" type="image" />
 """
@@ -1790,14 +1876,15 @@ class XMLImage(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPrincipalVoice(XMLElement):
     
+    TYPE = XSDComplexTypePrincipalVoice
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="principal-voice" type="principal-voice" />
 """
@@ -1805,14 +1892,15 @@ class XMLPrincipalVoice(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPercussion(XMLElement):
     
+    TYPE = XSDComplexTypePercussion
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="percussion" type="percussion" maxOccurs="unbounded" />
 """
@@ -1820,14 +1908,15 @@ class XMLPercussion(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccordionRegistration(XMLElement):
     
+    TYPE = XSDComplexTypeAccordionRegistration
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accordion-registration" type="accordion-registration" />
 """
@@ -1835,14 +1924,15 @@ class XMLAccordionRegistration(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffDivide(XMLElement):
     
+    TYPE = XSDComplexTypeStaffDivide
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-divide" type="staff-divide" />
 """
@@ -1850,14 +1940,15 @@ class XMLStaffDivide(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherDirection(XMLElement):
     
+    TYPE = XSDComplexTypeOtherDirection
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-direction" type="other-direction" />
 """
@@ -1865,14 +1956,15 @@ class XMLOtherDirection(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFrameStrings(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="frame-strings" type="xs:positiveInteger">
     <xs:annotation>
@@ -1884,14 +1976,15 @@ class XMLFrameStrings(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFrameFrets(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="frame-frets" type="xs:positiveInteger">
     <xs:annotation>
@@ -1903,14 +1996,15 @@ class XMLFrameFrets(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFirstFret(XMLElement):
     
+    TYPE = XSDComplexTypeFirstFret
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="first-fret" type="first-fret" minOccurs="0" />
 """
@@ -1918,14 +2012,15 @@ class XMLFirstFret(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFrameNote(XMLElement):
     
+    TYPE = XSDComplexTypeFrameNote
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="frame-note" type="frame-note" maxOccurs="unbounded" />
 """
@@ -1933,14 +2028,15 @@ class XMLFrameNote(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLString(XMLElement):
     
+    TYPE = XSDComplexTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="string" type="string" />
 """
@@ -1948,14 +2044,15 @@ class XMLString(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFret(XMLElement):
     
+    TYPE = XSDComplexTypeFret
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fret" type="fret" />
 """
@@ -1963,14 +2060,15 @@ class XMLFret(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFingering(XMLElement):
     
+    TYPE = XSDComplexTypeFingering
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fingering" type="fingering" minOccurs="0" />
 """
@@ -1978,14 +2076,15 @@ class XMLFingering(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBarre(XMLElement):
     
+    TYPE = XSDComplexTypeBarre
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="barre" type="barre" minOccurs="0" />
 """
@@ -1993,14 +2092,15 @@ class XMLBarre(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFeature(XMLElement):
     
+    TYPE = XSDComplexTypeFeature
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="feature" type="feature" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -2008,14 +2108,15 @@ class XMLFeature(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFrame(XMLElement):
     
+    TYPE = XSDComplexTypeFrame
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="frame" type="frame" minOccurs="0" />
 """
@@ -2023,14 +2124,15 @@ class XMLFrame(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPedalTuning(XMLElement):
     
+    TYPE = XSDComplexTypePedalTuning
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pedal-tuning" type="pedal-tuning" maxOccurs="unbounded" />
 """
@@ -2038,14 +2140,15 @@ class XMLPedalTuning(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSync(XMLElement):
     
+    TYPE = XSDComplexTypeSync
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sync" type="sync" />
 """
@@ -2053,14 +2156,15 @@ class XMLSync(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherListening(XMLElement):
     
+    TYPE = XSDComplexTypeOtherListening
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-listening" type="other-listening" />
 """
@@ -2068,14 +2172,15 @@ class XMLOtherListening(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeatUnitTied(XMLElement):
     
+    TYPE = XSDComplexTypeBeatUnitTied
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beat-unit-tied" type="beat-unit-tied" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -2083,14 +2188,15 @@ class XMLBeatUnitTied(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPerMinute(XMLElement):
     
+    TYPE = XSDComplexTypePerMinute
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="per-minute" type="per-minute" />
 """
@@ -2098,14 +2204,15 @@ class XMLPerMinute(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeArrows(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-arrows" type="empty" minOccurs="0">
     <xs:annotation>
@@ -2117,14 +2224,15 @@ class XMLMetronomeArrows(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeNote(XMLElement):
     
+    TYPE = XSDComplexTypeMetronomeNote
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-note" type="metronome-note" maxOccurs="unbounded" />
 """
@@ -2132,14 +2240,15 @@ class XMLMetronomeNote(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeRelation(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-relation" type="xs:string">
     <xs:annotation>
@@ -2151,14 +2260,15 @@ class XMLMetronomeRelation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeType(XMLElement):
     
+    TYPE = XSDSimpleTypeNoteTypeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-type" type="note-type-value">
     <xs:annotation>
@@ -2170,14 +2280,15 @@ class XMLMetronomeType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeDot(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-dot" type="empty" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -2189,14 +2300,15 @@ class XMLMetronomeDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeBeam(XMLElement):
     
+    TYPE = XSDComplexTypeMetronomeBeam
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-beam" type="metronome-beam" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -2204,14 +2316,15 @@ class XMLMetronomeBeam(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeTied(XMLElement):
     
+    TYPE = XSDComplexTypeMetronomeTied
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-tied" type="metronome-tied" minOccurs="0" />
 """
@@ -2219,14 +2332,15 @@ class XMLMetronomeTied(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetronomeTuplet(XMLElement):
     
+    TYPE = XSDComplexTypeMetronomeTuplet
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metronome-tuplet" type="metronome-tuplet" minOccurs="0" />
 """
@@ -2234,14 +2348,15 @@ class XMLMetronomeTuplet(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeralRoot(XMLElement):
     
+    TYPE = XSDComplexTypeNumeralRoot
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral-root" type="numeral-root" />
 """
@@ -2249,14 +2364,15 @@ class XMLNumeralRoot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeralAlter(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonyAlter
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral-alter" type="harmony-alter" minOccurs="0">
     <xs:annotation>
@@ -2268,14 +2384,15 @@ class XMLNumeralAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeralKey(XMLElement):
     
+    TYPE = XSDComplexTypeNumeralKey
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral-key" type="numeral-key" minOccurs="0" />
 """
@@ -2283,14 +2400,15 @@ class XMLNumeralKey(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeralFifths(XMLElement):
     
+    TYPE = XSDSimpleTypeFifths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral-fifths" type="fifths" />
 """
@@ -2298,14 +2416,15 @@ class XMLNumeralFifths(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeralMode(XMLElement):
     
+    TYPE = XSDSimpleTypeNumeralMode
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral-mode" type="numeral-mode" />
 """
@@ -2313,14 +2432,15 @@ class XMLNumeralMode(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPedalStep(XMLElement):
     
+    TYPE = XSDSimpleTypeStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pedal-step" type="step">
     <xs:annotation>
@@ -2332,14 +2452,15 @@ class XMLPedalStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPedalAlter(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pedal-alter" type="semitones">
     <xs:annotation>
@@ -2351,14 +2472,15 @@ class XMLPedalAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGlass(XMLElement):
     
+    TYPE = XSDComplexTypeGlass
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="glass" type="glass" />
 """
@@ -2366,14 +2488,15 @@ class XMLGlass(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMetal(XMLElement):
     
+    TYPE = XSDComplexTypeMetal
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="metal" type="metal" />
 """
@@ -2381,14 +2504,15 @@ class XMLMetal(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWood(XMLElement):
     
+    TYPE = XSDComplexTypeWood
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="wood" type="wood" />
 """
@@ -2396,14 +2520,15 @@ class XMLWood(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPitched(XMLElement):
     
+    TYPE = XSDComplexTypePitched
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pitched" type="pitched" />
 """
@@ -2411,14 +2536,15 @@ class XMLPitched(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMembrane(XMLElement):
     
+    TYPE = XSDComplexTypeMembrane
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="membrane" type="membrane" />
 """
@@ -2426,14 +2552,15 @@ class XMLMembrane(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEffect(XMLElement):
     
+    TYPE = XSDComplexTypeEffect
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="effect" type="effect" />
 """
@@ -2441,14 +2568,15 @@ class XMLEffect(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTimpani(XMLElement):
     
+    TYPE = XSDComplexTypeTimpani
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="timpani" type="timpani" />
 """
@@ -2456,14 +2584,15 @@ class XMLTimpani(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeater(XMLElement):
     
+    TYPE = XSDComplexTypeBeater
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beater" type="beater" />
 """
@@ -2471,14 +2600,15 @@ class XMLBeater(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStick(XMLElement):
     
+    TYPE = XSDComplexTypeStick
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stick" type="stick" />
 """
@@ -2486,14 +2616,15 @@ class XMLStick(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStickLocation(XMLElement):
     
+    TYPE = XSDSimpleTypeStickLocation
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stick-location" type="stick-location" />
 """
@@ -2501,14 +2632,15 @@ class XMLStickLocation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherPercussion(XMLElement):
     
+    TYPE = XSDComplexTypeOtherText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-percussion" type="other-text">
     <xs:annotation>
@@ -2520,14 +2652,15 @@ class XMLOtherPercussion(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMeasureLayout(XMLElement):
     
+    TYPE = XSDComplexTypeMeasureLayout
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="measure-layout" type="measure-layout" minOccurs="0" />
 """
@@ -2535,14 +2668,15 @@ class XMLMeasureLayout(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMeasureNumbering(XMLElement):
     
+    TYPE = XSDComplexTypeMeasureNumbering
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="measure-numbering" type="measure-numbering" minOccurs="0" />
 """
@@ -2550,14 +2684,15 @@ class XMLMeasureNumbering(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartNameDisplay(XMLElement):
     
+    TYPE = XSDComplexTypeNameDisplay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-name-display" type="name-display" minOccurs="0" />
 """
@@ -2565,14 +2700,15 @@ class XMLPartNameDisplay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartAbbreviationDisplay(XMLElement):
     
+    TYPE = XSDComplexTypeNameDisplay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-abbreviation-display" type="name-display" minOccurs="0" />
 """
@@ -2580,14 +2716,15 @@ class XMLPartAbbreviationDisplay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRootStep(XMLElement):
     
+    TYPE = XSDComplexTypeRootStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root-step" type="root-step" />
 """
@@ -2595,14 +2732,15 @@ class XMLRootStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRootAlter(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonyAlter
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root-alter" type="harmony-alter" minOccurs="0">
     <xs:annotation>
@@ -2614,14 +2752,15 @@ class XMLRootAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccord(XMLElement):
     
+    TYPE = XSDComplexTypeAccord
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accord" type="accord" maxOccurs="unbounded" />
 """
@@ -2629,14 +2768,15 @@ class XMLAccord(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrumentChange(XMLElement):
     
+    TYPE = XSDComplexTypeInstrumentChange
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument-change" type="instrument-change" minOccurs="0" />
 """
@@ -2644,14 +2784,15 @@ class XMLInstrumentChange(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiDevice(XMLElement):
     
+    TYPE = XSDComplexTypeMidiDevice
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-device" type="midi-device" minOccurs="0" />
 """
@@ -2659,14 +2800,15 @@ class XMLMidiDevice(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMidiInstrument(XMLElement):
     
+    TYPE = XSDComplexTypeMidiInstrument
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="midi-instrument" type="midi-instrument" minOccurs="0" />
 """
@@ -2674,14 +2816,15 @@ class XMLMidiInstrument(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPlay(XMLElement):
     
+    TYPE = XSDComplexTypePlay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="play" type="play" minOccurs="0" />
 """
@@ -2689,14 +2832,15 @@ class XMLPlay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSwing(XMLElement):
     
+    TYPE = XSDComplexTypeSwing
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="swing" type="swing" minOccurs="0" />
 """
@@ -2704,14 +2848,15 @@ class XMLSwing(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStickType(XMLElement):
     
+    TYPE = XSDSimpleTypeStickType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stick-type" type="stick-type" />
 """
@@ -2719,14 +2864,15 @@ class XMLStickType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStickMaterial(XMLElement):
     
+    TYPE = XSDSimpleTypeStickMaterial
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stick-material" type="stick-material" />
 """
@@ -2734,14 +2880,15 @@ class XMLStickMaterial(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStraight(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="straight" type="empty" />
 """
@@ -2749,14 +2896,15 @@ class XMLStraight(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFirst(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="first" type="xs:positiveInteger" />
 """
@@ -2764,14 +2912,15 @@ class XMLFirst(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSecond(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="second" type="xs:positiveInteger" />
 """
@@ -2779,14 +2928,15 @@ class XMLSecond(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSwingType(XMLElement):
     
+    TYPE = XSDSimpleTypeSwingTypeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="swing-type" type="swing-type-value" minOccurs="0" />
 """
@@ -2794,14 +2944,15 @@ class XMLSwingType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSwingStyle(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="swing-style" type="xs:string" minOccurs="0" />
 """
@@ -2809,14 +2960,15 @@ class XMLSwingStyle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEncodingDate(XMLElement):
     
+    TYPE = XSDSimpleTypeYyyyMmDd
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="encoding-date" type="yyyy-mm-dd" />
 """
@@ -2824,14 +2976,15 @@ class XMLEncodingDate(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEncoder(XMLElement):
     
+    TYPE = XSDComplexTypeTypedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="encoder" type="typed-text" />
 """
@@ -2839,14 +2992,15 @@ class XMLEncoder(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSoftware(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="software" type="xs:string" />
 """
@@ -2854,14 +3008,15 @@ class XMLSoftware(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEncodingDescription(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="encoding-description" type="xs:string" />
 """
@@ -2869,14 +3024,15 @@ class XMLEncodingDescription(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSupports(XMLElement):
     
+    TYPE = XSDComplexTypeSupports
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="supports" type="supports" />
 """
@@ -2884,14 +3040,15 @@ class XMLSupports(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCreator(XMLElement):
     
+    TYPE = XSDComplexTypeTypedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="creator" type="typed-text" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -2903,14 +3060,15 @@ class XMLCreator(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRights(XMLElement):
     
+    TYPE = XSDComplexTypeTypedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rights" type="typed-text" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -2922,14 +3080,15 @@ class XMLRights(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEncoding(XMLElement):
     
+    TYPE = XSDComplexTypeEncoding
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="encoding" type="encoding" minOccurs="0" />
 """
@@ -2937,14 +3096,15 @@ class XMLEncoding(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSource(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="source" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -2956,14 +3116,15 @@ class XMLSource(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRelation(XMLElement):
     
+    TYPE = XSDComplexTypeTypedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="relation" type="typed-text" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -2975,14 +3136,15 @@ class XMLRelation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMiscellaneous(XMLElement):
     
+    TYPE = XSDComplexTypeMiscellaneous
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="miscellaneous" type="miscellaneous" minOccurs="0" />
 """
@@ -2990,14 +3152,15 @@ class XMLMiscellaneous(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMiscellaneousField(XMLElement):
     
+    TYPE = XSDComplexTypeMiscellaneousField
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="miscellaneous-field" type="miscellaneous-field" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3005,14 +3168,15 @@ class XMLMiscellaneousField(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLineWidth(XMLElement):
     
+    TYPE = XSDComplexTypeLineWidth
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="line-width" type="line-width" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3020,14 +3184,15 @@ class XMLLineWidth(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNoteSize(XMLElement):
     
+    TYPE = XSDComplexTypeNoteSize
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="note-size" type="note-size" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3035,14 +3200,15 @@ class XMLNoteSize(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDistance(XMLElement):
     
+    TYPE = XSDComplexTypeDistance
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="distance" type="distance" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3050,14 +3216,15 @@ class XMLDistance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGlyph(XMLElement):
     
+    TYPE = XSDComplexTypeGlyph
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="glyph" type="glyph" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3065,14 +3232,15 @@ class XMLGlyph(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherAppearance(XMLElement):
     
+    TYPE = XSDComplexTypeOtherAppearance
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-appearance" type="other-appearance" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -3080,14 +3248,15 @@ class XMLOtherAppearance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMeasureDistance(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="measure-distance" type="tenths" minOccurs="0">
     <xs:annotation>
@@ -3099,14 +3268,15 @@ class XMLMeasureDistance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPageHeight(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="page-height" type="tenths" />
 """
@@ -3114,14 +3284,15 @@ class XMLPageHeight(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPageWidth(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="page-width" type="tenths" />
 """
@@ -3129,14 +3300,15 @@ class XMLPageWidth(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPageMargins(XMLElement):
     
+    TYPE = XSDComplexTypePageMargins
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="page-margins" type="page-margins" minOccurs="0" maxOccurs="2" />
 """
@@ -3144,14 +3316,15 @@ class XMLPageMargins(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMillimeters(XMLElement):
     
+    TYPE = XSDSimpleTypeMillimeters
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="millimeters" type="millimeters" />
 """
@@ -3159,14 +3332,15 @@ class XMLMillimeters(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTenths(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tenths" type="tenths" />
 """
@@ -3174,14 +3348,15 @@ class XMLTenths(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffDistance(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-distance" type="tenths" minOccurs="0" />
 """
@@ -3189,14 +3364,15 @@ class XMLStaffDistance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLeftDivider(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPrintObjectStyleAlign
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="left-divider" type="empty-print-object-style-align" />
 """
@@ -3204,14 +3380,15 @@ class XMLLeftDivider(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRightDivider(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPrintObjectStyleAlign
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="right-divider" type="empty-print-object-style-align" />
 """
@@ -3219,14 +3396,15 @@ class XMLRightDivider(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSystemMargins(XMLElement):
     
+    TYPE = XSDComplexTypeSystemMargins
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="system-margins" type="system-margins" minOccurs="0" />
 """
@@ -3234,14 +3412,15 @@ class XMLSystemMargins(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSystemDistance(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="system-distance" type="tenths" minOccurs="0" />
 """
@@ -3249,14 +3428,15 @@ class XMLSystemDistance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTopSystemDistance(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="top-system-distance" type="tenths" minOccurs="0" />
 """
@@ -3264,14 +3444,15 @@ class XMLTopSystemDistance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSystemDividers(XMLElement):
     
+    TYPE = XSDComplexTypeSystemDividers
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="system-dividers" type="system-dividers" minOccurs="0" />
 """
@@ -3279,14 +3460,15 @@ class XMLSystemDividers(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccent(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accent" type="empty-placement">
     <xs:annotation>
@@ -3298,14 +3480,15 @@ class XMLAccent(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStrongAccent(XMLElement):
     
+    TYPE = XSDComplexTypeStrongAccent
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="strong-accent" type="strong-accent">
     <xs:annotation>
@@ -3317,14 +3500,15 @@ class XMLStrongAccent(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaccato(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staccato" type="empty-placement">
     <xs:annotation>
@@ -3336,14 +3520,15 @@ class XMLStaccato(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTenuto(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tenuto" type="empty-placement">
     <xs:annotation>
@@ -3355,14 +3540,15 @@ class XMLTenuto(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDetachedLegato(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="detached-legato" type="empty-placement">
     <xs:annotation>
@@ -3374,14 +3560,15 @@ class XMLDetachedLegato(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaccatissimo(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staccatissimo" type="empty-placement">
     <xs:annotation>
@@ -3393,14 +3580,15 @@ class XMLStaccatissimo(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSpiccato(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="spiccato" type="empty-placement">
     <xs:annotation>
@@ -3412,14 +3600,15 @@ class XMLSpiccato(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLScoop(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyLine
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="scoop" type="empty-line">
     <xs:annotation>
@@ -3431,14 +3620,15 @@ class XMLScoop(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPlop(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyLine
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="plop" type="empty-line">
     <xs:annotation>
@@ -3450,14 +3640,15 @@ class XMLPlop(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDoit(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyLine
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="doit" type="empty-line">
     <xs:annotation>
@@ -3469,14 +3660,15 @@ class XMLDoit(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFalloff(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyLine
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="falloff" type="empty-line">
     <xs:annotation>
@@ -3488,14 +3680,15 @@ class XMLFalloff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBreathMark(XMLElement):
     
+    TYPE = XSDComplexTypeBreathMark
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="breath-mark" type="breath-mark" />
 """
@@ -3503,14 +3696,15 @@ class XMLBreathMark(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCaesura(XMLElement):
     
+    TYPE = XSDComplexTypeCaesura
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="caesura" type="caesura" />
 """
@@ -3518,14 +3712,15 @@ class XMLCaesura(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStress(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stress" type="empty-placement">
     <xs:annotation>
@@ -3537,14 +3732,15 @@ class XMLStress(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLUnstress(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="unstress" type="empty-placement">
     <xs:annotation>
@@ -3556,14 +3752,15 @@ class XMLUnstress(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSoftAccent(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="soft-accent" type="empty-placement">
     <xs:annotation>
@@ -3575,14 +3772,15 @@ class XMLSoftAccent(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherArticulation(XMLElement):
     
+    TYPE = XSDComplexTypeOtherPlacementText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-articulation" type="other-placement-text">
     <xs:annotation>
@@ -3594,14 +3792,15 @@ class XMLOtherArticulation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArrowDirection(XMLElement):
     
+    TYPE = XSDSimpleTypeArrowDirection
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="arrow-direction" type="arrow-direction" />
 """
@@ -3609,14 +3808,15 @@ class XMLArrowDirection(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArrowStyle(XMLElement):
     
+    TYPE = XSDSimpleTypeArrowStyle
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="arrow-style" type="arrow-style" minOccurs="0" />
 """
@@ -3624,14 +3824,15 @@ class XMLArrowStyle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArrowhead(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="arrowhead" type="empty" minOccurs="0" />
 """
@@ -3639,14 +3840,15 @@ class XMLArrowhead(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCircularArrow(XMLElement):
     
+    TYPE = XSDSimpleTypeCircularArrow
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="circular-arrow" type="circular-arrow" />
 """
@@ -3654,14 +3856,15 @@ class XMLCircularArrow(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBendAlter(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bend-alter" type="semitones">
     <xs:annotation>
@@ -3673,14 +3876,15 @@ class XMLBendAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPreBend(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pre-bend" type="empty">
     <xs:annotation>
@@ -3692,14 +3896,15 @@ class XMLPreBend(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRelease(XMLElement):
     
+    TYPE = XSDComplexTypeRelease
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="release" type="release" />
 """
@@ -3707,14 +3912,15 @@ class XMLRelease(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWithBar(XMLElement):
     
+    TYPE = XSDComplexTypePlacementText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="with-bar" type="placement-text" minOccurs="0">
     <xs:annotation>
@@ -3726,14 +3932,15 @@ class XMLWithBar(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPrefix(XMLElement):
     
+    TYPE = XSDComplexTypeStyleText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="prefix" type="style-text" minOccurs="0">
     <xs:annotation>
@@ -3745,14 +3952,15 @@ class XMLPrefix(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFigureNumber(XMLElement):
     
+    TYPE = XSDComplexTypeStyleText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="figure-number" type="style-text" minOccurs="0">
     <xs:annotation>
@@ -3764,14 +3972,15 @@ class XMLFigureNumber(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSuffix(XMLElement):
     
+    TYPE = XSDComplexTypeStyleText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="suffix" type="style-text" minOccurs="0">
     <xs:annotation>
@@ -3783,14 +3992,15 @@ class XMLSuffix(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLExtend(XMLElement):
     
+    TYPE = XSDComplexTypeExtend
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="extend" type="extend" minOccurs="0" />
 """
@@ -3798,14 +4008,15 @@ class XMLExtend(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFigure(XMLElement):
     
+    TYPE = XSDComplexTypeFigure
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="figure" type="figure" maxOccurs="unbounded" />
 """
@@ -3813,14 +4024,15 @@ class XMLFigure(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHarmonClosed(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonClosed
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="harmon-closed" type="harmon-closed" />
 """
@@ -3828,14 +4040,15 @@ class XMLHarmonClosed(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNatural(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="natural" type="empty">
     <xs:annotation>
@@ -3847,14 +4060,15 @@ class XMLNatural(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArtificial(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="artificial" type="empty">
     <xs:annotation>
@@ -3866,14 +4080,15 @@ class XMLArtificial(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBasePitch(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="base-pitch" type="empty">
     <xs:annotation>
@@ -3885,14 +4100,15 @@ class XMLBasePitch(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTouchingPitch(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="touching-pitch" type="empty">
     <xs:annotation>
@@ -3904,14 +4120,15 @@ class XMLTouchingPitch(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSoundingPitch(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sounding-pitch" type="empty">
     <xs:annotation>
@@ -3923,14 +4140,15 @@ class XMLSoundingPitch(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHoleType(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="hole-type" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -3942,14 +4160,15 @@ class XMLHoleType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHoleClosed(XMLElement):
     
+    TYPE = XSDComplexTypeHoleClosed
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="hole-closed" type="hole-closed" />
 """
@@ -3957,14 +4176,15 @@ class XMLHoleClosed(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHoleShape(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="hole-shape" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -3976,14 +4196,15 @@ class XMLHoleShape(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAssess(XMLElement):
     
+    TYPE = XSDComplexTypeAssess
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="assess" type="assess" />
 """
@@ -3991,14 +4212,15 @@ class XMLAssess(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWait(XMLElement):
     
+    TYPE = XSDComplexTypeWait
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="wait" type="wait" />
 """
@@ -4006,14 +4228,15 @@ class XMLWait(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherListen(XMLElement):
     
+    TYPE = XSDComplexTypeOtherListening
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-listen" type="other-listening" />
 """
@@ -4021,14 +4244,15 @@ class XMLOtherListen(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSyllabic(XMLElement):
     
+    TYPE = XSDSimpleTypeSyllabic
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="syllabic" type="syllabic" minOccurs="0" />
 """
@@ -4036,14 +4260,15 @@ class XMLSyllabic(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLText(XMLElement):
     
+    TYPE = XSDComplexTypeTextElementData
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="text" type="text-element-data" />
 """
@@ -4051,14 +4276,15 @@ class XMLText(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLElision(XMLElement):
     
+    TYPE = XSDComplexTypeElision
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="elision" type="elision" />
 """
@@ -4066,14 +4292,15 @@ class XMLElision(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLaughing(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="laughing" type="empty">
     <xs:annotation>
@@ -4085,14 +4312,15 @@ class XMLLaughing(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHumming(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="humming" type="empty">
     <xs:annotation>
@@ -4104,14 +4332,15 @@ class XMLHumming(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEndLine(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="end-line" type="empty" minOccurs="0">
     <xs:annotation>
@@ -4123,14 +4352,15 @@ class XMLEndLine(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEndParagraph(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="end-paragraph" type="empty" minOccurs="0">
     <xs:annotation>
@@ -4142,14 +4372,15 @@ class XMLEndParagraph(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTied(XMLElement):
     
+    TYPE = XSDComplexTypeTied
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tied" type="tied" />
 """
@@ -4157,14 +4388,15 @@ class XMLTied(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSlur(XMLElement):
     
+    TYPE = XSDComplexTypeSlur
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="slur" type="slur" />
 """
@@ -4172,14 +4404,15 @@ class XMLSlur(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTuplet(XMLElement):
     
+    TYPE = XSDComplexTypeTuplet
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet" type="tuplet" />
 """
@@ -4187,14 +4420,15 @@ class XMLTuplet(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGlissando(XMLElement):
     
+    TYPE = XSDComplexTypeGlissando
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="glissando" type="glissando" />
 """
@@ -4202,14 +4436,15 @@ class XMLGlissando(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSlide(XMLElement):
     
+    TYPE = XSDComplexTypeSlide
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="slide" type="slide" />
 """
@@ -4217,14 +4452,15 @@ class XMLSlide(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOrnaments(XMLElement):
     
+    TYPE = XSDComplexTypeOrnaments
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ornaments" type="ornaments" />
 """
@@ -4232,14 +4468,15 @@ class XMLOrnaments(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTechnical(XMLElement):
     
+    TYPE = XSDComplexTypeTechnical
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="technical" type="technical" />
 """
@@ -4247,14 +4484,15 @@ class XMLTechnical(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArticulations(XMLElement):
     
+    TYPE = XSDComplexTypeArticulations
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="articulations" type="articulations" />
 """
@@ -4262,14 +4500,15 @@ class XMLArticulations(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArpeggiate(XMLElement):
     
+    TYPE = XSDComplexTypeArpeggiate
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="arpeggiate" type="arpeggiate" />
 """
@@ -4277,14 +4516,15 @@ class XMLArpeggiate(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNonArpeggiate(XMLElement):
     
+    TYPE = XSDComplexTypeNonArpeggiate
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="non-arpeggiate" type="non-arpeggiate" />
 """
@@ -4292,14 +4532,15 @@ class XMLNonArpeggiate(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccidentalMark(XMLElement):
     
+    TYPE = XSDComplexTypeAccidentalMark
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accidental-mark" type="accidental-mark" />
 """
@@ -4307,14 +4548,15 @@ class XMLAccidentalMark(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherNotation(XMLElement):
     
+    TYPE = XSDComplexTypeOtherNotation
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-notation" type="other-notation" />
 """
@@ -4322,14 +4564,15 @@ class XMLOtherNotation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGrace(XMLElement):
     
+    TYPE = XSDComplexTypeGrace
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="grace" type="grace" />
 """
@@ -4337,14 +4580,15 @@ class XMLGrace(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTie(XMLElement):
     
+    TYPE = XSDComplexTypeTie
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tie" type="tie" minOccurs="0" maxOccurs="2" />
 """
@@ -4352,14 +4596,15 @@ class XMLTie(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCue(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="cue" type="empty" />
 """
@@ -4367,14 +4612,15 @@ class XMLCue(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrument(XMLElement):
     
+    TYPE = XSDComplexTypeInstrument
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument" type="instrument" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -4382,14 +4628,15 @@ class XMLInstrument(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLType(XMLElement):
     
+    TYPE = XSDComplexTypeNoteType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="type" type="note-type" minOccurs="0" />
 """
@@ -4397,14 +4644,15 @@ class XMLType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDot(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dot" type="empty-placement" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -4416,14 +4664,15 @@ class XMLDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAccidental(XMLElement):
     
+    TYPE = XSDComplexTypeAccidental
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="accidental" type="accidental" minOccurs="0" />
 """
@@ -4431,14 +4680,15 @@ class XMLAccidental(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTimeModification(XMLElement):
     
+    TYPE = XSDComplexTypeTimeModification
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="time-modification" type="time-modification" minOccurs="0" />
 """
@@ -4446,14 +4696,15 @@ class XMLTimeModification(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStem(XMLElement):
     
+    TYPE = XSDComplexTypeStem
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stem" type="stem" minOccurs="0" />
 """
@@ -4461,14 +4712,15 @@ class XMLStem(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNotehead(XMLElement):
     
+    TYPE = XSDComplexTypeNotehead
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="notehead" type="notehead" minOccurs="0" />
 """
@@ -4476,14 +4728,15 @@ class XMLNotehead(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNoteheadText(XMLElement):
     
+    TYPE = XSDComplexTypeNoteheadText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="notehead-text" type="notehead-text" minOccurs="0" />
 """
@@ -4491,14 +4744,15 @@ class XMLNoteheadText(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeam(XMLElement):
     
+    TYPE = XSDComplexTypeBeam
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beam" type="beam" minOccurs="0" maxOccurs="8" />
 """
@@ -4506,14 +4760,15 @@ class XMLBeam(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNotations(XMLElement):
     
+    TYPE = XSDComplexTypeNotations
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="notations" type="notations" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -4521,14 +4776,15 @@ class XMLNotations(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLyric(XMLElement):
     
+    TYPE = XSDComplexTypeLyric
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="lyric" type="lyric" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -4536,14 +4792,15 @@ class XMLLyric(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLListen(XMLElement):
     
+    TYPE = XSDComplexTypeListen
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="listen" type="listen" minOccurs="0" />
 """
@@ -4551,14 +4808,15 @@ class XMLListen(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTrillMark(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyTrillSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="trill-mark" type="empty-trill-sound">
     <xs:annotation>
@@ -4570,14 +4828,15 @@ class XMLTrillMark(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTurn(XMLElement):
     
+    TYPE = XSDComplexTypeHorizontalTurn
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="turn" type="horizontal-turn">
     <xs:annotation>
@@ -4589,14 +4848,15 @@ class XMLTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDelayedTurn(XMLElement):
     
+    TYPE = XSDComplexTypeHorizontalTurn
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="delayed-turn" type="horizontal-turn">
     <xs:annotation>
@@ -4608,14 +4868,15 @@ class XMLDelayedTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInvertedTurn(XMLElement):
     
+    TYPE = XSDComplexTypeHorizontalTurn
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inverted-turn" type="horizontal-turn">
     <xs:annotation>
@@ -4627,14 +4888,15 @@ class XMLInvertedTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDelayedInvertedTurn(XMLElement):
     
+    TYPE = XSDComplexTypeHorizontalTurn
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="delayed-inverted-turn" type="horizontal-turn">
     <xs:annotation>
@@ -4646,14 +4908,15 @@ class XMLDelayedInvertedTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVerticalTurn(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyTrillSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="vertical-turn" type="empty-trill-sound">
     <xs:annotation>
@@ -4665,14 +4928,15 @@ class XMLVerticalTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInvertedVerticalTurn(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyTrillSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inverted-vertical-turn" type="empty-trill-sound">
     <xs:annotation>
@@ -4684,14 +4948,15 @@ class XMLInvertedVerticalTurn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLShake(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyTrillSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="shake" type="empty-trill-sound">
     <xs:annotation>
@@ -4703,14 +4968,15 @@ class XMLShake(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMordent(XMLElement):
     
+    TYPE = XSDComplexTypeMordent
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="mordent" type="mordent">
     <xs:annotation>
@@ -4722,14 +4988,15 @@ class XMLMordent(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInvertedMordent(XMLElement):
     
+    TYPE = XSDComplexTypeMordent
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inverted-mordent" type="mordent">
     <xs:annotation>
@@ -4741,14 +5008,15 @@ class XMLInvertedMordent(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSchleifer(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="schleifer" type="empty-placement">
     <xs:annotation>
@@ -4760,14 +5028,15 @@ class XMLSchleifer(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTremolo(XMLElement):
     
+    TYPE = XSDComplexTypeTremolo
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tremolo" type="tremolo" />
 """
@@ -4775,14 +5044,15 @@ class XMLTremolo(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHaydn(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyTrillSound
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="haydn" type="empty-trill-sound">
     <xs:annotation>
@@ -4794,14 +5064,15 @@ class XMLHaydn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherOrnament(XMLElement):
     
+    TYPE = XSDComplexTypeOtherPlacementText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-ornament" type="other-placement-text">
     <xs:annotation>
@@ -4813,14 +5084,15 @@ class XMLOtherOrnament(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStep(XMLElement):
     
+    TYPE = XSDSimpleTypeStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="step" type="step" />
 """
@@ -4828,14 +5100,15 @@ class XMLStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAlter(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="alter" type="semitones" minOccurs="0" />
 """
@@ -4843,14 +5116,15 @@ class XMLAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOctave(XMLElement):
     
+    TYPE = XSDSimpleTypeOctave
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="octave" type="octave" />
 """
@@ -4858,14 +5132,15 @@ class XMLOctave(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLUpBow(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="up-bow" type="empty-placement">
     <xs:annotation>
@@ -4877,14 +5152,15 @@ class XMLUpBow(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDownBow(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="down-bow" type="empty-placement">
     <xs:annotation>
@@ -4896,14 +5172,15 @@ class XMLDownBow(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHarmonic(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonic
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="harmonic" type="harmonic" />
 """
@@ -4911,14 +5188,15 @@ class XMLHarmonic(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOpenString(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="open-string" type="empty-placement">
     <xs:annotation>
@@ -4930,14 +5208,15 @@ class XMLOpenString(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLThumbPosition(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="thumb-position" type="empty-placement">
     <xs:annotation>
@@ -4949,14 +5228,15 @@ class XMLThumbPosition(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPluck(XMLElement):
     
+    TYPE = XSDComplexTypePlacementText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pluck" type="placement-text">
     <xs:annotation>
@@ -4968,14 +5248,15 @@ class XMLPluck(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDoubleTongue(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="double-tongue" type="empty-placement">
     <xs:annotation>
@@ -4987,14 +5268,15 @@ class XMLDoubleTongue(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTripleTongue(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="triple-tongue" type="empty-placement">
     <xs:annotation>
@@ -5006,14 +5288,15 @@ class XMLTripleTongue(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStopped(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacementSmufl
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="stopped" type="empty-placement-smufl">
     <xs:annotation>
@@ -5025,14 +5308,15 @@ class XMLStopped(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSnapPizzicato(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="snap-pizzicato" type="empty-placement">
     <xs:annotation>
@@ -5044,14 +5328,15 @@ class XMLSnapPizzicato(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHammerOn(XMLElement):
     
+    TYPE = XSDComplexTypeHammerOnPullOff
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="hammer-on" type="hammer-on-pull-off" />
 """
@@ -5059,14 +5344,15 @@ class XMLHammerOn(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPullOff(XMLElement):
     
+    TYPE = XSDComplexTypeHammerOnPullOff
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pull-off" type="hammer-on-pull-off" />
 """
@@ -5074,14 +5360,15 @@ class XMLPullOff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBend(XMLElement):
     
+    TYPE = XSDComplexTypeBend
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bend" type="bend" />
 """
@@ -5089,14 +5376,15 @@ class XMLBend(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTap(XMLElement):
     
+    TYPE = XSDComplexTypeTap
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tap" type="tap" />
 """
@@ -5104,14 +5392,15 @@ class XMLTap(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHeel(XMLElement):
     
+    TYPE = XSDComplexTypeHeelToe
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="heel" type="heel-toe" />
 """
@@ -5119,14 +5408,15 @@ class XMLHeel(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLToe(XMLElement):
     
+    TYPE = XSDComplexTypeHeelToe
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="toe" type="heel-toe" />
 """
@@ -5134,14 +5424,15 @@ class XMLToe(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFingernails(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fingernails" type="empty-placement">
     <xs:annotation>
@@ -5153,14 +5444,15 @@ class XMLFingernails(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHole(XMLElement):
     
+    TYPE = XSDComplexTypeHole
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="hole" type="hole" />
 """
@@ -5168,14 +5460,15 @@ class XMLHole(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLArrow(XMLElement):
     
+    TYPE = XSDComplexTypeArrow
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="arrow" type="arrow" />
 """
@@ -5183,14 +5476,15 @@ class XMLArrow(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHandbell(XMLElement):
     
+    TYPE = XSDComplexTypeHandbell
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="handbell" type="handbell" />
 """
@@ -5198,14 +5492,15 @@ class XMLHandbell(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBrassBend(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="brass-bend" type="empty-placement">
     <xs:annotation>
@@ -5217,14 +5512,15 @@ class XMLBrassBend(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFlip(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="flip" type="empty-placement">
     <xs:annotation>
@@ -5236,14 +5532,15 @@ class XMLFlip(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSmear(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="smear" type="empty-placement">
     <xs:annotation>
@@ -5255,14 +5552,15 @@ class XMLSmear(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOpen(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacementSmufl
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="open" type="empty-placement-smufl">
     <xs:annotation>
@@ -5274,14 +5572,15 @@ class XMLOpen(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHalfMuted(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacementSmufl
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="half-muted" type="empty-placement-smufl">
     <xs:annotation>
@@ -5293,14 +5592,15 @@ class XMLHalfMuted(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHarmonMute(XMLElement):
     
+    TYPE = XSDComplexTypeHarmonMute
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="harmon-mute" type="harmon-mute" />
 """
@@ -5308,14 +5608,15 @@ class XMLHarmonMute(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGolpe(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyPlacement
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="golpe" type="empty-placement">
     <xs:annotation>
@@ -5327,14 +5628,15 @@ class XMLGolpe(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOtherTechnical(XMLElement):
     
+    TYPE = XSDComplexTypeOtherPlacementText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="other-technical" type="other-placement-text">
     <xs:annotation>
@@ -5346,14 +5648,15 @@ class XMLOtherTechnical(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLActualNotes(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="actual-notes" type="xs:nonNegativeInteger">
     <xs:annotation>
@@ -5365,14 +5668,15 @@ class XMLActualNotes(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNormalNotes(XMLElement):
     
+    TYPE = XSDSimpleTypeNonNegativeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="normal-notes" type="xs:nonNegativeInteger">
     <xs:annotation>
@@ -5384,14 +5688,15 @@ class XMLNormalNotes(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNormalType(XMLElement):
     
+    TYPE = XSDSimpleTypeNoteTypeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="normal-type" type="note-type-value">
     <xs:annotation>
@@ -5403,14 +5708,15 @@ class XMLNormalType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNormalDot(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="normal-dot" type="empty" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -5422,14 +5728,15 @@ class XMLNormalDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTupletActual(XMLElement):
     
+    TYPE = XSDComplexTypeTupletPortion
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet-actual" type="tuplet-portion" minOccurs="0">
     <xs:annotation>
@@ -5441,14 +5748,15 @@ class XMLTupletActual(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTupletNormal(XMLElement):
     
+    TYPE = XSDComplexTypeTupletPortion
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet-normal" type="tuplet-portion" minOccurs="0">
     <xs:annotation>
@@ -5460,14 +5768,15 @@ class XMLTupletNormal(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTupletNumber(XMLElement):
     
+    TYPE = XSDComplexTypeTupletNumber
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet-number" type="tuplet-number" minOccurs="0" />
 """
@@ -5475,14 +5784,15 @@ class XMLTupletNumber(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTupletType(XMLElement):
     
+    TYPE = XSDComplexTypeTupletType
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet-type" type="tuplet-type" minOccurs="0" />
 """
@@ -5490,14 +5800,15 @@ class XMLTupletType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTupletDot(XMLElement):
     
+    TYPE = XSDComplexTypeTupletDot
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuplet-dot" type="tuplet-dot" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5505,14 +5816,15 @@ class XMLTupletDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCreditType(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="credit-type" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5520,14 +5832,15 @@ class XMLCreditType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLink(XMLElement):
     
+    TYPE = XSDComplexTypeLink
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="link" type="link" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5535,14 +5848,15 @@ class XMLLink(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBookmark(XMLElement):
     
+    TYPE = XSDComplexTypeBookmark
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bookmark" type="bookmark" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5550,14 +5864,15 @@ class XMLBookmark(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCreditImage(XMLElement):
     
+    TYPE = XSDComplexTypeImage
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="credit-image" type="image" />
 """
@@ -5565,14 +5880,15 @@ class XMLCreditImage(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCreditWords(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedTextId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="credit-words" type="formatted-text-id" />
 """
@@ -5580,14 +5896,15 @@ class XMLCreditWords(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCreditSymbol(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedSymbolId
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="credit-symbol" type="formatted-symbol-id" />
 """
@@ -5595,14 +5912,15 @@ class XMLCreditSymbol(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLScaling(XMLElement):
     
+    TYPE = XSDComplexTypeScaling
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="scaling" type="scaling" minOccurs="0" />
 """
@@ -5610,14 +5928,15 @@ class XMLScaling(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLConcertScore(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="concert-score" type="empty" minOccurs="0">
     <xs:annotation>
@@ -5631,14 +5950,15 @@ A document with a concert-score element may not contain any transpose elements t
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAppearance(XMLElement):
     
+    TYPE = XSDComplexTypeAppearance
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="appearance" type="appearance" minOccurs="0" />
 """
@@ -5646,14 +5966,15 @@ class XMLAppearance(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMusicFont(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyFont
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="music-font" type="empty-font" minOccurs="0" />
 """
@@ -5661,14 +5982,15 @@ class XMLMusicFont(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWordFont(XMLElement):
     
+    TYPE = XSDComplexTypeEmptyFont
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="word-font" type="empty-font" minOccurs="0" />
 """
@@ -5676,14 +5998,15 @@ class XMLWordFont(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLyricFont(XMLElement):
     
+    TYPE = XSDComplexTypeLyricFont
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="lyric-font" type="lyric-font" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5691,14 +6014,15 @@ class XMLLyricFont(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLyricLanguage(XMLElement):
     
+    TYPE = XSDComplexTypeLyricLanguage
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="lyric-language" type="lyric-language" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5706,14 +6030,15 @@ class XMLLyricLanguage(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupName(XMLElement):
     
+    TYPE = XSDComplexTypeGroupName
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-name" type="group-name" minOccurs="0" />
 """
@@ -5721,14 +6046,15 @@ class XMLGroupName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupNameDisplay(XMLElement):
     
+    TYPE = XSDComplexTypeNameDisplay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-name-display" type="name-display" minOccurs="0">
     <xs:annotation>
@@ -5740,14 +6066,15 @@ class XMLGroupNameDisplay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupAbbreviation(XMLElement):
     
+    TYPE = XSDComplexTypeGroupName
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-abbreviation" type="group-name" minOccurs="0" />
 """
@@ -5755,14 +6082,15 @@ class XMLGroupAbbreviation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupAbbreviationDisplay(XMLElement):
     
+    TYPE = XSDComplexTypeNameDisplay
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-abbreviation-display" type="name-display" minOccurs="0">
     <xs:annotation>
@@ -5774,14 +6102,15 @@ class XMLGroupAbbreviationDisplay(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupSymbol(XMLElement):
     
+    TYPE = XSDComplexTypeGroupSymbol
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-symbol" type="group-symbol" minOccurs="0" />
 """
@@ -5789,14 +6118,15 @@ class XMLGroupSymbol(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupBarline(XMLElement):
     
+    TYPE = XSDComplexTypeGroupBarline
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-barline" type="group-barline" minOccurs="0" />
 """
@@ -5804,14 +6134,15 @@ class XMLGroupBarline(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupTime(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-time" type="empty" minOccurs="0">
     <xs:annotation>
@@ -5823,14 +6154,15 @@ class XMLGroupTime(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrumentLink(XMLElement):
     
+    TYPE = XSDComplexTypeInstrumentLink
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument-link" type="instrument-link" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5838,14 +6170,15 @@ class XMLInstrumentLink(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroupLink(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group-link" type="xs:string" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -5857,14 +6190,15 @@ class XMLGroupLink(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPlayerName(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="player-name" type="xs:string">
     <xs:annotation>
@@ -5876,14 +6210,15 @@ class XMLPlayerName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrumentName(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument-name" type="xs:string">
     <xs:annotation>
@@ -5895,14 +6230,15 @@ class XMLInstrumentName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrumentAbbreviation(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument-abbreviation" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -5914,14 +6250,15 @@ class XMLInstrumentAbbreviation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLIdentification(XMLElement):
     
+    TYPE = XSDComplexTypeIdentification
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="identification" type="identification" minOccurs="0" />
 """
@@ -5929,14 +6266,15 @@ class XMLIdentification(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartLink(XMLElement):
     
+    TYPE = XSDComplexTypePartLink
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-link" type="part-link" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -5944,14 +6282,15 @@ class XMLPartLink(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartName(XMLElement):
     
+    TYPE = XSDComplexTypePartName
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-name" type="part-name" />
 """
@@ -5959,14 +6298,15 @@ class XMLPartName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartAbbreviation(XMLElement):
     
+    TYPE = XSDComplexTypePartName
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-abbreviation" type="part-name" minOccurs="0" />
 """
@@ -5974,14 +6314,15 @@ class XMLPartAbbreviation(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGroup(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="group" type="xs:string" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -5993,14 +6334,15 @@ class XMLGroup(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLScoreInstrument(XMLElement):
     
+    TYPE = XSDComplexTypeScoreInstrument
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="score-instrument" type="score-instrument" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -6008,14 +6350,15 @@ class XMLScoreInstrument(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPlayer(XMLElement):
     
+    TYPE = XSDComplexTypePlayer
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="player" type="player" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -6023,14 +6366,15 @@ class XMLPlayer(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVirtualLibrary(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="virtual-library" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -6042,14 +6386,15 @@ class XMLVirtualLibrary(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVirtualName(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="virtual-name" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -6061,14 +6406,15 @@ class XMLVirtualName(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWorkNumber(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="work-number" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -6080,14 +6426,15 @@ class XMLWorkNumber(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWorkTitle(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="work-title" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -6099,14 +6446,15 @@ class XMLWorkTitle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOpus(XMLElement):
     
+    TYPE = XSDComplexTypeOpus
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opus" type="opus" minOccurs="0" />
 """
@@ -6114,14 +6462,15 @@ class XMLOpus(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFootnote(XMLElement):
     
+    TYPE = XSDComplexTypeFormattedText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="footnote" type="formatted-text" />
 """
@@ -6129,14 +6478,15 @@ class XMLFootnote(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLevel(XMLElement):
     
+    TYPE = XSDComplexTypeLevel
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="level" type="level" />
 """
@@ -6144,14 +6494,15 @@ class XMLLevel(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaff(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff" type="xs:positiveInteger">
     <xs:annotation>
@@ -6163,14 +6514,15 @@ class XMLStaff(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTuningStep(XMLElement):
     
+    TYPE = XSDSimpleTypeStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuning-step" type="step">
     <xs:annotation>
@@ -6182,14 +6534,15 @@ class XMLTuningStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTuningAlter(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuning-alter" type="semitones" minOccurs="0">
     <xs:annotation>
@@ -6201,14 +6554,15 @@ class XMLTuningAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTuningOctave(XMLElement):
     
+    TYPE = XSDSimpleTypeOctave
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="tuning-octave" type="octave">
     <xs:annotation>
@@ -6220,14 +6574,15 @@ class XMLTuningOctave(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInstrumentSound(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="instrument-sound" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -6239,14 +6594,15 @@ class XMLInstrumentSound(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSolo(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="solo" type="empty">
     <xs:annotation>
@@ -6258,14 +6614,15 @@ class XMLSolo(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLEnsemble(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveIntegerOrEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ensemble" type="positive-integer-or-empty">
     <xs:annotation>
@@ -6277,14 +6634,15 @@ class XMLEnsemble(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVirtualInstrument(XMLElement):
     
+    TYPE = XSDComplexTypeVirtualInstrument
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="virtual-instrument" type="virtual-instrument" minOccurs="0" />
 """
@@ -6292,14 +6650,15 @@ class XMLVirtualInstrument(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLVoice(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="voice" type="xs:string" />
 """
@@ -6307,14 +6666,15 @@ class XMLVoice(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSign(XMLElement):
     
+    TYPE = XSDSimpleTypeClefSign
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="sign" type="clef-sign">
     <xs:annotation>
@@ -6326,14 +6686,15 @@ class XMLSign(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLine(XMLElement):
     
+    TYPE = XSDSimpleTypeStaffLinePosition
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="line" type="staff-line-position" minOccurs="0">
     <xs:annotation>
@@ -6345,14 +6706,15 @@ class XMLLine(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLClefOctaveChange(XMLElement):
     
+    TYPE = XSDSimpleTypeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="clef-octave-change" type="xs:integer" minOccurs="0">
     <xs:annotation>
@@ -6364,14 +6726,15 @@ class XMLClefOctaveChange(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKeyStep(XMLElement):
     
+    TYPE = XSDSimpleTypeStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="key-step" type="step">
     <xs:annotation>
@@ -6383,14 +6746,15 @@ class XMLKeyStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKeyAlter(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="key-alter" type="semitones">
     <xs:annotation>
@@ -6402,14 +6766,15 @@ class XMLKeyAlter(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKeyAccidental(XMLElement):
     
+    TYPE = XSDComplexTypeKeyAccidental
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="key-accidental" type="key-accidental" minOccurs="0">
     <xs:annotation>
@@ -6421,14 +6786,15 @@ class XMLKeyAccidental(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSlashType(XMLElement):
     
+    TYPE = XSDSimpleTypeNoteTypeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="slash-type" type="note-type-value">
     <xs:annotation>
@@ -6440,14 +6806,15 @@ class XMLSlashType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSlashDot(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="slash-dot" type="empty" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -6459,14 +6826,15 @@ class XMLSlashDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLExceptVoice(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="except-voice" type="xs:string" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -6478,14 +6846,15 @@ class XMLExceptVoice(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeats(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beats" type="xs:string">
     <xs:annotation>
@@ -6497,14 +6866,15 @@ class XMLBeats(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeatType(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beat-type" type="xs:string">
     <xs:annotation>
@@ -6516,14 +6886,15 @@ class XMLBeatType(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCancel(XMLElement):
     
+    TYPE = XSDComplexTypeCancel
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="cancel" type="cancel" minOccurs="0" />
 """
@@ -6531,14 +6902,15 @@ class XMLCancel(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFifths(XMLElement):
     
+    TYPE = XSDSimpleTypeFifths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fifths" type="fifths" />
 """
@@ -6546,14 +6918,15 @@ class XMLFifths(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMode(XMLElement):
     
+    TYPE = XSDSimpleTypeMode
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="mode" type="mode" minOccurs="0" />
 """
@@ -6561,14 +6934,15 @@ class XMLMode(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDiatonic(XMLElement):
     
+    TYPE = XSDSimpleTypeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="diatonic" type="xs:integer" minOccurs="0">
     <xs:annotation>
@@ -6580,14 +6954,15 @@ class XMLDiatonic(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLChromatic(XMLElement):
     
+    TYPE = XSDSimpleTypeSemitones
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="chromatic" type="semitones">
     <xs:annotation>
@@ -6599,14 +6974,15 @@ class XMLChromatic(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLOctaveChange(XMLElement):
     
+    TYPE = XSDSimpleTypeInteger
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="octave-change" type="xs:integer" minOccurs="0">
     <xs:annotation>
@@ -6618,14 +6994,15 @@ class XMLOctaveChange(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDouble(XMLElement):
     
+    TYPE = XSDComplexTypeDouble
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="double" type="double" minOccurs="0">
     <xs:annotation>
@@ -6637,14 +7014,15 @@ class XMLDouble(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeatUnit(XMLElement):
     
+    TYPE = XSDSimpleTypeNoteTypeValue
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beat-unit" type="note-type-value">
     <xs:annotation>
@@ -6656,14 +7034,15 @@ class XMLBeatUnit(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBeatUnitDot(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="beat-unit-dot" type="empty" minOccurs="0" maxOccurs="unbounded">
     <xs:annotation>
@@ -6675,14 +7054,15 @@ class XMLBeatUnitDot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRoot(XMLElement):
     
+    TYPE = XSDComplexTypeRoot
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root" type="root" />
 """
@@ -6690,14 +7070,15 @@ class XMLRoot(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNumeral(XMLElement):
     
+    TYPE = XSDComplexTypeNumeral
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="numeral" type="numeral" />
 """
@@ -6705,14 +7086,15 @@ class XMLNumeral(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFunction(XMLElement):
     
+    TYPE = XSDComplexTypeStyleText
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="function" type="style-text">
     <xs:annotation>
@@ -6724,14 +7106,15 @@ class XMLFunction(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLKind(XMLElement):
     
+    TYPE = XSDComplexTypeKind
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="kind" type="kind" />
 """
@@ -6739,14 +7122,15 @@ class XMLKind(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLInversion(XMLElement):
     
+    TYPE = XSDComplexTypeInversion
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inversion" type="inversion" minOccurs="0" />
 """
@@ -6754,14 +7138,15 @@ class XMLInversion(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBass(XMLElement):
     
+    TYPE = XSDComplexTypeBass
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bass" type="bass" minOccurs="0" />
 """
@@ -6769,14 +7154,15 @@ class XMLBass(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDegree(XMLElement):
     
+    TYPE = XSDComplexTypeDegree
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="degree" type="degree" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -6784,14 +7170,15 @@ class XMLDegree(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLTopMargin(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="top-margin" type="tenths" />
 """
@@ -6799,14 +7186,15 @@ class XMLTopMargin(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBottomMargin(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bottom-margin" type="tenths" />
 """
@@ -6814,14 +7202,15 @@ class XMLBottomMargin(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPageLayout(XMLElement):
     
+    TYPE = XSDComplexTypePageLayout
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="page-layout" type="page-layout" minOccurs="0" />
 """
@@ -6829,14 +7218,15 @@ class XMLPageLayout(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLSystemLayout(XMLElement):
     
+    TYPE = XSDComplexTypeSystemLayout
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="system-layout" type="system-layout" minOccurs="0" />
 """
@@ -6844,14 +7234,15 @@ class XMLSystemLayout(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLStaffLayout(XMLElement):
     
+    TYPE = XSDComplexTypeStaffLayout
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="staff-layout" type="staff-layout" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -6859,14 +7250,15 @@ class XMLStaffLayout(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLLeftMargin(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="left-margin" type="tenths" />
 """
@@ -6874,14 +7266,15 @@ class XMLLeftMargin(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRightMargin(XMLElement):
     
+    TYPE = XSDSimpleTypeTenths
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="right-margin" type="tenths" />
 """
@@ -6889,14 +7282,15 @@ class XMLRightMargin(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDuration(XMLElement):
     
+    TYPE = XSDSimpleTypePositiveDivisions
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="duration" type="positive-divisions">
     <xs:annotation>
@@ -6910,14 +7304,15 @@ The duration element moves the musical position when used in backup elements, fo
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDisplayStep(XMLElement):
     
+    TYPE = XSDSimpleTypeStep
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="display-step" type="step" />
 """
@@ -6925,14 +7320,15 @@ class XMLDisplayStep(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDisplayOctave(XMLElement):
     
+    TYPE = XSDSimpleTypeOctave
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="display-octave" type="octave" />
 """
@@ -6940,14 +7336,15 @@ class XMLDisplayOctave(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLChord(XMLElement):
     
+    TYPE = XSDComplexTypeEmpty
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="chord" type="empty" minOccurs="0">
     <xs:annotation>
@@ -6963,14 +7360,15 @@ In most cases the duration will be the same as the preceding note. However it ca
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPitch(XMLElement):
     
+    TYPE = XSDComplexTypePitch
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="pitch" type="pitch" />
 """
@@ -6978,14 +7376,15 @@ class XMLPitch(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLUnpitched(XMLElement):
     
+    TYPE = XSDComplexTypeUnpitched
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="unpitched" type="unpitched" />
 """
@@ -6993,14 +7392,15 @@ class XMLUnpitched(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLRest(XMLElement):
     
+    TYPE = XSDComplexTypeRest
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rest" type="rest" />
 """
@@ -7008,14 +7408,15 @@ class XMLRest(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLNote(XMLElement):
     
+    TYPE = XSDComplexTypeNote
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="note" type="note" />
 """
@@ -7023,14 +7424,15 @@ class XMLNote(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBackup(XMLElement):
     
+    TYPE = XSDComplexTypeBackup
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="backup" type="backup" />
 """
@@ -7038,14 +7440,15 @@ class XMLBackup(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLForward(XMLElement):
     
+    TYPE = XSDComplexTypeForward
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="forward" type="forward" />
 """
@@ -7053,14 +7456,15 @@ class XMLForward(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDirection(XMLElement):
     
+    TYPE = XSDComplexTypeDirection
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="direction" type="direction" />
 """
@@ -7068,14 +7472,15 @@ class XMLDirection(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLAttributes(XMLElement):
     
+    TYPE = XSDComplexTypeAttributes
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="attributes" type="attributes" />
 """
@@ -7083,14 +7488,15 @@ class XMLAttributes(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLHarmony(XMLElement):
     
+    TYPE = XSDComplexTypeHarmony
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="harmony" type="harmony" />
 """
@@ -7098,14 +7504,15 @@ class XMLHarmony(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLFiguredBass(XMLElement):
     
+    TYPE = XSDComplexTypeFiguredBass
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="figured-bass" type="figured-bass" />
 """
@@ -7113,14 +7520,15 @@ class XMLFiguredBass(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPrint(XMLElement):
     
+    TYPE = XSDComplexTypePrint
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="print" type="print" />
 """
@@ -7128,14 +7536,15 @@ class XMLPrint(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLBarline(XMLElement):
     
+    TYPE = XSDComplexTypeBarline
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="barline" type="barline" />
 """
@@ -7143,14 +7552,15 @@ class XMLBarline(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLGrouping(XMLElement):
     
+    TYPE = XSDComplexTypeGrouping
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="grouping" type="grouping" />
 """
@@ -7158,14 +7568,15 @@ class XMLGrouping(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartGroup(XMLElement):
     
+    TYPE = XSDComplexTypePartGroup
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-group" type="part-group" />
 """
@@ -7173,14 +7584,15 @@ class XMLPartGroup(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLWork(XMLElement):
     
+    TYPE = XSDComplexTypeWork
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="work" type="work" minOccurs="0" />
 """
@@ -7188,14 +7600,15 @@ class XMLWork(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMovementNumber(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="movement-number" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -7207,14 +7620,15 @@ class XMLMovementNumber(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLMovementTitle(XMLElement):
     
+    TYPE = XSDSimpleTypeString
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="movement-title" type="xs:string" minOccurs="0">
     <xs:annotation>
@@ -7226,14 +7640,15 @@ class XMLMovementTitle(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLDefaults(XMLElement):
     
+    TYPE = XSDComplexTypeDefaults
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="defaults" type="defaults" minOccurs="0" />
 """
@@ -7241,14 +7656,15 @@ class XMLDefaults(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLCredit(XMLElement):
     
+    TYPE = XSDComplexTypeCredit
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="credit" type="credit" minOccurs="0" maxOccurs="unbounded" />
 """
@@ -7256,14 +7672,15 @@ class XMLCredit(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLPartList(XMLElement):
     
+    TYPE = XSDComplexTypePartList
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="part-list" type="part-list" />
 """
@@ -7271,14 +7688,15 @@ class XMLPartList(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 
 
 class XMLScorePart(XMLElement):
     
+    TYPE = XSDComplexTypeScorePart
     XSD_TREE = XSDTree(ET.fromstring("""
 <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="score-part" type="score-part">
     <xs:annotation>
@@ -7290,8 +7708,8 @@ class XMLScorePart(XMLElement):
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 

@@ -15,7 +15,7 @@ class TestScore(TestCase):
 
     def test_score_partwise_type(self):
         score = XMLScorePartwise()
-        assert score.type_ == XSDComplexTypeScorePartwise
+        assert score.TYPE == XSDComplexTypeScorePartwise
 
     def test_xsd_complex_type_score_partwise_sequence(self):
         assert XSDComplexTypeScorePartwise.get_xsd_indicator()[0].elements == [('XMLWork', '0', '1'), ('XMLMovementNumber', '0', '1'),
@@ -26,7 +26,7 @@ class TestScore(TestCase):
 
     def test_score_partwise_indicator(self):
         score = XMLScorePartwise()
-        assert isinstance(score.type_.get_xsd_indicator()[0], XSDSequence)
+        assert isinstance(score.TYPE.get_xsd_indicator()[0], XSDSequence)
 
     def test_minimum_score(self):
         score = XMLScorePartwise()

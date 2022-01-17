@@ -14,6 +14,7 @@ from musicxml.xsd.xsdcomplextype import *
 
 class XMLElement(Tree):
     PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'et_xml_element', 'name', 'type_', 'value', }
+    TYPE = None
     XSD_TREE: Optional[XSDTree] = None
 
     def __init__(self, value=None, **kwargs):
@@ -29,9 +30,9 @@ class XMLElement(Tree):
         self._create_child_container_tree()
 
     def _check_attribute(self, name, value):
-        attributes = self.type_.get_xsd_attributes()
+        attributes = self.TYPE.get_xsd_attributes()
         allowed_attributes = [attribute.name for attribute in attributes]
-        if name not in [attribute.name for attribute in self.type_.get_xsd_attributes()]:
+        if name not in [attribute.name for attribute in self.TYPE.get_xsd_attributes()]:
             raise XSDWrongAttribute(f"{self.__class__.__name__} has no attribute {name}. Allowed attributes are: {allowed_attributes}")
         for attribute in attributes:
             if attribute.name == name:
@@ -49,8 +50,8 @@ class XMLElement(Tree):
             self._et_xml_element.append(child.et_xml_element)
 
     def _check_required_attributes(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            required_attributes = [attribute for attribute in self.type_.get_xsd_attributes() if attribute.is_required]
+        if self.TYPE.XSD_TREE.is_complex_type:
+            required_attributes = [attribute for attribute in self.TYPE.get_xsd_attributes() if attribute.is_required]
             for required_attribute in required_attributes:
                 if required_attribute.name not in self.attributes:
                     raise XSDAttributeRequiredException(f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
@@ -68,8 +69,8 @@ class XMLElement(Tree):
 
     def _create_child_container_tree(self):
         try:
-            if self.type_.XSD_TREE.is_complex_type:
-                self._child_container_tree = copy.copy(containers[self.type_.__name__])
+            if self.TYPE.XSD_TREE.is_complex_type:
+                self._child_container_tree = copy.copy(containers[self.TYPE.__name__])
                 self._child_container_tree._parent_element = self
         except KeyError:
             pass
@@ -78,7 +79,7 @@ class XMLElement(Tree):
         if not val:
             return
 
-        if self.type_.XSD_TREE.is_simple_type:
+        if self.TYPE.XSD_TREE.is_simple_type:
             if val:
                 raise XSDWrongAttribute(f'{self.__class__.__name__} has no attributes.')
 
@@ -109,22 +110,13 @@ class XMLElement(Tree):
         return self.XSD_TREE.get_attributes()['name']
 
     @property
-    def type_(self):
-        if self._type is None:
-            try:
-                self._type = eval(convert_to_xsd_class_name(self.XSD_TREE.get_attributes()['type'], 'complex_type'))
-            except (NameError, ValueError):
-                self._type = eval(convert_to_xsd_class_name(self.XSD_TREE.get_attributes()['type'], 'simple_type'))
-        return self._type
-
-    @property
     def value(self):
         return self._value
 
     @value.setter
     def value(self, val):
         if val is not None:
-            self._value = self.type_(val)
+            self._value = self.TYPE(val)
 
     @classmethod
     def get_xsd(cls):

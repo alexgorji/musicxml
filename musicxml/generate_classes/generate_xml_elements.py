@@ -5,8 +5,11 @@ from pathlib import Path
 from string import Template
 
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
-from musicxml.util.core import convert_to_xml_class_name
+from musicxml.util.core import convert_to_xml_class_name, convert_to_xsd_class_name
 from musicxml.xsd.xsdtree import XSDTree
+from musicxml.xsd.xsdcomplextype import *
+from musicxml.xsd.xsdcomplextype import __all__ as all_complex_types
+from musicxml.xsd.xsdsimpletype import *
 
 default_path = Path(__file__).parent / 'defaults' / 'xmlelement.py'
 target_path = Path(__file__).parent.parent / 'xmlelement' / 'xmlelement.py'
@@ -14,6 +17,7 @@ target_path = Path(__file__).parent.parent / 'xmlelement' / 'xmlelement.py'
 template_string = """
 class $class_name($base_classes):
     
+    TYPE = $xsd_type
     XSD_TREE = XSDTree(ET.fromstring(\"\"\"
 $xsd_string
 \"\"\"
@@ -21,8 +25,8 @@ $xsd_string
 
     @property
     def __doc__(self):
-        if self.type_.XSD_TREE.is_complex_type:
-            return self.type_.__doc__
+        if self.TYPE.XSD_TREE.is_complex_type:
+            return self.TYPE.__doc__
         else:
             return self.XSD_TREE.get_doc()
 """
@@ -49,10 +53,16 @@ def element_class_as_string(element_):
     xsd_tree = XSDTree(copied_el)
     class_name = convert_to_xml_class_name(xsd_tree.name)
     xml_element_class_names.append(class_name)
+    try:
+        xsd_type = convert_to_xsd_class_name(xsd_tree.get_attributes()['type'], 'complex_type')
+        assert xsd_type in all_complex_types
+    except (ValueError, AssertionError):
+        xsd_type = convert_to_xsd_class_name(xsd_tree.get_attributes()['type'], 'simple_type')
     base_classes = ('XMLElement',)
     ET.indent(found_et_xml, space='    '),
     xsd_string = ET.tostring(found_et_xml, encoding='unicode').strip()
-    t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_classes), xsd_string=xsd_string)
+    t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_classes), xsd_type=xsd_type,
+                                             xsd_string=xsd_string)
     return t
 
 

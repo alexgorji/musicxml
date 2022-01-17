@@ -11,10 +11,10 @@ class TestXMLElements(TestCase):
 
     def test_element_type(self):
         el = XMLOffset()
-        assert el.type_ == XSDComplexTypeOffset
+        assert el.TYPE == XSDComplexTypeOffset
 
         el = XMLElevation()
-        assert el.type_ == XSDSimpleTypeRotationDegrees
+        assert el.TYPE == XSDSimpleTypeRotationDegrees
 
     def test_element_simple_content(self):
         """
@@ -79,7 +79,7 @@ class TestXMLElements(TestCase):
         </xs:element>
         """
         el = XMLElevation()
-        assert el.type_ == XSDSimpleTypeRotationDegrees
+        assert el.TYPE == XSDSimpleTypeRotationDegrees
         with self.assertRaises(TypeError):
             el.value = 'something'
         with self.assertRaises(ValueError):
@@ -209,16 +209,16 @@ The offset affects the visual appearance of the direction. If the sound attribut
         xs:string vs. string: xs:string is a simple type, string is a complex type.
         """
         string = XMLString()
-        assert string.type_ == XSDComplexTypeString
+        assert string.TYPE == XSDComplexTypeString
         software = XMLSoftware()
-        assert software.type_ == XSDSimpleTypeString
+        assert software.TYPE == XSDSimpleTypeString
 
     def test_element_with_type_and_value_as_attributes(self):
         """
         Test if an element which has attributes name type and value can be initiated without conflicts
         """
         supports = XMLSupports()
-        assert supports.type_ == XSDComplexTypeSupports
+        assert supports.TYPE == XSDComplexTypeSupports
         supports.element = 'print'
         supports.type = 'yes'
         supports.value = 'yes'
@@ -228,7 +228,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
         Test that XMLCreditWords can have attributes
         """
         cw = XMLCreditWords()
-        assert [a.name for a in cw.type_.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x', 'relative-y',
+        assert [a.name for a in cw.TYPE.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x', 'relative-y',
                                                                    'font-family', 'font-style', 'font-size', 'font-weight', 'color',
                                                                    'halign', 'valign', 'underline', 'overline', 'line-through', 'rotation',
                                                                    'letter-spacing', 'line-height', 'lang', 'space', 'dir', 'enclosure',
