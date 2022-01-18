@@ -322,9 +322,9 @@ The offset affects the visual appearance of the direction. If the sound attribut
         e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start')
         assert e.to_string() == expected
 
-    def test_get_elements(self):
+    def test_get_unordered_children(self):
         """
-        Test XMLElement.get_elements() which returns a list of elements in order of their addition
+        Test XMLElement.get_children(ordered=False) which returns a list of elements in order of their addition
         """
         n = XMLNote()
         n.add_child(XMLType('half'))
@@ -341,5 +341,30 @@ The offset affects the visual appearance of the direction. If the sound attribut
         nn = n.add_child(XMLNotations())
         nn.add_child(XMLTied(orientation='over', type='start'))
 
-        assert [el.__class__.__name__ for el in n.get_elements()] == ['XMLType', 'XMLDuration', 'XMLPitch', 'XMLTie', 'XMLVoice',
-                                                                      'XMLStem', 'XMLStaff', 'XMLNotations']
+        assert [el.__class__.__name__ for el in n.get_children(ordered=False)] == ['XMLType', 'XMLDuration', 'XMLPitch', 'XMLTie',
+                                                                                   'XMLVoice',
+                                                                                   'XMLStem', 'XMLStaff', 'XMLNotations']
+
+    def test_find_children(self):
+        """
+        Test XMLElement.find_child or find_children (ordered=False)
+        """
+        """
+        complexType@name=appearance
+            annotation
+                documentation
+            sequence
+                element@name=line-width@type=line-width@minOccurs=0@maxOccurs=unbounded
+                element@name=note-size@type=note-size@minOccurs=0@maxOccurs=unbounded
+                element@name=distance@type=distance@minOccurs=0@maxOccurs=unbounded
+                element@name=glyph@type=glyph@minOccurs=0@maxOccurs=unbounded
+                element@name=other-appearance@type=other-appearance@minOccurs=0@maxOccurs=unbounded
+        """
+        n = XMLAppearance()
+        ns1 = n.add_child(XMLNoteSize())
+        lw = n.add_child(XMLLineWidth())
+        ns2 = n.add_child(XMLNoteSize())
+        assert n.find_child(XMLLineWidth) == lw
+        assert n.find_child('XMLLineWidth') == lw
+        assert n.find_children(XMLNoteSize) == [ns1, ns2]
+        assert n.find_children('XMLNoteSize') == [ns1, ns2]

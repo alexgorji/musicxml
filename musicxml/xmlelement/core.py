@@ -24,7 +24,7 @@ class XMLElement(Tree):
         self._attributes = {}
         self._et_xml_element = None
         self._child_container_tree = None
-        self._elements = []
+        self._unordered_children = []
         self.value = value
         self._set_attributes(kwargs)
 
@@ -131,21 +131,29 @@ class XMLElement(Tree):
         if not self._child_container_tree:
             raise XMLElementCannotHaveChildrenError()
         self._child_container_tree.add_element(child, forward)
-        self._elements.append(child)
+        self._unordered_children.append(child)
         return child
 
-    def get_children(self):
+    def get_children(self, ordered=True):
+        if ordered is False:
+            return self._unordered_children
         if self._child_container_tree:
             return [xml_element for leaf in self._child_container_tree.iterate_leaves() for xml_element in leaf.content.xml_elements if
                     leaf.content.xml_elements]
         else:
             return []
 
-    def get_elements(self):
-        """
-        list of elements in order of their addition
-        """
-        return self._elements
+    def find_child(self, name, ordered=False):
+        if isinstance(name, type):
+            name = name.__name__
+        for ch in self.get_children(ordered=ordered):
+            if ch.__class__.__name__ == name:
+                return ch
+
+    def find_children(self, name, ordered=False):
+        if isinstance(name, type):
+            name = name.__name__
+        return [ch for ch in self.get_children(ordered=ordered) if ch.__class__.__name__ == name]
 
     def to_string(self, intelligent_choice=False) -> str:
         self._final_checks(intelligent_choice=intelligent_choice)
