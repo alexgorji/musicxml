@@ -24,6 +24,7 @@ class XMLElement(Tree):
         self._attributes = {}
         self._et_xml_element = None
         self._child_container_tree = None
+        self._elements = []
         self.value = value
         self._set_attributes(kwargs)
 
@@ -130,6 +131,7 @@ class XMLElement(Tree):
         if not self._child_container_tree:
             raise XMLElementCannotHaveChildrenError()
         self._child_container_tree.add_element(child, forward)
+        self._elements.append(child)
         return child
 
     def get_children(self):
@@ -138,6 +140,12 @@ class XMLElement(Tree):
                     leaf.content.xml_elements]
         else:
             return []
+
+    def get_elements(self):
+        """
+        list of elements in order of their addition
+        """
+        return self._elements
 
     def to_string(self, intelligent_choice=False) -> str:
         self._final_checks(intelligent_choice=intelligent_choice)

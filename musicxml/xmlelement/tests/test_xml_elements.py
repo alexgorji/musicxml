@@ -229,10 +229,10 @@ The offset affects the visual appearance of the direction. If the sound attribut
         """
         cw = XMLCreditWords()
         assert [a.name for a in cw.TYPE.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x', 'relative-y',
-                                                                   'font-family', 'font-style', 'font-size', 'font-weight', 'color',
-                                                                   'halign', 'valign', 'underline', 'overline', 'line-through', 'rotation',
-                                                                   'letter-spacing', 'line-height', 'lang', 'space', 'dir', 'enclosure',
-                                                                   'id']
+                                                                  'font-family', 'font-style', 'font-size', 'font-weight', 'color',
+                                                                  'halign', 'valign', 'underline', 'overline', 'line-through', 'rotation',
+                                                                  'letter-spacing', 'line-height', 'lang', 'space', 'dir', 'enclosure',
+                                                                  'id']
 
     def test_xml_element_directive(self):
         d = XMLDirective('HU')
@@ -317,10 +317,29 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert tm.to_string() == expected
 
     def test_xml_ending(self):
-        expected = """<ending default-y="40" end-length="30" font-size="7.6" number="1" print-object="yes" type="start"/>
+        expected = """<ending default-y="40" end-length="30" font-size="7.6" number="1" print-object="yes" type="start" />
 """
         e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start')
-        e.to_string()
+        assert e.to_string() == expected
 
-    def test_xml_pitch_copy_container(self):
-        p = XMLPitch()
+    def test_get_elements(self):
+        """
+        Test XMLElement.get_elements() which returns a list of elements in order of their addition
+        """
+        n = XMLNote()
+        n.add_child(XMLType('half'))
+        n.add_child(XMLDuration(192))
+        p = n.add_child(XMLPitch())
+        p.add_child(XMLStep('F'))
+        p.add_child(XMLAlter(1))
+        p.add_child(XMLOctave(5))
+        n.add_child(XMLTie(type='start'))
+        n.add_child(XMLVoice('1'))
+
+        n.add_child(XMLStem('up', default_y=28))
+        n.add_child(XMLStaff(1))
+        nn = n.add_child(XMLNotations())
+        nn.add_child(XMLTied(orientation='over', type='start'))
+
+        assert [el.__class__.__name__ for el in n.get_elements()] == ['XMLType', 'XMLDuration', 'XMLPitch', 'XMLTie', 'XMLVoice',
+                                                                      'XMLStem', 'XMLStaff', 'XMLNotations']
