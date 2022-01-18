@@ -174,3 +174,14 @@ class XMLElement(Tree):
                 super().__setattr__(key, value)
         else:
             self._set_attributes({key: value})
+
+    def __getattr__(self, item):
+        try:
+            return self.attributes[item]
+        except KeyError:
+            attributes = self.TYPE.get_xsd_attributes()
+            allowed_attributes = [attribute.name for attribute in attributes]
+            if item in allowed_attributes:
+                return None
+            else:
+                raise AttributeError(f"{self.__class__.__name__} object has no attribute {item}")

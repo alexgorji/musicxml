@@ -59,6 +59,30 @@ class TestXMLElements(TestCase):
         with self.assertRaises(XSDWrongAttribute):
             el.dummy = 'no'
 
+    def test_xml_measure_attributes(self):
+        m = XMLMeasure(number='2')
+        m.text = 'hello'
+        m.width = 150
+        assert (m.number, m.text, m.width) == ('2', 'hello', 150)
+
+    def test_xml_accidental_attributes(self):
+        """
+            complexType@name=accidental
+        annotation
+            documentation
+        simpleContent
+            extension@base=accidental-value
+                attribute@name=cautionary@type=yes-no
+                attribute@name=editorial@type=yes-no
+                attributeGroup@ref=level-display
+                attributeGroup@ref=print-style
+                attribute@name=smufl@type=smufl-accidental-glyph-name
+        :return:
+        """
+        a = XMLAccidental()
+        a.cautionary = 'yes'
+        assert a.cautionary == 'yes'
+
     def test_element_attribute_with_hyphenated_name(self):
         el = XMLPartName('Part 1', default_x=10)
         assert el.to_string() == """<part-name default-x="10">Part 1</part-name>
