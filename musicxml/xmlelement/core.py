@@ -45,7 +45,7 @@ class XMLElement(Tree):
 
     def _create_et_xml_element(self):
         self._et_xml_element = ET.Element(self.name, {k: str(v) for k, v in self.attributes.items()})
-        if self.value:
+        if self.value is not None:
             self._et_xml_element.text = str(self.value)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
@@ -117,7 +117,8 @@ class XMLElement(Tree):
     @value.setter
     def value(self, val):
         if val is not None:
-            self._value = self.TYPE(val)
+            self.TYPE(val)
+            self._value = val
 
     @classmethod
     def get_xsd(cls):
