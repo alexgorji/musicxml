@@ -54,12 +54,12 @@ class TestParseMusicXml(TestCase):
         print(f"end writing score :{end - start_writing}")
         # print("start reading score")
 
-    # def test_parse_bach_partita_3(self):
-    #     start_reading = datetime.datetime.now()
-    #     print("start reading score")
-    #     score = parse_musicxml(Path(__file__).parent / 'test_bach_partita_3.xml')
-    #     start_writing = datetime.datetime.now()
-    #     print(f"start writing score :{start_writing - start_reading}")
-    #     score.write(Path(__file__).parent / 'test_bach_partita_3_created.xml')
-    #     end = datetime.datetime.now()
-    #     print(f"end writing score :{end - start_writing}")
+    def test_parse_bach_partita_3(self):
+        start_reading = datetime.datetime.now()
+        print("start reading score")
+        score = parse_musicxml(Path(__file__).parent / 'test_bach_partita_3.xml')
+        start_writing = datetime.datetime.now()
+        print(f"start writing score :{start_writing - start_reading}")
+        score.write(Path(__file__).parent / 'test_bach_partita_3_created.xml')
+        end = datetime.datetime.now()
+        print(f"end writing score :{end - start_writing}")

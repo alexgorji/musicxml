@@ -28,6 +28,7 @@ class XSDElement:
     def add_xml_element(self, el):
         if el.name != self.name:
             raise TypeError
+        el.parent_xsd_element = self
         self._xml_elements.append(el)
 
     @property

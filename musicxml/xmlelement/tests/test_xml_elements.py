@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
 from musicxml.util.core import show_force_valid
+from musicxml.xmlelement.exceptions import XMLChildContainerMaxOccursError
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
@@ -56,7 +57,7 @@ class TestXMLElements(TestCase):
         with self.assertRaises(XSDWrongAttribute):
             XMLPartName('Part 1', dummy='no')
         el = XMLPartName('Part 1')
-        with self.assertRaises(XSDWrongAttribute):
+        with self.assertRaises(AttributeError):
             el.dummy = 'no'
 
     def test_xml_measure_attributes(self):
@@ -392,3 +393,64 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert n.find_child('XMLLineWidth') == lw
         assert n.find_children(XMLNoteSize) == [ns1, ns2]
         assert n.find_children('XMLNoteSize') == [ns1, ns2]
+
+    def test_barline(self):
+        b = XMLBarline()
+        b.add_child(XMLBarStyle('light-light'))
+        expected = """<barline>
+    <bar-style>light-light</bar-style>
+</barline>
+"""
+        assert b.to_string() == expected
+
+    def test_possible_children_names(self):
+        n = XMLNote()
+        assert n.possible_children_names == {'beam', 'footnote', 'accidental', 'rest', 'unpitched', 'dot', 'time-modification', 'tie',
+                                             'instrument', 'level', 'notehead', 'duration', 'voice', 'stem', 'chord', 'grace',
+                                             'pitch', 'lyric', 'staff', 'listen', 'notations', 'type', 'cue', 'play', 'notehead-text'}
+
+    def test_convert_attribute_to_child(self):
+        """
+        Tests if a dot operator can create and add child if necessary
+        """
+        b = XMLBarline()
+        assert b.xml_bar_style is None
+        b.xml_bar_style = 'light-light'
+        expected = """<barline>
+    <bar-style>light-light</bar-style>
+</barline>
+"""
+        assert b.to_string() == expected
+        assert isinstance(b.xml_bar_style, XMLBarStyle)
+        assert b.xml_bar_style.value == 'light-light'
+        current_xml_bar_style = b.xml_bar_style
+
+        b.xml_bar_style = 'light-heavy'
+        assert b.xml_bar_style == current_xml_bar_style
+        assert b.xml_bar_style.value == 'light-heavy'
+        b.xml_bar_style = XMLBarStyle('regular')
+        assert b.xml_bar_style.value == 'regular'
+        assert b.xml_bar_style != current_xml_bar_style
+        m = XMLMeasure()
+        assert m.attributes == {}
+
+        m = XMLMeasure(number='1')
+        m.xml_barline = XMLBarline()
+
+        m.xml_attributes = XMLAttributes()
+        assert m.attributes == {'number': '1'}
+        with self.assertRaises(AttributeError):
+            m.barline
+        m.xml_attributes.xml_divisions = 12
+        m.xml_barline.xml_bar_style = 'light-light'
+
+        expected = """<measure number="1">
+    <barline>
+        <bar-style>light-light</bar-style>
+    </barline>
+    <attributes>
+        <divisions>12</divisions>
+    </attributes>
+</measure>
+"""
+        assert m.to_string() == expected
