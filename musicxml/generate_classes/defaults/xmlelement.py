@@ -92,6 +92,7 @@ class XMLElement(Tree):
             self._et_xml_element.text = str(self.value)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
+        ET.indent(self._et_xml_element, space="    ", level=self.level)
 
     def _final_checks(self, intelligent_choice=False):
         if self._child_container_tree:
@@ -137,8 +138,7 @@ class XMLElement(Tree):
 
     @property
     def et_xml_element(self):
-        if not self._et_xml_element:
-            self._create_et_xml_element()
+        self._create_et_xml_element()
         return self._et_xml_element
 
     @property
@@ -232,7 +232,6 @@ class XMLElement(Tree):
         self._final_checks(intelligent_choice=intelligent_choice)
         self._create_et_xml_element()
 
-        ET.indent(self.et_xml_element, space="    ", level=self.level)
         return ET.tostring(self.et_xml_element, encoding='unicode') + '\n'
 
     def __setattr__(self, key, value):

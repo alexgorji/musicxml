@@ -475,6 +475,38 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert b.xml_bar_style is not None
         b.xml_bar_style = None
         assert b.xml_bar_style is None
+        assert b.get_children() == []
         expected = """<barline />
 """
         assert b.to_string() == expected
+
+    def test_change_children(self):
+        """
+        Test if changing children directly influences parent's et_xml_element
+        """
+        n = XMLNote()
+        n.xml_duration = 2
+        p = n.xml_pitch = XMLPitch()
+        p.xml_step = 'G'
+        p.xml_alter = -1
+        p.xml_octave = 4
+        expected = """<note>
+    <pitch>
+        <step>G</step>
+        <alter>-1</alter>
+        <octave>4</octave>
+    </pitch>
+    <duration>2</duration>
+</note>
+"""
+        assert n.to_string() == expected
+        p.xml_alter = None
+        expected = """<note>
+    <pitch>
+        <step>G</step>
+        <octave>4</octave>
+    </pitch>
+    <duration>2</duration>
+</note>
+"""
+        assert n.to_string() == expected
