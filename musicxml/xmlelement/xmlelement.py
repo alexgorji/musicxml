@@ -69,6 +69,9 @@ class XMLElement(Tree):
                 self.replace_child(found_child, value)
             else:
                 self.add_child(value)
+        elif value is None:
+            if found_child:
+                self.remove(found_child)
         else:
             if found_child:
                 found_child.value = value
@@ -194,6 +197,12 @@ class XMLElement(Tree):
         if isinstance(name, type):
             name = name.__name__
         return [ch for ch in self.get_children(ordered=ordered) if ch.__class__.__name__ == name]
+
+    def remove(self, child):
+        self._unordered_children.remove(child)
+        child.parent_xsd_element.xml_elements.remove(child)
+        child.parent_xsd_element = None
+        del child
 
     def replace_child(self, old, new, index: int = 0) -> None:
         """

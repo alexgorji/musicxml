@@ -454,3 +454,27 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </measure>
 """
         assert m.to_string() == expected
+
+    def test_remove_child(self):
+        """
+        Test if element's can be removed
+        """
+        b = XMLBarline()
+        b.xml_bar_style = 'light-light'
+        expected = """<barline>
+    <bar-style>light-light</bar-style>
+</barline>
+"""
+        assert b.to_string() == expected
+        b.remove(b.xml_bar_style)
+        expected = """<barline />
+"""
+        assert b.to_string() == expected
+        assert b.xml_bar_style is None
+        b.xml_bar_style = 'light-light'
+        assert b.xml_bar_style is not None
+        b.xml_bar_style = None
+        assert b.xml_bar_style is None
+        expected = """<barline />
+"""
+        assert b.to_string() == expected
