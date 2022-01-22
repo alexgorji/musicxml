@@ -82,7 +82,7 @@ class XMLElement(Tree):
         try:
             if self.TYPE.XSD_TREE.is_complex_type:
                 self._child_container_tree = copy.copy(containers[self.TYPE.__name__])
-                self._child_container_tree._parent_element = self
+                self._child_container_tree._parent_xml_element = self
         except KeyError:
             pass
 
@@ -200,6 +200,11 @@ class XMLElement(Tree):
 
     def remove(self, child):
         self._unordered_children.remove(child)
+
+        parent_container = child.parent_xsd_element.parent_container.get_parent()
+        if parent_container.chosen_child == child.parent_xsd_element.parent_container:
+            parent_container.chosen_child = None
+            parent_container.requirements_not_fulfilled = True
         child.parent_xsd_element.xml_elements.remove(child)
         child.parent_xsd_element = None
         del child

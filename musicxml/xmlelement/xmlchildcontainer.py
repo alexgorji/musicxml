@@ -14,19 +14,19 @@ def _convert_xsd_child_to_xsd_container(xsd_child):
     min_occurrences = xsd_child.get_attributes().get('minOccurs')
     max_occurrences = xsd_child.get_attributes().get('maxOccurs')
 
-    copied_xml_child = copy.deepcopy(xsd_child)
+    copied_xsd_child = copy.deepcopy(xsd_child)
     if min_occurrences is not None:
-        copied_xml_child.get_attributes().pop('minOccurs')
+        copied_xsd_child.get_attributes().pop('minOccurs')
     if max_occurrences is not None:
-        copied_xml_child.get_attributes().pop('maxOccurs')
+        copied_xsd_child.get_attributes().pop('maxOccurs')
     if xsd_child.tag == 'element':
-        return XMLChildContainer(content=XSDElement(copied_xml_child), min_occurrences=min_occurrences,
+        return XMLChildContainer(content=XSDElement(copied_xsd_child), min_occurrences=min_occurrences,
                                  max_occurrences=max_occurrences)
     elif xsd_child.tag == 'sequence':
-        return XMLChildContainer(content=XSDSequence(copied_xml_child), min_occurrences=min_occurrences,
+        return XMLChildContainer(content=XSDSequence(copied_xsd_child), min_occurrences=min_occurrences,
                                  max_occurrences=max_occurrences)
     elif xsd_child.tag == 'choice':
-        return XMLChildContainer(content=XSDChoice(copied_xml_child), min_occurrences=min_occurrences,
+        return XMLChildContainer(content=XSDChoice(copied_xsd_child), min_occurrences=min_occurrences,
                                  max_occurrences=max_occurrences)
     elif xsd_child.tag == 'group':
         xsd_group_name = 'XSDGroup' + ''.join([cap_first(partial) for partial in xsd_child.get_attributes()['ref'].split('-')])
@@ -132,12 +132,12 @@ class XMLChildContainer(Tree):
         self._content = None
         self._chosen_child = None
         self._required_element_names = None
-        self._requirement_not_fulfilled = None
+        self._requirements_not_fulfilled = None
         self.min_occurrences = 1 if min_occurrences is None else int(min_occurrences)
         self.max_occurrences = 1 if max_occurrences is None else 'unbounded' if max_occurrences == 'unbounded' else int(max_occurrences)
         self.content = content
         self._force_validate = None
-        self._parent_element = None
+        self._parent_xml_element = None
         if populate_children:
             self._populate_children()
 
@@ -173,8 +173,8 @@ class XMLChildContainer(Tree):
             raise TypeError
 
     def _check_choices_intelligently(self, xml_element=None):
-        if self.get_parent_element():
-            print(f'_check_choices_intelligently: intelligent choice for {self.get_parent_element()}')
+        if self.get_parent_xml_element():
+            print(f'_check_choices_intelligently: intelligent choice for {self.get_parent_xml_element()}')
         """
         Check if existing xml elements can be attached to other choice paths in order to fulfill all requirements. Only possible leaves
         forwards will be checked. If xml_element is given it will be treated as a new element which going to be attached to the container.
@@ -284,16 +284,16 @@ class XMLChildContainer(Tree):
                 choice.requirements_not_fulfilled for choice in node.choices_in_reversed_path] and node.min_occurrences != 0:
                 for leaf in node.iterate_leaves():
                     if leaf.content.xml_elements:
-                        node._requirement_not_fulfilled = False
-                if node._requirement_not_fulfilled is None:
+                        node._requirements_not_fulfilled = False
+                if node._requirements_not_fulfilled is None:
                     for child in node.get_children():
                         if child.min_occurrences != 0:
-                            node._requirement_not_fulfilled = True
+                            node._requirements_not_fulfilled = True
                         break
-                if node._requirement_not_fulfilled is None:
-                    node._requirement_not_fulfilled = False
+                if node._requirements_not_fulfilled is None:
+                    node._requirements_not_fulfilled = False
             else:
-                node._requirement_not_fulfilled = False
+                node._requirements_not_fulfilled = False
 
     # public properties
 
@@ -330,13 +330,14 @@ class XMLChildContainer(Tree):
             return output
 
     @property
-    def content(self) -> XSDElement:
+    def content(self):
         return self._content
 
     @content.setter
-    def content(self, val: XSDElement):
+    def content(self, val):
         self._check_content_type(val)
         self._content = val
+        self._content.parent_container = self
 
     @property
     def choices_in_reversed_path(self):
@@ -372,18 +373,18 @@ class XMLChildContainer(Tree):
 
     @property
     def requirements_not_fulfilled(self):
-        return self._requirement_not_fulfilled
+        return self._requirements_not_fulfilled
 
     @requirements_not_fulfilled.setter
     def requirements_not_fulfilled(self, val: bool):
         if not isinstance(val, bool):
             raise TypeError
-        self._requirement_not_fulfilled = val
+        self._requirements_not_fulfilled = val
 
     # public methods
 
     def add_element(self, xml_element, forward=None, intelligent_choice=True):
-        if self._requirement_not_fulfilled is None:
+        if self._requirements_not_fulfilled is None:
             self.check_required_elements()
 
         def select_valid_leaves(leaves):
@@ -425,8 +426,8 @@ class XMLChildContainer(Tree):
                     return [l for l in copy_with_intelligence.iterate_leaves() if xml_element in l.content.xml_elements][0]
 
             if not intelligently_selected:
-                msg = f"{self} By adding {xml_element.__class__.__name__} to {self.get_parent_element().__class__.__name__}" if \
-                    self.get_parent_element() else f"{self} By adding {xml_element.__class__.__name__}"
+                msg = f"{self} By adding {xml_element.__class__.__name__} to {self.get_parent_xml_element().__class__.__name__}" if \
+                    self.get_parent_xml_element() else f"{self} By adding {xml_element.__class__.__name__}"
                 raise XMLChildContainerChoiceHasAnotherChosenChild(msg)
             else:
                 self.check_required_elements()
@@ -463,7 +464,7 @@ class XMLChildContainer(Tree):
         return selected
 
     def check_required_elements(self, intelligent_choice=False):
-        if self._requirement_not_fulfilled is None:
+        if self._requirements_not_fulfilled is None:
             self._set_requirement_not_fulfilled()
         _check_if_container_requires_elements(self)
         requirements_exist = False
@@ -524,8 +525,11 @@ class XMLChildContainer(Tree):
         else:
             raise NotImplementedError
 
-    def get_parent_element(self):
-        return self._parent_element
+    def get_parent_xml_element(self):
+        """
+        :return: XMLElement which child container is attached to.
+        """
+        return self._parent_xml_element
 
     def get_required_element_names(self, intelligent_choice=False):
         def func(leaf):

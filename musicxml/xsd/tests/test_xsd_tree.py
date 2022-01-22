@@ -246,3 +246,4 @@ class TestXSDTree(MusicXmlTestCase):
         assert self.yes_no_number_simple_type_xsd_element.is_complex_type is False
         assert self.above_below_simple_type_xsd_element.is_complex_type is False
         assert self.complex_type_xsd_element.is_complex_type is True
+

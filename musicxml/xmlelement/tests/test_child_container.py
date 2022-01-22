@@ -694,6 +694,23 @@ class TestChildContainer(TestCase):
 """
         assert container.tree_representation(show_force_valid) == expected
 
+    def test_xsd_element_parent_content(self):
+        """
+        Test that if an xsd element is content of a child_container it can return parent_container.
+        """
+
+        container = XMLChildContainer(content=self.element)
+        assert container.content.parent_container == container
+        container = XMLChildContainer(content=self.sequence)
+        for node in container.traverse():
+            assert node.content.parent_container == node
+        container = XMLChildContainer(content=self.choice)
+        for node in container.traverse():
+            assert node.content.parent_container == node
+        container = XMLChildContainerFactory(complex_type=XSDComplexTypePitch).get_child_container()
+        for node in container.traverse():
+            assert node.content.parent_container == node
+
 
 class TestDuplication(TestCase):
     def test_duplication_sequence(self):

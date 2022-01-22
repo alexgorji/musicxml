@@ -8,6 +8,7 @@ class XSDElement:
         self._xsd_tree = None
         self.xsd_tree = xsd_tree
         self._xml_elements = []
+        self.parent_container = None
 
     @property
     def xsd_tree(self):

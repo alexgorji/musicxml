@@ -54,3 +54,10 @@ def show_force_valid(node):
     if node.chosen_child:
         output += f': !!Chosen Child!!'
     return output
+
+
+def show_requirements_not_fulfilled(node):
+    output = node.compact_repr
+    if node.requirements_not_fulfilled:
+        output += ': !!!NOT FULTILLED!!!'
+    return output

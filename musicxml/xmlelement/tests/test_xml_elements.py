@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
-from musicxml.util.core import show_force_valid
+from musicxml.util.core import show_force_valid, show_requirements_not_fulfilled
 from musicxml.xmlelement.exceptions import XMLChildContainerMaxOccursError
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
@@ -510,3 +510,45 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </note>
 """
         assert n.to_string() == expected
+
+    def test_remove_choices_chosen_element(self):
+        n = XMLNote()
+        n.xml_duration = 2
+        p = n.xml_pitch = XMLPitch()
+        p.xml_step = 'G'
+        p.xml_alter = -1
+        p.xml_octave = 4
+        choice_container = p.parent_xsd_element.parent_container.get_parent()
+        assert choice_container.chosen_child == p.parent_xsd_element.parent_container
+        n.remove(n.xml_pitch)
+        assert choice_container.chosen_child is None
+
+    def test_remove_pitch_add_rest(self):
+        n = XMLNote()
+        n.xml_duration = 2
+        p = n.xml_pitch = XMLPitch()
+        p.xml_step = 'G'
+        p.xml_alter = -1
+        p.xml_octave = 4
+        n.remove(n.xml_pitch)
+        n.add_child(XMLRest())
+        expected = """<note>
+    <rest />
+    <duration>2</duration>
+</note>
+"""
+        assert n.to_string() == expected
+
+    def test_remove_element_and_check_child_container(self):
+        """
+        Test if after removing an element roots container is checked again.
+        """
+        n = XMLNote()
+        n.xml_duration = 1
+        with self.assertRaises(XMLElementChildrenRequired):
+            n.to_string()
+        n.xml_rest = XMLRest()
+        n.to_string()
+        n.remove(n.xml_rest)
+        with self.assertRaises(XMLElementChildrenRequired):
+            n.to_string()
