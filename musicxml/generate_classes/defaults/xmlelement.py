@@ -259,10 +259,10 @@ class XMLElement(Tree):
 
     def __getattr__(self, item):
         try:
-            return self.attributes[item]
+            return self.attributes['-'.join(item.split('_'))]
         except KeyError:
             attributes = self.TYPE.get_xsd_attributes()
-            allowed_attributes = [attribute.name for attribute in attributes]
+            allowed_attributes = ['_'.join(attribute.name.split('-')) for attribute in attributes]
             if item in allowed_attributes:
                 return None
             else:

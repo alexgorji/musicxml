@@ -552,3 +552,17 @@ The offset affects the visual appearance of the direction. If the sound attribut
         n.remove(n.xml_rest)
         with self.assertRaises(XMLElementChildrenRequired):
             n.to_string()
+
+    def test_note_attributes(self):
+        """
+        Test if note can set and get attributes via dot operator
+        """
+        n = XMLNote()
+        assert n.attack is None
+        n.attack = 10
+        assert n.attack == 10
+        assert n.print_leger is None
+        n.print_leger = 'yes'
+        assert n.print_leger == 'yes'
+        n.relative_x = 10
+        assert n.relative_x == 10
