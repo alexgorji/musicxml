@@ -124,6 +124,13 @@ class XMLElement(Tree):
             raise TypeError
 
         new_attributes = replace_key_underline_with_hyphen(dict_=val)
+        none_values_dict = {k: v for k, v in new_attributes.items() if v is None}
+        for key in none_values_dict:
+            new_attributes.pop(key)
+            try:
+                self.attributes.pop(key)
+            except KeyError:
+                pass
         for key in new_attributes:
             self._check_attribute(key, new_attributes[key])
         self._attributes = {**self._attributes, **new_attributes}
@@ -248,14 +255,16 @@ class XMLElement(Tree):
                     super().__setattr__(key, value)
             else:
                 super().__setattr__(key, value)
+        elif key.startswith('xml_'):
+            try:
+                self._convert_attribute_to_child(name=key, value=value)
+            except NameError:
+                raise AttributeError(self._get_attributes_error_message(key))
         else:
             try:
                 self._set_attributes({key: value})
             except XSDWrongAttribute:
-                try:
-                    self._convert_attribute_to_child(name=key, value=value)
-                except NameError:
-                    raise AttributeError(self._get_attributes_error_message(key))
+                raise AttributeError(self._get_attributes_error_message(key))
 
     def __getattr__(self, item):
         try:

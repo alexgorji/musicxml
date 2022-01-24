@@ -553,11 +553,14 @@ The offset affects the visual appearance of the direction. If the sound attribut
         with self.assertRaises(XMLElementChildrenRequired):
             n.to_string()
 
-    def test_note_attributes(self):
+    def test_attributes_underline(self):
         """
         Test if note can set and get attributes via dot operator
         """
         n = XMLNote()
+        n.xml_rest = XMLRest()
+        n.xml_duration = 2
+
         assert n.attack is None
         n.attack = 10
         assert n.attack == 10
@@ -566,3 +569,23 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert n.print_leger == 'yes'
         n.relative_x = 10
         assert n.relative_x == 10
+        expected = """<note attack="10" print-leger="yes" relative-x="10">
+    <rest />
+    <duration>2</duration>
+</note>
+"""
+        assert n.to_string() == expected
+
+    def test_attributes_none(self):
+        n = XMLNote(relative_x=10)
+        n.xml_rest = XMLRest()
+        n.xml_duration = 2
+        n.print_leger = 'yes'
+        n.relative_x = 10
+        n.print_leger = None
+        expected = """<note relative-x="10">
+    <rest />
+    <duration>2</duration>
+</note>
+"""
+        assert n.to_string() == expected
