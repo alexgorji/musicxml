@@ -589,3 +589,34 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </note>
 """
         assert n.to_string() == expected
+
+    def test_xml_type_restrictions(self):
+        with self.assertRaises(ValueError):
+            XSDSimpleTypeNoteTypeValue('bla')
+        with self.assertRaises(ValueError):
+            XSDComplexTypeNoteType('bla')
+        with self.assertRaises(ValueError):
+            XMLType('bla')
+        t = XMLType('whole')
+        expected = """<type>whole</type>
+"""
+        assert t.to_string() == expected
+
+    def test_xml_with_complex_content(self):
+        """
+        Test if value of a complex type is checked according to the core complex content
+        """
+        mt = XMLMetronomeTuplet()
+        with self.assertRaises(XMLElementChildrenRequired):
+            mt.to_string()
+        mt.xml_actual_notes = 3
+        mt.xml_normal_notes = 2
+        with self.assertRaises(XSDAttributeRequiredException):
+            mt.to_string()
+        mt.type = 'start'
+        expected = """<metronome-tuplet type="start">
+    <actual-notes>3</actual-notes>
+    <normal-notes>2</normal-notes>
+</metronome-tuplet>
+"""
+        assert mt.to_string() == expected

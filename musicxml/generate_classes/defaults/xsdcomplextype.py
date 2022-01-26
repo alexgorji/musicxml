@@ -8,9 +8,31 @@ import xml.etree.ElementTree as ET
 
 
 class XSDComplexType(XSDTreeElement):
+    _SIMPLE_CONTENT = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, value=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.value = value
+        self._value = None
+
+    def _check_value(self, val):
+        if val is not None:
+            if self._SIMPLE_CONTENT:
+                try:
+                    self._SIMPLE_CONTENT(val)
+                except TypeError as err:
+                    raise TypeError(f"{self.__class__.__name__}: " + err.args[0])
+                except ValueError as err:
+                    raise ValueError(f"{self.__class__.__name__}: " + err.args[0])
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, v):
+        self._check_value(v)
+        self._value = v
 
     @classmethod
     def get_xsd_attributes(cls):
@@ -88,6 +110,7 @@ xsd_tree_score_partwise = XSDTree(musicxml_xsd_et_root.find(".//{*}element[@name
 </xs:element>
 """
 
+
 class XSDComplexTypeScorePartwise(XSDComplexType):
     XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(".//{*}element[@name='score-partwise']//{*}complexType")[0])
 
@@ -100,7 +123,9 @@ class XSDComplexTypeMeasure(XSDComplexType):
     XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(".//{*}element[@name='score-partwise']//{*}complexType")[2])
 
 
-class XSDComplexTypeDirective(XSDComplexType, XSDSimpleTypeString):
+class XSDComplexTypeDirective(XSDComplexType):
+    _SIMPLE_CONTENT = XSDSimpleTypeString
+
     XSD_TREE = XSDTree(musicxml_xsd_et_root.find(".//{*}complexType[@name='attributes']//{*}complexType"))
 
 

@@ -14,6 +14,8 @@ template_string = """
 class $class_name($base_classes):
     \"\"\"$doc\"\"\"
     
+    _SIMPLE_CONTENT = $simple_content
+    
     XSD_TREE = XSDTree(ET.fromstring(\"\"\"
 $xsd_string
 \"\"\"
@@ -28,13 +30,23 @@ def complex_type_class_as_string(complex_type_):
     xsd_tree = XSDTree(complex_type_)
     class_name = xsd_tree.xsd_element_class_name
     xsd_complex_types.append(class_name)
-    base_classes = get_complex_type_all_base_classes(xsd_tree)
+    base_class_names = []
+    simple_content = None
+    for cls_name in get_complex_type_all_base_classes(xsd_tree):
+        if cls_name.startswith('XSDSimpleType'):
+            if simple_content is not None:
+                raise NotImplementedError('More than one Simple Type as base class.')
+            simple_content = cls_name
+        else:
+            base_class_names.append(cls_name)
+
     doc = xsd_tree.get_doc()
     ET.indent(complex_type_, space='    '),
     xsd_string = ET.tostring(complex_type_, encoding='unicode').strip()
     if not doc:
         doc = ""
-    t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_classes), doc=doc, xsd_string=xsd_string)
+    t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_class_names), simple_content=simple_content,
+                                             doc=doc, xsd_string=xsd_string)
     return t
 
 

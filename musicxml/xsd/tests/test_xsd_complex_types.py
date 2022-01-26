@@ -7,6 +7,7 @@ from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdattribute import *
 from musicxml.xsd.xsdcomplextype import XSDComplexType
 from musicxml.xsd.xsdsimpletype import *
+from musicxml.xsd.xsdtree import XSDTree
 
 
 class TestComplexTypes(MusicXmlTestCase):
@@ -257,3 +258,16 @@ class TestComplexTypes(MusicXmlTestCase):
                                                                        ('XMLStaffLayout', '0', 'unbounded'), ('XMLMeasureLayout', '0', '1'),
                                                                        ('XMLMeasureNumbering', '0', '1'), ('XMLPartNameDisplay', '0', '1'),
                                                                        ('XMLPartAbbreviationDisplay', '0', '1')]
+
+    def test_simple_content_value(self):
+        """
+        Test if value of a complex type is checked according to the core simple type
+        """
+        with self.assertRaises(ValueError):
+            XSDSimpleTypeNoteTypeValue('bla')
+
+        XSDComplexTypeNoteType()
+        with self.assertRaises(ValueError):
+            XSDComplexTypeNoteType(value='bla')
+        XSDComplexTypeNoteType('half')
+

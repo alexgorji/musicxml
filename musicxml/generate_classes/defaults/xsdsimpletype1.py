@@ -31,7 +31,7 @@ class XSDSimpleType(XSDTreeElement):
         self._populate_pattern()
         self._value = None
         self.value = value
-
+        
     def _check_value(self, v):
         if self._UNION:
             errors = []
