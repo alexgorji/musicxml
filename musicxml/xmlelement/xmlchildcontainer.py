@@ -299,6 +299,9 @@ class XMLChildContainer(Tree):
 
     @property
     def compact_repr(self):
+        """
+        :return: A compact representation of ChildContainerTree.content.
+        """
         if isinstance(self.content, XSDSequence):
             type_ = 'Sequence'
             return f"{type_}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
@@ -322,7 +325,7 @@ class XMLChildContainer(Tree):
             for xml_element in self.content.xml_elements:
                 output += '\n'
                 output += self.get_indentation() + '    '
-                output += xml_element.get_class_name()
+                output += xml_element.__class__.__name__
             if self.requirements_not_fulfilled:
                 output += '\n'
                 output += self.get_indentation() + '    '
@@ -331,6 +334,10 @@ class XMLChildContainer(Tree):
 
     @property
     def content(self):
+        """
+        :return: Content of a ChildContainerTree is its core property. It can be of types: XSDSequence, XSDChoice, XSDGroup or XSDElement
+        which are used to translate the behaviour of the according a xsd tags: sequence, choice, group and element.
+        """
         return self._content
 
     @content.setter

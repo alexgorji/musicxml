@@ -132,10 +132,6 @@ The offset affects the visual appearance of the direction. If the sound attribut
         el = XMLChord()
         assert el.to_string() == '<chord />\n'
 
-    def test_get_class_name(self):
-        assert XMLPitch.get_class_name() == 'XMLPitch'
-        assert XMLPitch().get_class_name() == 'XMLPitch'
-
     def test_sequence_indicator_children_required(self):
         """
         Test that a sequence indicator with only elements as children can verify the behavior of its corresponding element
@@ -620,3 +616,10 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </metronome-tuplet>
 """
         assert mt.to_string() == expected
+
+    def test_xml_child_get_parent(self):
+        mt = XMLMetronomeTuplet()
+        an = mt.add_child(XMLActualNotes(3))
+        mt.xml_normal_notes = 2
+        assert an.get_parent() == mt
+        assert mt.xml_normal_notes.get_parent() == mt

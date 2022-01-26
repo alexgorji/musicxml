@@ -28,6 +28,36 @@ Children can be added with method add_child(<xmlelement>):
 pitch.add_child(XMLStep('G'))
 ```
 
+As a shortcut it is possible to add, remove or change child with a dot operator:
+
+```
+pitch.xml_step = 'G'
+```
+
+is equivalent to:
+
+```
+pitch.xml_step = XMLStep('G')
+```
+
+change:
+
+```
+pitch.xml_step = 'F'
+```
+
+or remove:
+
+```
+pitch.xml_step = None
+```
+
+Dot operator can also be used as a shortcut to get a child:
+
+```
+print(pitch.xml_step.value)
+```
+
 The value of an element (which be translated to text of xml element) can be set during or after creation:
 
 ```
@@ -58,7 +88,7 @@ to another choice path and see if the problem can be solved. On this account alt
 guaranty that in some cases the library does not behave as it should. Please let me know if you discover a bug!
 
 A musicxml file can get easily very long (see for example Bach's piano partita no. 3 in parser with 126327 lines!). The parser manages to
-read the whole file in about 1.5 minutes on my machine. Maybe it can get faster in the future ...
+read the whole file in about 1 minutes on my machine. Maybe it can get faster in the future ...
 
 At the moment no documentation exists. But you can use the very extensive musicxml documentation
 on: [https://www.w3. org/2021/06/musicxml40/](https://www.w3.org/2021/06/musicxml40/)

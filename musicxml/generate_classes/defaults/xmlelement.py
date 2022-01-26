@@ -1,6 +1,6 @@
 import copy
 import xml.etree.ElementTree as ET
-from typing import Optional
+from typing import Optional, List, Callable, Union
 
 from musicxml.exceptions import XSDWrongAttribute, XSDAttributeRequiredException, XMLElementChildrenRequired
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
@@ -137,14 +137,29 @@ class XMLElement(Tree):
 
     @property
     def attributes(self):
+        """
+        :return: a dictionary of attributes like {'font-family': 'Arial'} if XMLElement.font_family is set to Arial. The attributes will
+        appear in the main xml tag: <text font-family="Arial">hello</text>.
+        """
         return self._attributes
 
     @property
     def child_container_tree(self):
+        """
+        :return: A ChildContainerTree object which is used to manage and control XMLElements children. The nodes of a ChildContainerTree
+        have a core content property of types XSDSequence, XSDChoice, XSDGroup or XSDElement. XSDElement are the content type of
+        ChildContainerTree leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element) can be
+        added to its xml_elements list. An interaction of xsd indicators (sequence, choice and group) with xsd elements makes it possible to
+        add XMLElement's Children in the right order and control all xsd rules which apply to musicxml. A variety of exceptions help user to
+        control the xml structure of the exported file which they are intending to use as a musicxml format file.
+        """
         return self._child_container_tree
 
     @property
     def et_xml_element(self):
+        """
+        :return:  A xml.etree.ElementTree.Element which is used to write the musicxml file.
+        """
         self._create_et_xml_element()
         return self._et_xml_element
 
@@ -161,30 +176,47 @@ class XMLElement(Tree):
 
     @property
     def value(self):
+        """
+        :return: A validated value of XMLElement which will be translated to its text in xml format.
+        """
         return self._value
 
     @value.setter
     def value(self, val):
+        """
+        :param val: Value to be validated and added to XMLElement. This value will be translated to xml element's text in xml format.
+        """
         if val is not None:
             self.TYPE(val)
             self._value = val
 
     @classmethod
     def get_xsd(cls):
+        """
+        :return: Snippet of musicxml xsd file which is relevant for this XMLElement.
+        """
         return cls.XSD_TREE.get_xsd()
 
-    @classmethod
-    def get_class_name(cls):
-        return cls.__name__
-
-    def add_child(self, child: 'XMLElement', forward=None) -> 'XMLElement':
+    def add_child(self, child: 'XMLElement', forward: Optional[int] = None) -> 'XMLElement':
+        """
+        :param XMLElement child: XMLElement child to be added to XMLElement's ChildContainerTree and _unordered_children.
+        :param int forward: If there are more than one XSDElement leaves in self.child_container_tree, forward can be used to determine
+        manually which of these equivocal xsd elements is going to be used to attach the child.
+        :return: Added child.
+        """
         if not self._child_container_tree:
             raise XMLElementCannotHaveChildrenError()
         self._child_container_tree.add_element(child, forward)
         self._unordered_children.append(child)
+        child._parent = self
         return child
 
-    def get_children(self, ordered=True):
+    def get_children(self, ordered: bool = True) -> List['XMLElement']:
+        """
+        :param bool ordered: True or False.
+        :return: XMLElement added children. If ordered is False the _unordered_children is returned as a more light weighted way of
+        getting children instead of using the leaves of ChildContainerTree.
+        """
         if ordered is False:
             return self._unordered_children
         if self._child_container_tree:
@@ -193,19 +225,34 @@ class XMLElement(Tree):
         else:
             return []
 
-    def find_child(self, name, ordered=False):
+    def find_child(self, name: Union['XMLElement', str], ordered: bool = False) -> 'XMLElement':
+        """
+        :param XMLElement/String name: Child or it's name as string.
+        :param bool ordered: get_children mode to be used to find first appearance of child.
+        :return: found child.
+        """
         if isinstance(name, type):
             name = name.__name__
         for ch in self.get_children(ordered=ordered):
             if ch.__class__.__name__ == name:
                 return ch
 
-    def find_children(self, name, ordered=False):
+    def find_children(self, name: Union['XMLElement', str], ordered: bool = False) -> List['XMLElement']:
+        """
+        :param XMLElement/String name: Child or it's name as string.
+        :param bool ordered: get_children mode to be used to find children.
+        :return: found children.
+        """
         if isinstance(name, type):
             name = name.__name__
         return [ch for ch in self.get_children(ordered=ordered) if ch.__class__.__name__ == name]
 
-    def remove(self, child):
+    def remove(self, child: 'XMLElement') -> None:
+        """
+        :param XMLElement child: child to be removed. This method must be used to remove a child properly from ChildContainerTree and
+        reset its behaviour.
+        :return: None
+        """
         self._unordered_children.remove(child)
 
         parent_container = child.parent_xsd_element.parent_container.get_parent()
@@ -214,13 +261,14 @@ class XMLElement(Tree):
             parent_container.requirements_not_fulfilled = True
         child.parent_xsd_element.xml_elements.remove(child)
         child.parent_xsd_element = None
+        child._parent = None
         del child
 
-    def replace_child(self, old, new, index: int = 0) -> None:
+    def replace_child(self, old: Union['XMLElement', Callable], new: 'XMLElement', index: int = 0) -> None:
         """
-        :param old: child or function
-        :param new: child
-        :param index: index of old in list of old appearances
+        :param XMLElement or function old: A child or function which is used to find a child to be replaced.
+        :param XMLElement new: child to be replaced with.
+        :param int index: index of old in list of old appearances
         :return: None
         """
         if hasattr(old, '__call__'):
@@ -239,8 +287,16 @@ class XMLElement(Tree):
         parent_xsd_element = old_child.parent_xsd_element
         new.parent_xsd_element = parent_xsd_element
         parent_xsd_element._xml_elements = [new if el == old_child else el for el in parent_xsd_element.xml_elements]
+        new._parent = self
+        old._parent = None
 
-    def to_string(self, intelligent_choice=False) -> str:
+    def to_string(self, intelligent_choice: bool = False) -> str:
+        """
+        :param bool intelligent_choice: Set to True if you wish to use intelligent choice in final checks to be able to change the
+        attachment order of XMLElement children in self.child_container_tree if an Exception was thrown and other choices can still be
+        checked. (No GUARANTEE!)
+        :return: String in xml format.
+        """
         self._final_checks(intelligent_choice=intelligent_choice)
         self._create_et_xml_element()
 
