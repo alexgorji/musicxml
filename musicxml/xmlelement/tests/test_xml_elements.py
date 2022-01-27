@@ -624,3 +624,36 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert an.get_parent() == mt
         assert mt.xml_normal_notes.get_parent() == mt
         assert mt.xml_normal_notes.up == mt
+
+    def test_xml_remove_one_child_of_multiple_occurs(self):
+        t = XMLTime()
+        t.add_child(XMLBeats('3'))
+        t.add_child(XMLBeatType('4'))
+        t.add_child(XMLBeats('2'))
+        t.add_child(XMLBeatType('4'))
+        expected = """<time>
+    <beats>3</beats>
+    <beat-type>4</beat-type>
+    <beats>2</beats>
+    <beat-type>4</beat-type>
+</time>
+"""
+        assert t.to_string() == expected
+        t.remove(t.find_children("XMLBeats")[1])
+        t.remove(t.find_children("XMLBeatType")[1])
+        expected = """<time>
+    <beats>3</beats>
+    <beat-type>4</beat-type>
+</time>
+"""
+        assert t.to_string() == expected
+        t.add_child(XMLBeats('2'))
+        t.add_child(XMLBeatType('4'))
+        t.remove(t.find_children("XMLBeats")[0])
+        t.remove(t.find_children("XMLBeatType")[0])
+        expected = """<time>
+    <beats>2</beats>
+    <beat-type>4</beat-type>
+</time>
+"""
+        assert t.to_string() == expected

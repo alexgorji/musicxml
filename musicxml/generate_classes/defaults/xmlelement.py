@@ -8,6 +8,7 @@ from musicxml.tree.tree import Tree
 from musicxml.util.core import cap_first, replace_key_underline_with_hyphen
 from musicxml.xmlelement.containers import containers
 from musicxml.xmlelement.exceptions import XMLElementCannotHaveChildrenError
+from musicxml.xmlelement.xmlchildcontainer import DuplicationXSDSequence
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
 from musicxml.xsd.xsdtree import XSDTree
@@ -259,6 +260,16 @@ class XMLElement(Tree):
         if parent_container.chosen_child == child.parent_xsd_element.parent_container:
             parent_container.chosen_child = None
             parent_container.requirements_not_fulfilled = True
+        for node in parent_container.reversed_path_to_root():
+            if node.up:
+                if isinstance(node.up.content, DuplicationXSDSequence) and len(node.up.get_children()) > 1:
+                    remove_duplicate = False
+                    for leaf in node.iterate_leaves():
+                        if leaf != parent_container and leaf.content.xml_elements:
+                            break
+                        remove_duplicate = True
+                    if remove_duplicate:
+                        node.up.remove(node)
         child.parent_xsd_element.xml_elements.remove(child)
         child.parent_xsd_element = None
         child._parent = None
