@@ -657,3 +657,18 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </time>
 """
         assert t.to_string() == expected
+
+    def test_set_value_to_None(self):
+        st = XMLStaff()
+        assert st.value is None
+        st.value = 2
+        assert st.value == 2
+        st.value = 3
+        assert st.value == 3
+        expected = """<staff>3</staff>
+"""
+        assert st.to_string() == expected
+        st.value = None
+        assert st.value is None
+        with self.assertRaises(ValueError):
+            st.to_string()

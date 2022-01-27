@@ -29,3 +29,5 @@ doc strings added to `XMLElement`
 
 Bug fix: `XMLElement.get_parent()`: if XMLElement is a child returns now the parent XMLElement.
 `Tree.up`: returns `Tree.get_parent()`
+Bug fix: `XMLElement.remove(<child>)` removes duplications in `ChildContainerTree` if necessary.
+Bug fix: `XMLElement.value` can be set to None.

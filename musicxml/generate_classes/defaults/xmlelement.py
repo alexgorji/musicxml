@@ -53,6 +53,10 @@ class XMLElement(Tree):
                 if required_attribute.name not in self.attributes:
                     raise XSDAttributeRequiredException(f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
 
+    def _check_required_value(self):
+        if self.TYPE.XSD_TREE.is_simple_type and self.value is None:
+            raise ValueError(f"{self.__class__.__name__} needs a value.")
+
     def _convert_attribute_to_child(self, name, value):
         if not name.startswith('xml_'):
             raise NameError
@@ -96,6 +100,7 @@ class XMLElement(Tree):
         ET.indent(self._et_xml_element, space="    ", level=self.level)
 
     def _final_checks(self, intelligent_choice=False):
+        self._check_required_value()
         if self._child_container_tree:
             required_children = self._child_container_tree.get_required_element_names(intelligent_choice=intelligent_choice)
             if required_children:
@@ -189,7 +194,7 @@ class XMLElement(Tree):
         """
         if val is not None:
             self.TYPE(val)
-            self._value = val
+        self._value = val
 
     @classmethod
     def get_xsd(cls):
@@ -315,7 +320,7 @@ class XMLElement(Tree):
 
     def __setattr__(self, key, value):
         if key[0] == '_' or key in self.PROPERTIES:
-            if key == 'value' and value is not None:
+            if key == 'value':
                 try:
                     self._set_attributes({key: value})
                 except XSDWrongAttribute:
