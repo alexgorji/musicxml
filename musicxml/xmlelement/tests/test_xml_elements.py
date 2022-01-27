@@ -623,3 +623,4 @@ The offset affects the visual appearance of the direction. If the sound attribut
         mt.xml_normal_notes = 2
         assert an.get_parent() == mt
         assert mt.xml_normal_notes.get_parent() == mt
+        assert mt.xml_normal_notes.up == mt

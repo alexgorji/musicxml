@@ -34,6 +34,10 @@ class Tree(ABC):
             return False
 
     @property
+    def up(self):
+        return self.get_parent()
+
+    @property
     def level(self):
         if self.get_parent() is None:
             return 0

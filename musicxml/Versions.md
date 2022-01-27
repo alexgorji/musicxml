@@ -28,3 +28,4 @@ doc strings added to `XMLElement`
 `XMLElement.get_class_name()`: removed. Use `XMLElement.__class__.__name__` instead
 
 Bug fix: `XMLElement.get_parent()`: if XMLElement is a child returns now the parent XMLElement.
+`Tree.up`: returns `Tree.get_parent()`
