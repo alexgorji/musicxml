@@ -672,3 +672,20 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert st.value is None
         with self.assertRaises(ValueError):
             st.to_string()
+
+    def test_xml_notations(self):
+        n = XMLNotations()
+        t1 = n.add_child(XMLTied(type='stop'))
+        t2 = n.add_child(XMLTied(type='start'))
+        expected = """<notations>
+    <tied type="stop" />
+    <tied type="start" />
+</notations>
+"""
+        assert n.to_string() == expected
+        t1.up.remove(t1)
+        expected = """<notations>
+    <tied type="start" />
+</notations>
+"""
+        assert n.to_string() == expected

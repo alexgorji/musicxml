@@ -259,26 +259,31 @@ class XMLElement(Tree):
         reset its behaviour.
         :return: None
         """
+
+        def remove_duplictation():
+            for node in parent_container.reversed_path_to_root():
+                if node.up:
+                    if isinstance(node.up.content, DuplicationXSDSequence) and len(node.up.get_children()) > 1:
+                        remove_duplicate = False
+                        for leaf in node.iterate_leaves():
+                            if leaf != parent_container and leaf.content.xml_elements:
+                                break
+                            remove_duplicate = True
+                        if remove_duplicate:
+                            node.up.remove(node)
+
         self._unordered_children.remove(child)
 
         parent_container = child.parent_xsd_element.parent_container.get_parent()
         if parent_container.chosen_child == child.parent_xsd_element.parent_container:
             parent_container.chosen_child = None
             parent_container.requirements_not_fulfilled = True
-        for node in parent_container.reversed_path_to_root():
-            if node.up:
-                if isinstance(node.up.content, DuplicationXSDSequence) and len(node.up.get_children()) > 1:
-                    remove_duplicate = False
-                    for leaf in node.iterate_leaves():
-                        if leaf != parent_container and leaf.content.xml_elements:
-                            break
-                        remove_duplicate = True
-                    if remove_duplicate:
-                        node.up.remove(node)
+
         child.parent_xsd_element.xml_elements.remove(child)
         child.parent_xsd_element = None
         child._parent = None
         del child
+        remove_duplictation()
 
     def replace_child(self, old: Union['XMLElement', Callable], new: 'XMLElement', index: int = 0) -> None:
         """
