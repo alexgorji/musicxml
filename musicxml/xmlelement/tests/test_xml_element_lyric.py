@@ -42,7 +42,7 @@ class TestXMLLyric(TestCase):
                                         "'XMLHumming')"
         lyric.add_child(XMLHumming())
         expected = """<lyric>
-    <humming />
+  <humming />
 </lyric>
 """
         assert lyric.to_string() == expected
@@ -60,9 +60,9 @@ class TestXMLLyric(TestCase):
         assert err.exception.args[0] == "XSDComplexTypeLevel: XSDSimpleTypeString's value 3 can only be of types ['str'] not int."
         level.value = '3'
         expected = """<lyric>
-    <humming />
-    <footnote>some footnote</footnote>
-    <level>3</level>
+  <humming />
+  <footnote>some footnote</footnote>
+  <level>3</level>
 </lyric>
 """
         assert lyric.to_string() == expected

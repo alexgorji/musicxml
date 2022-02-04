@@ -1,8 +1,6 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
-from musicxml.util.core import show_force_valid, show_requirements_not_fulfilled
-from musicxml.xmlelement.exceptions import XMLChildContainerMaxOccursError
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
@@ -161,8 +159,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
         el.add_child(XMLStep('A'))
         el.add_child(XMLOctave(4))
         expected = """<pitch>
-    <step>A</step>
-    <octave>4</octave>
+  <step>A</step>
+  <octave>4</octave>
 </pitch>
 """
         assert el.to_string() == expected
@@ -186,9 +184,9 @@ The offset affects the visual appearance of the direction. If the sound attribut
         sp.id = 'p1'
         pn.value = 'part name 1'
         expected = """<part-list>
-    <score-part id="p1">
-        <part-name>part name 1</part-name>
-    </score-part>
+  <score-part id="p1">
+    <part-name>part name 1</part-name>
+  </score-part>
 </part-list>
 """
         assert el.to_string() == expected
@@ -207,19 +205,19 @@ The offset affects the visual appearance of the direction. If the sound attribut
         k.add_child(XMLMode('major'))
 
         expected = """<attributes>
-    <divisions>1</divisions>
-    <key>
-        <fifths>0</fifths>
-        <mode>major</mode>
-    </key>
-    <time>
-        <beats>4</beats>
-        <beat-type>4</beat-type>
-    </time>
-    <clef>
-        <sign>G</sign>
-        <line>2</line>
-    </clef>
+  <divisions>1</divisions>
+  <key>
+    <fifths>0</fifths>
+    <mode>major</mode>
+  </key>
+  <time>
+    <beats>4</beats>
+    <beat-type>4</beat-type>
+  </time>
+  <clef>
+    <sign>G</sign>
+    <line>2</line>
+  </clef>
 </attributes>
 """
         assert el.to_string() == expected
@@ -262,20 +260,20 @@ The offset affects the visual appearance of the direction. If the sound attribut
 
     def test_xml_note_with_tie(self):
         expected = """<note>
-    <pitch>
-        <step>F</step>
-        <alter>1</alter>
-        <octave>5</octave>
-    </pitch>
-    <duration>192</duration>
-    <tie type="start" />
-    <voice>1</voice>
-    <type>half</type>
-    <stem default-y="28">up</stem>
-    <staff>1</staff>
-    <notations>
-        <tied orientation="over" type="start" />
-    </notations>
+  <pitch>
+    <step>F</step>
+    <alter>1</alter>
+    <octave>5</octave>
+  </pitch>
+  <duration>192</duration>
+  <tie type="start" />
+  <voice>1</voice>
+  <type>half</type>
+  <stem default-y="28">up</stem>
+  <staff>1</staff>
+  <notations>
+    <tied orientation="over" type="start" />
+  </notations>
 </note>
 """
         n = XMLNote()
@@ -318,7 +316,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
 
     def test_xml_credit(self):
         expected = """<credit page="1">
-    <credit-words default-x="651" default-y="88" font-size="10" justify="center" valign="bottom">#</credit-words>
+  <credit-words default-x="651" default-y="88" font-size="10" justify="center" valign="bottom">#</credit-words>
 </credit>
 """
         c = XMLCredit(page=1)
@@ -328,8 +326,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
 
     def test_xml_time_modification(self):
         expected = """<time-modification>
-    <actual-notes>3</actual-notes>
-    <normal-notes>2</normal-notes>
+  <actual-notes>3</actual-notes>
+  <normal-notes>2</normal-notes>
 </time-modification>
 """
         tm = XMLTimeModification()
@@ -394,7 +392,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
         b = XMLBarline()
         b.add_child(XMLBarStyle('light-light'))
         expected = """<barline>
-    <bar-style>light-light</bar-style>
+  <bar-style>light-light</bar-style>
 </barline>
 """
         assert b.to_string() == expected
@@ -413,7 +411,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert b.xml_bar_style is None
         b.xml_bar_style = 'light-light'
         expected = """<barline>
-    <bar-style>light-light</bar-style>
+  <bar-style>light-light</bar-style>
 </barline>
 """
         assert b.to_string() == expected
@@ -441,12 +439,12 @@ The offset affects the visual appearance of the direction. If the sound attribut
         m.xml_barline.xml_bar_style = 'light-light'
 
         expected = """<measure number="1">
-    <barline>
-        <bar-style>light-light</bar-style>
-    </barline>
-    <attributes>
-        <divisions>12</divisions>
-    </attributes>
+  <barline>
+    <bar-style>light-light</bar-style>
+  </barline>
+  <attributes>
+    <divisions>12</divisions>
+  </attributes>
 </measure>
 """
         assert m.to_string() == expected
@@ -458,7 +456,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
         b = XMLBarline()
         b.xml_bar_style = 'light-light'
         expected = """<barline>
-    <bar-style>light-light</bar-style>
+  <bar-style>light-light</bar-style>
 </barline>
 """
         assert b.to_string() == expected
@@ -487,22 +485,22 @@ The offset affects the visual appearance of the direction. If the sound attribut
         p.xml_alter = -1
         p.xml_octave = 4
         expected = """<note>
-    <pitch>
-        <step>G</step>
-        <alter>-1</alter>
-        <octave>4</octave>
-    </pitch>
-    <duration>2</duration>
+  <pitch>
+    <step>G</step>
+    <alter>-1</alter>
+    <octave>4</octave>
+  </pitch>
+  <duration>2</duration>
 </note>
 """
         assert n.to_string() == expected
         p.xml_alter = None
         expected = """<note>
-    <pitch>
-        <step>G</step>
-        <octave>4</octave>
-    </pitch>
-    <duration>2</duration>
+  <pitch>
+    <step>G</step>
+    <octave>4</octave>
+  </pitch>
+  <duration>2</duration>
 </note>
 """
         assert n.to_string() == expected
@@ -529,8 +527,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
         n.remove(n.xml_pitch)
         n.add_child(XMLRest())
         expected = """<note>
-    <rest />
-    <duration>2</duration>
+  <rest />
+  <duration>2</duration>
 </note>
 """
         assert n.to_string() == expected
@@ -566,8 +564,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
         n.relative_x = 10
         assert n.relative_x == 10
         expected = """<note attack="10" print-leger="yes" relative-x="10">
-    <rest />
-    <duration>2</duration>
+  <rest />
+  <duration>2</duration>
 </note>
 """
         assert n.to_string() == expected
@@ -580,8 +578,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
         n.relative_x = 10
         n.print_leger = None
         expected = """<note relative-x="10">
-    <rest />
-    <duration>2</duration>
+  <rest />
+  <duration>2</duration>
 </note>
 """
         assert n.to_string() == expected
@@ -611,8 +609,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
             mt.to_string()
         mt.type = 'start'
         expected = """<metronome-tuplet type="start">
-    <actual-notes>3</actual-notes>
-    <normal-notes>2</normal-notes>
+  <actual-notes>3</actual-notes>
+  <normal-notes>2</normal-notes>
 </metronome-tuplet>
 """
         assert mt.to_string() == expected
@@ -632,18 +630,18 @@ The offset affects the visual appearance of the direction. If the sound attribut
         t.add_child(XMLBeats('2'))
         t.add_child(XMLBeatType('4'))
         expected = """<time>
-    <beats>3</beats>
-    <beat-type>4</beat-type>
-    <beats>2</beats>
-    <beat-type>4</beat-type>
+  <beats>3</beats>
+  <beat-type>4</beat-type>
+  <beats>2</beats>
+  <beat-type>4</beat-type>
 </time>
 """
         assert t.to_string() == expected
         t.remove(t.find_children("XMLBeats")[1])
         t.remove(t.find_children("XMLBeatType")[1])
         expected = """<time>
-    <beats>3</beats>
-    <beat-type>4</beat-type>
+  <beats>3</beats>
+  <beat-type>4</beat-type>
 </time>
 """
         assert t.to_string() == expected
@@ -652,8 +650,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
         t.remove(t.find_children("XMLBeats")[0])
         t.remove(t.find_children("XMLBeatType")[0])
         expected = """<time>
-    <beats>2</beats>
-    <beat-type>4</beat-type>
+  <beats>2</beats>
+  <beat-type>4</beat-type>
 </time>
 """
         assert t.to_string() == expected
@@ -678,14 +676,14 @@ The offset affects the visual appearance of the direction. If the sound attribut
         t1 = n.add_child(XMLTied(type='stop'))
         t2 = n.add_child(XMLTied(type='start'))
         expected = """<notations>
-    <tied type="stop" />
-    <tied type="start" />
+  <tied type="stop" />
+  <tied type="start" />
 </notations>
 """
         assert n.to_string() == expected
         t1.up.remove(t1)
         expected = """<notations>
-    <tied type="start" />
+  <tied type="start" />
 </notations>
 """
         assert n.to_string() == expected

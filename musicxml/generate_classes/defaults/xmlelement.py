@@ -97,7 +97,7 @@ class XMLElement(Tree):
             self._et_xml_element.text = str(self.value)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
-        ET.indent(self._et_xml_element, space="    ", level=self.level)
+        ET.indent(self._et_xml_element, space="  ", level=self.level)
 
     def _final_checks(self, intelligent_choice=False):
         self._check_required_value()
