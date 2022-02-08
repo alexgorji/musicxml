@@ -6,6 +6,6 @@ __pycache__/
 .coverage
 venv
 build/
-musicxml.egg-info
-dist
+#musicxml.egg-info
+#dist
 
