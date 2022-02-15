@@ -48,6 +48,7 @@ musicxml/xmlelement/tests/test_pre_create_child_container.py
 musicxml/xmlelement/tests/test_xml_element_lyric.py
 musicxml/xmlelement/tests/test_xml_element_score.py
 musicxml/xmlelement/tests/test_xml_elements.py
+musicxml/xmlelement/tests/test_xml_error.py
 musicxml/xsd/__init__.py
 musicxml/xsd/xsdcomplextype.py
 musicxml/xsd/xsdelement.py

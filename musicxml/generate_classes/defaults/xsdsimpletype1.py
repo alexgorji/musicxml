@@ -18,8 +18,9 @@ class XSDSimpleType(XSDTreeElement):
     _PERMITTED: list[str] = []
     _PATTERN: Optional[str] = None
 
-    def __init__(self, value: Any, *args, **kwargs):
+    def __init__(self, value: Any, parent=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.parent = parent
         if not self._PERMITTED:
             self._populate_permitted()
         if not self._FORCED_PERMITTED:
@@ -31,7 +32,7 @@ class XSDSimpleType(XSDTreeElement):
         self._populate_pattern()
         self._value = None
         self.value = value
-        
+
     def _check_value(self, v):
         if self._UNION:
             errors = []
@@ -43,13 +44,13 @@ class XSDSimpleType(XSDTreeElement):
                     pass
                 except ValueError as err:
                     errors.append(err.args[0])
-            raise ValueError(errors)
+            raise ValueError(self._get_error_class(), errors)
 
         elif v in self._FORCED_PERMITTED:
             return
         if self._PERMITTED:
             if v not in self._PERMITTED:
-                raise ValueError(f'{self.__class__.__name__}.value {v} must in {self._PERMITTED}')
+                raise ValueError(f"{self._get_error_class()}.value '{v}' must in {self._PERMITTED}")
         elif self._PATTERN:
             restriction = self.XSD_TREE.get_restriction()
             if restriction:
@@ -61,7 +62,7 @@ class XSDSimpleType(XSDTreeElement):
                     XSDSimpleTypeSmuflGlyphName(v)
             if re.compile(self._PATTERN).fullmatch(v) is None:
                 raise ValueError(
-                    f'{self.__class__.__name__}.value {v} must match the following pattern: {self._PATTERN}')
+                    f"{self._get_error_class()}.value '{v}' must match the following pattern: {self._PATTERN}")
         else:
             restriction = self.XSD_TREE.get_restriction()
             if restriction:
@@ -69,19 +70,19 @@ class XSDSimpleType(XSDTreeElement):
                 for child in restriction_children:
                     if child.tag == 'minLength' and len(v) < int(child.get_attributes()['value']):
                         raise ValueError(
-                            f'{self.__class__.__name__}.value {v} must have a length >= 1')
+                            f"{self._get_error_class()}.value '{v}' must have a length >= 1")
                     if child.tag == 'minExclusive' and v <= int(child.get_attributes()['value']):
                         raise ValueError(
-                            f"{self.__class__.__name__}.value {v} must be greater than"
-                            f" {child.get_attributes()['value']}")
+                            f"{self._get_error_class()}.value '{v}' must be greater than"
+                            f" '{child.get_attributes()['value']}'")
                     if child.tag == 'minInclusive' and v < int(child.get_attributes()['value']):
                         raise ValueError(
-                            f"{self.__class__.__name__}.value {v} must be greater than or equal to"
-                            f" {child.get_attributes()['value']}")
+                            f"{self._get_error_class()}.value '{v}' must be greater than or equal to"
+                            f" '{child.get_attributes()['value']}'")
                     if child.tag == 'maxInclusive' and v > int(child.get_attributes()['value']):
                         raise ValueError(
-                            f"{self.__class__.__name__}.value {v} must be less than or equal to"
-                            f" {child.get_attributes()['value']}")
+                            f"{self._get_error_class()}.value '{v}' must be less than or equal to"
+                            f" '{child.get_attributes()['value']}'")
 
     def _check_value_type(self, value):
         if value in self._FORCED_PERMITTED:
@@ -94,8 +95,18 @@ class XSDSimpleType(XSDTreeElement):
         if True in [isinstance(value, type_) for type_ in self._TYPES]:
             pass
         else:
-            raise TypeError(f"{self.__class__.__name__}'s value {value} can only be of types {[type_.__name__ for type_ in self._TYPES]} "
-                            f"not {type(value).__name__}.")
+            message = f"{self._get_error_class()}'s value '{value}' can only be of types {[type_.__name__ for type_ in self._TYPES]} not {type(value).__name__}."
+            if self._PERMITTED:
+                message += f" {self._get_error_class()}.value must in {self._PERMITTED}"
+            if self._FORCED_PERMITTED:
+                message += f" {self._get_error_class()}.value can also be {self._FORCED_PERMITTED}"
+            raise TypeError(message)
+
+    def _get_error_class(self):
+        if self.parent:
+            return self.parent.__class__.__name__
+        else:
+            return self.__class__.__name__
 
     def _populate_permitted(self):
         restriction = self.XSD_TREE.get_restriction()

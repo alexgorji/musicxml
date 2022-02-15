@@ -8,7 +8,6 @@ class XSDSequence:
         self._xsd_tree = None
         self._elements = None
         self.xsd_tree = xsd_tree
-        self.parent_container = None
 
     @property
     def elements(self):
@@ -62,7 +61,6 @@ class XSDChoice:
     def __init__(self, xsd_tree):
         self._xsd_tree = None
         self.xsd_tree = xsd_tree
-        self.parent_container = None
 
     @property
     def xsd_tree(self):
@@ -82,7 +80,6 @@ class XSDGroup(XSDTreeElement):
     def __init__(self):
         self._sequence = None
         self._name = None
-        self.parent_container = None
 
     @property
     def name(self):

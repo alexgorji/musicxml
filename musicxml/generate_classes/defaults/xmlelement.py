@@ -119,7 +119,7 @@ class XMLElement(Tree):
                f"children as attributes: {sorted(['xml_' + '_'.join(ch.split('-')) for ch in self.possible_children_names])}"
 
     def _set_attributes(self, val):
-        if not val:
+        if val is None:
             return
 
         if self.TYPE.XSD_TREE.is_simple_type:
@@ -192,8 +192,7 @@ class XMLElement(Tree):
         """
         :param val: Value to be validated and added to XMLElement. This value will be translated to xml element's text in xml format.
         """
-        # if val is not None:
-        self.TYPE(val)
+        self.TYPE(val, parent=self)
         self._value = val
 
     @classmethod
@@ -326,13 +325,6 @@ class XMLElement(Tree):
     def __setattr__(self, key, value):
         if key[0] == '_' or key in self.PROPERTIES:
             super().__setattr__(key, value)
-            # if key == 'value':
-            #     try:
-            #         self._set_attributes({key: value})
-            #     except XSDWrongAttribute:
-            #         super().__setattr__(key, value)
-            # else:
-            #     super().__setattr__(key, value)
         elif key.startswith('xml_'):
             try:
                 self._convert_attribute_to_child(name=key, value=value)

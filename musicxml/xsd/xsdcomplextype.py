@@ -10,19 +10,26 @@ import xml.etree.ElementTree as ET
 class XSDComplexType(XSDTreeElement):
     _SIMPLE_CONTENT = None
 
-    def __init__(self, value=None, *args, **kwargs):
+    def __init__(self, value=None, parent=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.parent = parent
         self.value = value
         self._value = None
+
+    def _get_error_class(self):
+        if self.parent:
+            return self.parent.__class__.__name__
+        else:
+            return self.__class__.__name__
 
     def _check_value(self, val):
         if self._SIMPLE_CONTENT:
             try:
                 self._SIMPLE_CONTENT(val)
             except TypeError as err:
-                raise TypeError(f"{self.__class__.__name__}: " + err.args[0])
+                raise TypeError(f"{self._get_error_class()}: " + err.args[0])
             except ValueError as err:
-                raise ValueError(f"{self.__class__.__name__}: " + err.args[0])
+                raise ValueError(f"{self._get_error_class()}: " + err.args[0])
 
     @property
     def value(self):

@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
-from musicxml.util.core import show_force_valid
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *

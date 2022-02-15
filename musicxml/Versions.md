@@ -41,3 +41,7 @@ replaces parent_element's container if needed. (Necessary for `XMLArticulations`
 
 `XMLElement.value` renamed to `XMLElement.value_`
 `XMLElement.value_` will be checked immediately also for XSDComplexTypes
+
+`XMLElement._check_value()` sets `self.TYPE.element` to self
+`XSDComplexType` and `XSDSimpleType`: `element` attribute and `_get_error_class()` method added to be able to give a better error message.
+error messages improved.
