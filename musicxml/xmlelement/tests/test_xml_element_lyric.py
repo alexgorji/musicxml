@@ -46,19 +46,19 @@ class TestXMLLyric(TestCase):
 </lyric>
 """
         assert lyric.to_string() == expected
-        footnote = lyric.add_child(XMLFootnote())
-        level = lyric.add_child(XMLLevel())
+        footnote = lyric.add_child(XMLFootnote('something'))
+        level = lyric.add_child(XMLLevel('1'))
         # with self.assertRaises(XMLElementValueRequiredError) as err:
         #     lyric.to_string()
         # assert err.exception.args[0] == 'XMLFootnote requires a value.'
-        footnote.value = 'some footnote'
+        footnote.value_ = 'some footnote'
         # with self.assertRaises(XMLElementValueRequiredError) as err:
         #     lyric.to_string()
         # assert err.exception.args[0] == 'XMLLevel requires a value.'
         with self.assertRaises(TypeError) as err:
-            level.value = 3
+            level.value_ = 3
         assert err.exception.args[0] == "XSDComplexTypeLevel: XSDSimpleTypeString's value 3 can only be of types ['str'] not int."
-        level.value = '3'
+        level.value_ = '3'
         expected = """<lyric>
   <humming />
   <footnote>some footnote</footnote>

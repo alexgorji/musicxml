@@ -357,7 +357,7 @@ class TestChildContainer(TestCase):
         Test a complex type with a simple choice of elements can manage children.
         """
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
-        container.add_element(XMLMultipleRest())
+        container.add_element(XMLMultipleRest(1))
 
         expected = """Choice@minOccurs=1@maxOccurs=1
     Element@name=multiple-rest@minOccurs=1@maxOccurs=1
@@ -477,22 +477,22 @@ class TestChildContainer(TestCase):
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLLaughing())
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
-            container.add_element(XMLText())
+            container.add_element(XMLText('huhu'))
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
-            container.add_element(XMLSyllabic())
+            container.add_element(XMLSyllabic('begin'))
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeLyric).get_child_container()
         choice = container.get_children()[0]
         container.check_required_elements()
-        container.add_element(XMLElision())
+        container.add_element(XMLElision('something'))
         assert choice.chosen_child == choice.get_children()[0]
-        container.add_element(XMLText())
-        container.add_element(XMLText())
+        container.add_element(XMLText('something'))
+        container.add_element(XMLText('something'))
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLLaughing())
 
-        container.add_element(XMLText())
-        container.add_element(XMLSyllabic(), forward=1)
+        container.add_element(XMLText('something'))
+        container.add_element(XMLSyllabic('end'), forward=1)
         expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
             Element@name=syllabic@minOccurs=0@maxOccurs=1
             Element@name=text@minOccurs=1@maxOccurs=1
@@ -624,7 +624,7 @@ class TestChildContainer(TestCase):
         assert choice.chosen_child.tree_representation(function=show_force_valid) == expected
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLRest())
-        container.add_element(XMLDuration())
+        container.add_element(XMLDuration(2))
         container.check_required_elements()
         expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
             Group@name=full-note@minOccurs=1@maxOccurs=1
@@ -724,7 +724,7 @@ class TestDuplication(TestCase):
     def test_create_empty_copy(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeKey).get_child_container()
         first_group = container.get_children()[0].get_children()[0]
-        first_group.add_element(XMLCancel())
+        first_group.add_element(XMLCancel(0))
         copied_group = first_group._create_empty_copy()
         expected = """Group@name=traditional-key@minOccurs=1@maxOccurs=1
     Sequence@minOccurs=1@maxOccurs=1
@@ -778,14 +778,14 @@ class TestDuplication(TestCase):
 
     def test_duplicate_node(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeKey).get_child_container()
-        container.add_element(XMLKeyAccidental())
+        container.add_element(XMLKeyAccidental('sharp'))
         unbounded_group = container.get_children()[0].get_children()[1]
         duplicated = unbounded_group.duplicate()
         assert duplicated.get_parent() == unbounded_group.get_parent()
         assert container.get_leaves(lambda x: x.content.name) == [
             (['cancel', 'fifths', 'mode'], [['key-step', 'key-alter', 'key-accidental'], ['key-step', 'key-alter', 'key-accidental']]),
             'key-octave']
-        container.add_element(XMLKeyAccidental())
+        container.add_element(XMLKeyAccidental('sharp'))
         other_duplicated = unbounded_group.duplicate()
         assert duplicated.get_parent() == unbounded_group.get_parent()
         assert other_duplicated.get_parent() == duplicated.get_parent() == unbounded_group.get_parent()
@@ -794,7 +794,7 @@ class TestDuplication(TestCase):
                                             ['key-step', 'key-alter', 'key-accidental']]),
             'key-octave']
         container.check_required_elements()
-        container.add_element(XMLKeyAlter(), 2)
+        container.add_element(XMLKeyAlter(1), 2)
         expected = """Sequence@minOccurs=1@maxOccurs=1
     Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
         Group@name=traditional-key@minOccurs=1@maxOccurs=1
@@ -910,7 +910,7 @@ class TestChildContainerCheckRequired(TestCase):
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeKey).get_child_container()
         assert container.get_required_element_names() == ('XMLFifths', ['XMLKeyStep', 'XMLKeyAlter'])
-        container.add_element(XMLFifths())
+        container.add_element(XMLFifths(0))
         assert container.get_required_element_names() is None
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeAttributes).get_child_container()
@@ -935,17 +935,17 @@ class TestChildContainerCheckRequired(TestCase):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeLyric).get_child_container()
         assert container.get_required_element_names() == ('XMLText', 'XMLExtend', 'XMLLaughing', 'XMLHumming')
 
-        container.add_element(XMLText())
+        container.add_element(XMLText('something'))
         assert container.get_required_element_names() is None
-        container.add_element(XMLElision())
+        container.add_element(XMLElision('Something'))
         assert container.get_required_element_names() == 'XMLText'
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeLyric).get_child_container()
-        container.add_element(XMLText())
+        container.add_element(XMLText('something'))
         assert container.get_required_element_names() is None
-        container.add_element(XMLSyllabic())
+        container.add_element(XMLSyllabic('end'))
         assert container.get_required_element_names() is None
-        container.add_element(XMLSyllabic())
+        container.add_element(XMLSyllabic('end'))
         assert container.get_required_element_names() == ['XMLElision', 'XMLText']
 
     def test_note_required_elements(self):
@@ -996,7 +996,7 @@ class TestChildContainerCheckRequired(TestCase):
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLCue(), intelligent_choice=False)
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
-            container.add_element(XMLDuration())
+            container.add_element(XMLDuration(1))
 
     def test_required_choice_not_fulfilled(self):
         """
@@ -1033,7 +1033,7 @@ class TestChildContainerCheckRequired(TestCase):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
         assert container.check_required_elements() is True
         assert container.requirements_not_fulfilled is True
-        container.add_element(XMLMultipleRest())
+        container.add_element(XMLMultipleRest(2))
         assert container.requirements_not_fulfilled is False
         assert container.check_required_elements() is False
 
@@ -1058,17 +1058,17 @@ class TestChildContainerCheckRequired(TestCase):
         assert container.check_required_elements() is False
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeLyric).get_child_container()
-        container.add_element(XMLText())
+        container.add_element(XMLText('something'))
         assert container.check_required_elements() is False
-        container.add_element(XMLElision())
+        container.add_element(XMLElision('something'))
         assert container.check_required_elements() is True
-        container.add_element(XMLText())
+        container.add_element(XMLText('something'))
         assert container.check_required_elements() is False
 
     #     def test_check_intelligent_choice(self):
     #         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
     #         container.add_element(XMLPitch())
-    #         container.add_element(XMLDuration())
+    #         container.add_element(XMLDuration(1))
     #         container.add_element(XMLCue())
     #         assert container.check_required_elements() is False
     #         expected = """Sequence@minOccurs=1@maxOccurs=1
@@ -1155,9 +1155,9 @@ class TestChildContainerCheckRequired(TestCase):
     def test_note_with_voice_and_type(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
         container.add_element(XMLPitch())
-        container.add_element(XMLDuration())
-        container.add_element(XMLVoice())
-        container.add_element(XMLType())
+        container.add_element(XMLDuration(1))
+        container.add_element(XMLVoice('1'))
+        container.add_element(XMLType('eighth'))
         expected = """Sequence@minOccurs=1@maxOccurs=1
     Choice@minOccurs=1@maxOccurs=1
         Sequence@minOccurs=1@maxOccurs=1
@@ -1243,8 +1243,8 @@ class TestChildContainerCheckRequired(TestCase):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
         before_tree = container.tree_representation(show_force_valid)
         container.add_element(XMLPitch())
-        container.add_element(XMLDuration())
-        container.add_element(XMLVoice())
-        container.add_element(XMLType())
+        container.add_element(XMLDuration(2))
+        container.add_element(XMLVoice('1'))
+        container.add_element(XMLType('eighth'))
         copied = copy.copy(container)
         assert before_tree == copied.tree_representation()

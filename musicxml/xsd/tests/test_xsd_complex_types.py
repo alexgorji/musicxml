@@ -266,8 +266,8 @@ class TestComplexTypes(MusicXmlTestCase):
         with self.assertRaises(ValueError):
             XSDSimpleTypeNoteTypeValue('bla')
 
-        XSDComplexTypeNoteType()
+        with self.assertRaises(TypeError):
+            XSDComplexTypeNoteType()
         with self.assertRaises(ValueError):
             XSDComplexTypeNoteType(value='bla')
         XSDComplexTypeNoteType('half')
-

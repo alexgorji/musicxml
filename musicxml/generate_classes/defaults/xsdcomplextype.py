@@ -16,14 +16,13 @@ class XSDComplexType(XSDTreeElement):
         self._value = None
 
     def _check_value(self, val):
-        if val is not None:
-            if self._SIMPLE_CONTENT:
-                try:
-                    self._SIMPLE_CONTENT(val)
-                except TypeError as err:
-                    raise TypeError(f"{self.__class__.__name__}: " + err.args[0])
-                except ValueError as err:
-                    raise ValueError(f"{self.__class__.__name__}: " + err.args[0])
+        if self._SIMPLE_CONTENT:
+            try:
+                self._SIMPLE_CONTENT(val)
+            except TypeError as err:
+                raise TypeError(f"{self.__class__.__name__}: " + err.args[0])
+            except ValueError as err:
+                raise ValueError(f"{self.__class__.__name__}: " + err.args[0])
 
     @property
     def value(self):

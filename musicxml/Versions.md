@@ -38,3 +38,6 @@ to be consistent with finale's musicxml export.
 
 Bug fix: `XMLChildContainer.add_element()`: if container has a parent_element and container gets a duplicated parent, duplicated parent
 replaces parent_element's container if needed. (Necessary for `XMLArticulations`)
+
+`XMLElement.value` renamed to `XMLElement.value_`
+`XMLElement.value_` will be checked immediately also for XSDComplexTypes

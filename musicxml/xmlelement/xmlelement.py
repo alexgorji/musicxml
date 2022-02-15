@@ -16,19 +16,19 @@ from musicxml.xsd.xsdtree import XSDTree
 
 class XMLElement(Tree):
     PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
-                  'et_xml_element', 'name', 'type_', 'value', 'parent_xsd_element'}
+                  'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element'}
     TYPE = None
     XSD_TREE: Optional[XSDTree] = None
 
-    def __init__(self, value=None, **kwargs):
+    def __init__(self, value_=None, **kwargs):
         self._type = None
         super().__init__()
-        self._value = None
+        self._value_ = None
         self._attributes = {}
         self._et_xml_element = None
         self._child_container_tree = None
         self._unordered_children = []
-        self.value = value
+        self.value_ = value_
         self._set_attributes(kwargs)
 
         self._create_child_container_tree()
@@ -54,7 +54,7 @@ class XMLElement(Tree):
                     raise XSDAttributeRequiredException(f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
 
     def _check_required_value(self):
-        if self.TYPE.XSD_TREE.is_simple_type and self.value is None:
+        if self.TYPE.XSD_TREE.is_simple_type and self.value_ is None:
             raise ValueError(f"{self.__class__.__name__} needs a value.")
 
     def _convert_attribute_to_child(self, name, value):
@@ -79,7 +79,7 @@ class XMLElement(Tree):
                 self.remove(found_child)
         else:
             if found_child:
-                found_child.value = value
+                found_child.value_ = value
             else:
                 self.add_child(child_class(value))
 
@@ -93,8 +93,8 @@ class XMLElement(Tree):
 
     def _create_et_xml_element(self):
         self._et_xml_element = ET.Element(self.name, {k: str(v) for k, v in self.attributes.items()})
-        if self.value is not None:
-            self._et_xml_element.text = str(self.value)
+        if self.value_ is not None:
+            self._et_xml_element.text = str(self.value_)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
         ET.indent(self._et_xml_element, space="  ", level=self.level)
@@ -181,19 +181,19 @@ class XMLElement(Tree):
             return {leaf.content.name for leaf in self.child_container_tree.iterate_leaves()}
 
     @property
-    def value(self):
+    def value_(self):
         """
         :return: A validated value of XMLElement which will be translated to its text in xml format.
         """
         return self._value
 
-    @value.setter
-    def value(self, val):
+    @value_.setter
+    def value_(self, val):
         """
         :param val: Value to be validated and added to XMLElement. This value will be translated to xml element's text in xml format.
         """
-        if val is not None:
-            self.TYPE(val)
+        # if val is not None:
+        self.TYPE(val)
         self._value = val
 
     @classmethod
@@ -325,13 +325,14 @@ class XMLElement(Tree):
 
     def __setattr__(self, key, value):
         if key[0] == '_' or key in self.PROPERTIES:
-            if key == 'value':
-                try:
-                    self._set_attributes({key: value})
-                except XSDWrongAttribute:
-                    super().__setattr__(key, value)
-            else:
-                super().__setattr__(key, value)
+            super().__setattr__(key, value)
+            # if key == 'value':
+            #     try:
+            #         self._set_attributes({key: value})
+            #     except XSDWrongAttribute:
+            #         super().__setattr__(key, value)
+            # else:
+            #     super().__setattr__(key, value)
         elif key.startswith('xml_'):
             try:
                 self._convert_attribute_to_child(name=key, value=value)

@@ -10,10 +10,10 @@ from musicxml.xsd.xsdsimpletype import *
 class TestXMLElements(TestCase):
 
     def test_element_type(self):
-        el = XMLOffset()
+        el = XMLOffset(2)
         assert el.TYPE == XSDComplexTypeOffset
 
-        el = XMLElevation()
+        el = XMLElevation(2)
         assert el.TYPE == XSDSimpleTypeRotationDegrees
 
     def test_element_simple_content(self):
@@ -33,7 +33,7 @@ class TestXMLElements(TestCase):
         el = XMLOffset(-2, sound='yes')
         assert el.to_string() == '<offset sound="yes">-2</offset>\n'
 
-        el = XMLOffset()
+        el = XMLOffset(2)
         # with self.assertRaises(XMLElementValueRequiredError):
         #     el.to_string()
 
@@ -49,7 +49,7 @@ class TestXMLElements(TestCase):
     def test_element_name(self):
         el = XMLOffset(-2)
         assert el.name == 'offset'
-        el = XMLElevation()
+        el = XMLElevation(10)
         assert el.name == 'elevation'
 
     def test_element_with_wrong_attribute(self):
@@ -79,7 +79,7 @@ class TestXMLElements(TestCase):
                 attribute@name=smufl@type=smufl-accidental-glyph-name
         :return:
         """
-        a = XMLAccidental()
+        a = XMLAccidental('sharp')
         a.cautionary = 'yes'
         assert a.cautionary == 'yes'
 
@@ -102,14 +102,14 @@ class TestXMLElements(TestCase):
             </xs:annotation>
         </xs:element>
         """
-        el = XMLElevation()
+        el = XMLElevation(10)
         assert el.TYPE == XSDSimpleTypeRotationDegrees
         with self.assertRaises(TypeError):
-            el.value = 'something'
+            el.value_ = 'something'
         with self.assertRaises(ValueError):
-            el.value = 200
+            el.value_ = 200
 
-        el.value = 170
+        el.value_ = 170
         assert el.to_string() == '<elevation>170</elevation>\n'
         assert el.__doc__ == 'The elevation and pan elements allow placing of sound in a 3-D space relative to the listener. Both are expressed in degrees ranging from -180 to 180. For elevation, 0 is level with the listener, 90 is directly above, and -90 is directly below.'
 
@@ -118,11 +118,11 @@ class TestXMLElements(TestCase):
         Test if an element with complex type returns its type's __doc__ as its __doc__
         Test if an element with simple type returns its xsd tree documentation as its __doc__
         """
-        assert XMLOffset().__doc__ == """An offset is represented in terms of divisions, and indicates where the direction will appear relative to the current musical location. The current musical location is always within the current measure, even at the end of a measure.
+        assert XMLOffset(10).__doc__ == """An offset is represented in terms of divisions, and indicates where the direction will appear relative to the current musical location. The current musical location is always within the current measure, even at the end of a measure.
 
 The offset affects the visual appearance of the direction. If the sound attribute is "yes", then the offset affects playback and listening too. If the sound attribute is "no", then any sound or listening associated with the direction takes effect at the current location. The sound attribute is "no" by default for compatibility with earlier versions of the MusicXML format. If an element within a direction includes a default-x attribute, the offset value will be ignored when determining the appearance of that element."""
-
-        assert XMLElevation().__doc__ == 'The elevation and pan elements allow placing of sound in a 3-D space relative to the listener. Both are expressed in degrees ranging from -180 to 180. For elevation, 0 is level with the listener, 90 is directly above, and -90 is directly below.'
+        assert XMLElevation(10).__doc__ == 'The elevation and pan elements allow placing of sound in a 3-D space relative to the ' \
+                                           'listener. Both are expressed in degrees ranging from -180 to 180. For elevation, 0 is level with the listener, 90 is directly above, and -90 is directly below.'
 
     def test_element_empty(self):
         """
@@ -178,12 +178,11 @@ The offset affects the visual appearance of the direction. If the sound attribut
             el.to_string()
         assert err.exception.args[0] == 'XMLScorePart requires at least following children: XMLPartName'
 
-        pn = sp.add_child(XMLPartName())
+        pn = sp.add_child(XMLPartName('part name 1'))
         with self.assertRaises(XSDAttributeRequiredException) as err:
             el.to_string()
         assert err.exception.args[0] == 'XMLScorePart requires attribute: id'
         sp.id = 'p1'
-        pn.value = 'part name 1'
         expected = """<part-list>
   <score-part id="p1">
     <part-name>part name 1</part-name>
@@ -228,9 +227,9 @@ The offset affects the visual appearance of the direction. If the sound attribut
         Test if there is no conflict between simple and complex types with the same name such as:
         xs:string vs. string: xs:string is a simple type, string is a complex type.
         """
-        string = XMLString()
+        string = XMLString(2)
         assert string.TYPE == XSDComplexTypeString
-        software = XMLSoftware()
+        software = XMLSoftware('gaga')
         assert software.TYPE == XSDSimpleTypeString
 
     def test_element_with_type_and_value_as_attributes(self):
@@ -247,7 +246,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
         """
         Test that XMLCreditWords can have attributes
         """
-        cw = XMLCreditWords()
+        cw = XMLCreditWords('something')
         assert [a.name for a in cw.TYPE.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x', 'relative-y',
                                                                   'font-family', 'font-style', 'font-size', 'font-weight', 'color',
                                                                   'halign', 'valign', 'underline', 'overline', 'line-through', 'rotation',
@@ -339,7 +338,7 @@ The offset affects the visual appearance of the direction. If the sound attribut
     def test_xml_ending(self):
         expected = """<ending default-y="40" end-length="30" font-size="7.6" number="1" print-object="yes" type="start" />
 """
-        e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start')
+        e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start', value_="")
         assert e.to_string() == expected
 
     def test_get_unordered_children(self):
@@ -381,9 +380,9 @@ The offset affects the visual appearance of the direction. If the sound attribut
                 element@name=other-appearance@type=other-appearance@minOccurs=0@maxOccurs=unbounded
         """
         n = XMLAppearance()
-        ns1 = n.add_child(XMLNoteSize())
-        lw = n.add_child(XMLLineWidth())
-        ns2 = n.add_child(XMLNoteSize())
+        ns1 = n.add_child(XMLNoteSize(10))
+        lw = n.add_child(XMLLineWidth(10))
+        ns2 = n.add_child(XMLNoteSize(10))
         assert n.find_child(XMLLineWidth) == lw
         assert n.find_child('XMLLineWidth') == lw
         assert n.find_children(XMLNoteSize) == [ns1, ns2]
@@ -417,14 +416,14 @@ The offset affects the visual appearance of the direction. If the sound attribut
 """
         assert b.to_string() == expected
         assert isinstance(b.xml_bar_style, XMLBarStyle)
-        assert b.xml_bar_style.value == 'light-light'
+        assert b.xml_bar_style.value_ == 'light-light'
         current_xml_bar_style = b.xml_bar_style
 
         b.xml_bar_style = 'light-heavy'
         assert b.xml_bar_style == current_xml_bar_style
-        assert b.xml_bar_style.value == 'light-heavy'
+        assert b.xml_bar_style.value_ == 'light-heavy'
         b.xml_bar_style = XMLBarStyle('regular')
-        assert b.xml_bar_style.value == 'regular'
+        assert b.xml_bar_style.value_ == 'regular'
         assert b.xml_bar_style != current_xml_bar_style
         m = XMLMeasure()
         assert m.attributes == {}
@@ -658,19 +657,15 @@ The offset affects the visual appearance of the direction. If the sound attribut
         assert t.to_string() == expected
 
     def test_set_value_to_None(self):
-        st = XMLStaff()
-        assert st.value is None
-        st.value = 2
-        assert st.value == 2
-        st.value = 3
-        assert st.value == 3
+        st = XMLStaff(1)
+        assert st.value_ == 1
+        st.value_ = 2
+        assert st.value_ == 2
+        st.value_ = 3
+        assert st.value_ == 3
         expected = """<staff>3</staff>
 """
         assert st.to_string() == expected
-        st.value = None
-        assert st.value is None
-        with self.assertRaises(ValueError):
-            st.to_string()
 
     def test_xml_notations(self):
         n = XMLNotations()
@@ -692,8 +687,8 @@ The offset affects the visual appearance of the direction. If the sound attribut
     def test_xml_articulations(self):
         n = XMLNotations()
         a = n.add_child(XMLArticulations())
-        art1 = a.add_child(XMLAccent())
-        art2 = a.add_child(XMLStaccato())
+        a.add_child(XMLAccent())
+        a.add_child(XMLStaccato())
         expected = """<notations>
   <articulations>
     <accent />
@@ -702,3 +697,14 @@ The offset affects the visual appearance of the direction. If the sound attribut
 </notations>
 """
         assert n.to_string() == expected
+
+    def test_xml_fret(self):
+        """
+        Test if a value is required
+        """
+        with self.assertRaises(TypeError):
+            f = XMLFret()
+        f = XMLFret(value_=2)
+        expected = """<fret>2</fret>
+"""
+        assert f.to_string() == expected
