@@ -842,7 +842,7 @@ class TestDuplication(TestCase):
         assert isinstance(duplicated_parent.content, XSDChoice)
         assert duplicated_parent.get_parent() == container.get_parent()
 
-    def test_add_child_to_unbounded_choice(self):
+    def test_add_child_to_unbounded_choice_dynamics(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeDynamics).get_child_container()
         container.add_element(XMLPp())
         container.add_element(XMLPp())
@@ -856,6 +856,14 @@ class TestDuplication(TestCase):
         assert len(container.get_parent().get_children()) == 5
         assert [leaf.content.xml_elements[0].__class__.__name__ for leaf in container.get_parent().iterate_leaves() if
                 leaf.content.xml_elements] == ['XMLPp', 'XMLPp', 'XMLPp', 'XMLPp', 'XMLMf']
+
+    def test_add_child_to_unbounded_choice_articulations(self):
+        container = XMLChildContainerFactory(complex_type=XSDComplexTypeArticulations).get_child_container()
+        accent = XMLAccent()
+        staccato = XMLStaccato()
+        container.add_element(accent)
+        container.add_element(staccato)
+        assert container.up.get_attached_elements() == [accent, staccato]
 
 
 class TestChildContainerCheckRequired(TestCase):

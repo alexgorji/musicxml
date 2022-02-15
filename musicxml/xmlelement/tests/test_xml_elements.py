@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
+from musicxml.util.core import show_force_valid
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
@@ -684,6 +685,20 @@ The offset affects the visual appearance of the direction. If the sound attribut
         t1.up.remove(t1)
         expected = """<notations>
   <tied type="start" />
+</notations>
+"""
+        assert n.to_string() == expected
+
+    def test_xml_articulations(self):
+        n = XMLNotations()
+        a = n.add_child(XMLArticulations())
+        art1 = a.add_child(XMLAccent())
+        art2 = a.add_child(XMLStaccato())
+        expected = """<notations>
+  <articulations>
+    <accent />
+    <staccato />
+  </articulations>
 </notations>
 """
         assert n.to_string() == expected

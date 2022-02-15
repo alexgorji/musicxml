@@ -32,7 +32,7 @@ class TestScore(TestCase):
         score = XMLScorePartwise()
         pl = score.add_child(XMLPartList())
         sp = pl.add_child(XMLScorePart(id='P1'))
-        sp.add_child(XMLPartName('some name'))
+        sp.add_child(XMLPartName('some name', print_object="no"))
         p = score.add_child(XMLPart(id='P1'))
         p.add_child(XMLMeasure(number='1'))
 

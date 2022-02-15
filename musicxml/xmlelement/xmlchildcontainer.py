@@ -422,7 +422,6 @@ class XMLChildContainer(Tree):
             raise XMLChildContainerWrongElementError()
 
         selected_same_name_leaves = select_valid_leaves(same_name_leaves)
-
         if selected_same_name_leaves is None:
             intelligently_selected = None
             if forward is None and intelligent_choice is True:
@@ -446,6 +445,9 @@ class XMLChildContainer(Tree):
                 selected_same_name_leaves = [leaf for leaf in duplicated_parent.iterate_leaves() if
                                              leaf.content.name == xml_element.name and not
                                              leaf.max_is_reached]
+                if self._parent_xml_element and self.up:
+                    self._parent_xml_element._child_container_tree = self.up
+
             else:
                 raise XMLChildContainerChoiceHasAnotherChosenChild
 

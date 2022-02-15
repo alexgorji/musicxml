@@ -29,8 +29,12 @@ doc strings added to `XMLElement`
 
 Bug fix: `XMLElement.get_parent()`: if XMLElement is a child returns now the parent XMLElement.
 `Tree.up`: returns `Tree.get_parent()`
-Bug fix: `XMLElement.remove(<child>)` removes duplications in `ChildContainerTree` if necessary.
-Bug fix: `XMLElement.value` can be set to None.
+Bug fix: `XMLElement.remove(<child>)` removes duplications in `ChildContainerTree` if necessary. Bug fix: `XMLElement.value` can be set to
+None.
 `Tree.get_leaves()`: added
-Bug fix: `XMLElement.remove()`: remove_duplicate is now called after removing child.
-Indentation: changed from 4 spaced to 2 spaces in order to be consistent with finale's musicxml export.
+
+Bug fix: `XMLElement.remove()`: remove_duplicate is now called after removing child. Indentation: changed from 4 spaced to 2 spaces in order
+to be consistent with finale's musicxml export.
+
+Bug fix: `XMLChildContainer.add_element()`: if container has a parent_element and container gets a duplicated parent, duplicated parent
+replaces parent_element's container if needed. (Necessary for `XMLArticulations`)
