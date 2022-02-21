@@ -462,6 +462,8 @@ class XMLChildContainer(Tree):
                 if duplicated_parent:
                     selected_same_name_leaves_max_not_reached = [leaf for leaf in duplicated_parent.iterate_leaves() if leaf.content.name ==
                                                                  xml_element.name and not leaf.max_is_reached]
+                    if self._parent_xml_element and self.up:
+                        self._parent_xml_element._child_container_tree = self.up
                 else:
                     raise XMLChildContainerMaxOccursError()
 

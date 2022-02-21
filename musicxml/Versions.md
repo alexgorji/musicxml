@@ -45,3 +45,7 @@ replaces parent_element's container if needed. (Necessary for `XMLArticulations`
 `XMLElement._check_value()` sets `self.TYPE.element` to self
 `XSDComplexType` and `XSDSimpleType`: `element` attribute and `_get_error_class()` method added to be able to give a better error message.
 error messages improved.
+
+# Version 0.1.5
+Bug fix: `XMLChildContainer.add_element()`: if container has a parent_element and container gets a duplicated parent, duplicated parent
+replaces parent_element's container if needed. (Necessary for `XMLEncoding`)
