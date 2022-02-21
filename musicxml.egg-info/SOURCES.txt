@@ -44,6 +44,7 @@ musicxml/xmlelement/xmlchildcontainer.py
 musicxml/xmlelement/xmlelement.py
 musicxml/xmlelement/tests/__init__.py
 musicxml/xmlelement/tests/test_child_container.py
+musicxml/xmlelement/tests/test_choice.py
 musicxml/xmlelement/tests/test_pre_create_child_container.py
 musicxml/xmlelement/tests/test_xml_element_lyric.py
 musicxml/xmlelement/tests/test_xml_element_score.py
