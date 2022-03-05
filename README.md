@@ -1,5 +1,9 @@
 musicxml is a python library for reading and writing musicxml files.
 
+musicxml is also a part of library: musicscore2. Feel free to check out:
+[https://github.com/alexgorji/musicxml](https://github.com/alexgorji/musicxml)
+[https://musicscore2.readthedocs.io](https://musicscore2.readthedocs.io)
+
 INSTALLATION
 
 1. Check the version of python on your computer: `python --version`. This library has been developed with python 3.9. Possibly you have to
@@ -86,9 +90,3 @@ it can happen, that the current chosen path throws an error since this particula
 it could for example require another not existing child in the final check. It these cases the parent element tries to attach its children
 to another choice path and see if the problem can be solved. On this account although some thorough testings have been done, there is yet no
 guaranty that in some cases the library does not behave as it should. Please let me know if you discover a bug!
-
-A musicxml file can get easily very long (see for example Bach's piano partita no. 3 in parser with 126327 lines!). The parser manages to
-read the whole file in about 1 minutes on my machine. Maybe it can get faster in the future ...
-
-At the moment no documentation exists. But you can use the very extensive musicxml documentation
-on: [https://www.w3. org/2021/06/musicxml40/](https://www.w3.org/2021/06/musicxml40/)

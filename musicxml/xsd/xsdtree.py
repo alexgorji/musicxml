@@ -4,7 +4,10 @@ import xml.etree.ElementTree as ET
 from contextlib import redirect_stdout
 from typing import Optional
 
-from musicxml.tree.tree import Tree
+from musicxml.generate_classes.utils import musicxml_xsd_et_root
+from musicxml.util.helprervariables import xml_name_first_character_without_colon, name_character_without_colon, name_character, \
+    xml_name_first_character
+from tree.tree import Tree
 from musicxml.util.core import cap_first, convert_to_xsd_class_name
 
 """
@@ -158,16 +161,61 @@ class XSDTree(Tree):
             return self.get_complex_content().get_children()[0]
 
     def get_doc(self):
+        output = ''
         for node in self.traverse():
             if node.tag == 'documentation':
                 output = node.text.strip()
                 output.replace('\t', '    ')
-                return output
+                break
+        permitted = self.get_permitted()
+        pattern = self.get_pattern()
+        if permitted:
+            output += '\n    '
+            output += '\n    '
+            permitted = [f"``'{perm}'``" if perm else "``''``" for perm in permitted]
+            output += f"Permitted Values: {', '.join(perm for perm in permitted)}\n"
+        if pattern:
+            output += '\n    '
+            output += '\n    '
+            output += f"    \nPattern: {pattern}\n"
+
+        return output
 
     def get_restriction(self):
         for node in self.get_children():
             if node.tag == 'restriction':
                 return node
+
+    def get_pattern(self, parent_xsd_tree=None):
+        def get_xsd_pattern(restriction_):
+            if restriction_ and restriction_.get_children() and restriction_.get_children()[0].tag == 'pattern':
+                return rf"{restriction.get_children()[0].get_attributes()['value']}"
+            else:
+                if parent_xsd_tree:
+                    parent_restriction = parent_xsd_tree.get_restriction()
+                    if parent_restriction and parent_restriction.get_children() and parent_restriction.get_children()[0].tag == 'pattern':
+                        return rf"{parent_restriction.get_children()[0].get_attributes()['value']}"
+
+        def translate_pattern(pattern_):
+            if pattern_ == "[\i-[:]][\c-[:]]*":
+                return rf"{xml_name_first_character_without_colon}{name_character_without_colon}*"
+            pattern_ = pattern_.replace('\c', name_character)
+            pattern_ = pattern_.replace('\i', xml_name_first_character)
+            return pattern_
+
+        restriction = self.get_restriction()
+        pattern = get_xsd_pattern(restriction)
+        if pattern:
+            return translate_pattern(pattern)
+        else:
+            return None
+
+    def get_permitted(self):
+        restriction = self.get_restriction()
+        if restriction:
+            enumerations = [child for child in restriction.get_children() if
+                            child.tag == 'enumeration']
+            return [enumeration.get_attributes()['value'] for enumeration in enumerations]
 
     def get_simple_content(self):
         for node in self.get_children():
@@ -235,11 +283,20 @@ class XSDTreeElement:
     Abstract class of all generated XSD Classes
     """
     XSD_TREE: Optional[XSDTree] = None
+    _SEARCH_FOR_ELEMENT = ""
+    _XSD_TREE = None
+
+    @classmethod
+    def get_xsd_tree(cls):
+        if cls._XSD_TREE:
+            return cls._XSD_TREE
+        found_xsd_element = musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT)
+        if not found_xsd_element:
+            return cls.XSD_TREE
+        else:
+            cls._XSD_TREE = XSDTree(found_xsd_element)
+            return cls._XSD_TREE
 
     @classmethod
     def get_xsd(cls):
-        return cls.XSD_TREE.get_xsd()
-
-    @property
-    def xsd_tree(self):
-        return self.XSD_TREE
+        return cls.get_xsd_tree().get_xsd()

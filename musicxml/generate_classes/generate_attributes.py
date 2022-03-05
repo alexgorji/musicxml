@@ -3,12 +3,13 @@ from pathlib import Path
 from string import Template
 import xml.etree.ElementTree as ET
 
-from musicxml.generate_classes.utils import get_complex_type_all_base_classes, get_all_et_elements
+from musicxml.generate_classes.utils import get_all_et_elements
 from musicxml.xsd.xsdtree import XSDTree
 
 sources_path = Path(__file__).parent / 'musicxml_4_0.xsd'
 default_path = Path(__file__).parent / 'defaults' / 'xsdattribute.py'
-target_path = Path(__file__).parent.parent / 'xsd' / 'xsdattribute' / 'xsdattribute.py'
+target_path = Path(__file__).parent.parent / 'xsd' / 'xsdattribute.py'
+
 
 template_string = """
 class $class_name($base_classes):

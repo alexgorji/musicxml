@@ -1,10 +1,13 @@
+# -----------------------------------------------------
+# AUTOMATICALLY GENERATED WITH generate_xml_elements.py
+# -----------------------------------------------------
 import copy
 import xml.etree.ElementTree as ET
 from typing import Optional, List, Callable, Union
 
 from musicxml.exceptions import XSDWrongAttribute, XSDAttributeRequiredException, XMLElementChildrenRequired
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
-from musicxml.tree.tree import Tree
+from tree.tree import Tree
 from musicxml.util.core import cap_first, replace_key_underline_with_hyphen
 from musicxml.xmlelement.containers import containers
 from musicxml.xmlelement.exceptions import XMLElementCannotHaveChildrenError
@@ -15,12 +18,16 @@ from musicxml.xsd.xsdtree import XSDTree
 
 
 class XMLElement(Tree):
-    PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
-                  'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element'}
+    """
+    Parent class of all xml elements.
+    """
+    _PROPERTIES = {'xsd_tree', 'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
+                   'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element'}
     TYPE = None
-    XSD_TREE: Optional[XSDTree] = None
+    _SEARCH_FOR_ELEMENT = ''
 
     def __init__(self, value_=None, **kwargs):
+        self.xsd_tree = XSDTree(musicxml_xsd_et_root.find(self._SEARCH_FOR_ELEMENT))
         self._type = None
         super().__init__()
         self._value_ = None
@@ -47,14 +54,14 @@ class XMLElement(Tree):
             raise TypeError
 
     def _check_required_attributes(self):
-        if self.TYPE.XSD_TREE.is_complex_type:
+        if self.TYPE.get_xsd_tree().is_complex_type:
             required_attributes = [attribute for attribute in self.TYPE.get_xsd_attributes() if attribute.is_required]
             for required_attribute in required_attributes:
                 if required_attribute.name not in self.attributes:
                     raise XSDAttributeRequiredException(f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
 
     def _check_required_value(self):
-        if self.TYPE.XSD_TREE.is_simple_type and self.value_ is None:
+        if self.TYPE.get_xsd_tree().is_simple_type and self.value_ is None:
             raise ValueError(f"{self.__class__.__name__} needs a value.")
 
     def _convert_attribute_to_child(self, name, value):
@@ -85,7 +92,7 @@ class XMLElement(Tree):
 
     def _create_child_container_tree(self):
         try:
-            if self.TYPE.XSD_TREE.is_complex_type:
+            if self.TYPE.get_xsd_tree().is_complex_type:
                 self._child_container_tree = copy.copy(containers[self.TYPE.__name__])
                 self._child_container_tree._parent_xml_element = self
         except KeyError:
@@ -122,7 +129,7 @@ class XMLElement(Tree):
         if val is None:
             return
 
-        if self.TYPE.XSD_TREE.is_simple_type:
+        if self.TYPE.get_xsd_tree().is_simple_type:
             if val:
                 raise XSDWrongAttribute(f'{self.__class__.__name__} has no attributes.')
 
@@ -144,20 +151,27 @@ class XMLElement(Tree):
     @property
     def attributes(self):
         """
-        :return: a dictionary of attributes like {'font-family': 'Arial'} if XMLElement.font_family is set to Arial. The attributes will
-        appear in the main xml tag: <text font-family="Arial">hello</text>.
+        :return: a dictionary of attributes like {'font-family': 'Arial'}
+
+        >>> t = XMLText(value_='hello', font_family = 'Arial')
+        >>> t.attributes
+        {'font-family': 'Arial'}
+        >>> t.to_string()
+        <text font-family="Arial">hello</text>
         """
+
         return self._attributes
 
     @property
     def child_container_tree(self):
         """
         :return: A ChildContainerTree object which is used to manage and control XMLElements children. The nodes of a ChildContainerTree
-        have a core content property of types XSDSequence, XSDChoice, XSDGroup or XSDElement. XSDElement are the content type of
-        ChildContainerTree leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element) can be
-        added to its xml_elements list. An interaction of xsd indicators (sequence, choice and group) with xsd elements makes it possible to
-        add XMLElement's Children in the right order and control all xsd rules which apply to musicxml. A variety of exceptions help user to
-        control the xml structure of the exported file which they are intending to use as a musicxml format file.
+                 have a core content property of types XSDSequence, XSDChoice, XSDGroup or XSDElement. XSDElement are the content type of
+                 ChildContainerTree leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element)
+                 can be added to its xml_elements list. An interaction of xsd indicators (sequence, choice and group) with xsd elements
+                 makes it possible to add XMLElement's Children in the right order and control all xsd rules which apply to musicxml. A
+                 variety of exceptions help user to control the xml structure of the exported file which they are intending to use as a
+                 musicxml format file.
         """
         return self._child_container_tree
 
@@ -171,7 +185,7 @@ class XMLElement(Tree):
 
     @property
     def name(self):
-        return self.XSD_TREE.get_attributes()['name']
+        return self.xsd_tree.get_attributes()['name']
 
     @property
     def possible_children_names(self):
@@ -200,13 +214,13 @@ class XMLElement(Tree):
         """
         :return: Snippet of musicxml xsd file which is relevant for this XMLElement.
         """
-        return cls.XSD_TREE.get_xsd()
+        return cls.xsd_tree.get_xsd()
 
     def add_child(self, child: 'XMLElement', forward: Optional[int] = None) -> 'XMLElement':
         """
         :param XMLElement child: XMLElement child to be added to XMLElement's ChildContainerTree and _unordered_children.
         :param int forward: If there are more than one XSDElement leaves in self.child_container_tree, forward can be used to determine
-        manually which of these equivocal xsd elements is going to be used to attach the child.
+                            manually which of these equivocal xsd elements is going to be used to attach the child.
         :return: Added child.
         """
         if not self._child_container_tree:
@@ -220,7 +234,7 @@ class XMLElement(Tree):
         """
         :param bool ordered: True or False.
         :return: XMLElement added children. If ordered is False the _unordered_children is returned as a more light weighted way of
-        getting children instead of using the leaves of ChildContainerTree.
+                 getting children instead of using the leaves of ChildContainerTree.
         """
         if ordered is False:
             return self._unordered_children
@@ -255,7 +269,7 @@ class XMLElement(Tree):
     def remove(self, child: 'XMLElement') -> None:
         """
         :param XMLElement child: child to be removed. This method must be used to remove a child properly from ChildContainerTree and
-        reset its behaviour.
+                                 reset its behaviour.
         :return: None
         """
 
@@ -313,8 +327,8 @@ class XMLElement(Tree):
     def to_string(self, intelligent_choice: bool = False) -> str:
         """
         :param bool intelligent_choice: Set to True if you wish to use intelligent choice in final checks to be able to change the
-        attachment order of XMLElement children in self.child_container_tree if an Exception was thrown and other choices can still be
-        checked. (No GUARANTEE!)
+                                         attachment order of XMLElement children in self.child_container_tree if an Exception was thrown
+                                         and other choices can still be checked. (No GUARANTEE!)
         :return: String in xml format.
         """
         self._final_checks(intelligent_choice=intelligent_choice)
@@ -323,7 +337,7 @@ class XMLElement(Tree):
         return ET.tostring(self.et_xml_element, encoding='unicode') + '\n'
 
     def __setattr__(self, key, value):
-        if key[0] == '_' or key in self.PROPERTIES:
+        if key[0] == '_' or key in self._PROPERTIES:
             super().__setattr__(key, value)
         elif key.startswith('xml_'):
             try:
@@ -354,76 +368,6 @@ class XMLElement(Tree):
                         return None
                 raise AttributeError(self._get_attributes_error_message(item))
 
-
-# xml score partwise
-xsd_tree_score_partwise_part = XSDTree(musicxml_xsd_et_root.find(f".//{ns}element[@name='score-partwise']"))
-"""
-<xs:element name="score-partwise" block="extension substitution" final="#all">
-    <xs:annotation>
-        <xs:documentation>The score-partwise element is the root element for a partwise MusicXML score. It includes a score-header group followed by a series of parts with measures inside. The document-attributes attribute group includes the version attribute.</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-        <xs:sequence>
-            <xs:group ref="score-header"/>
-            <xs:element name="part" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="measure" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:group ref="music-data"/>
-                                <xs:attributeGroup ref="measure-attributes"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attributeGroup ref="part-attributes"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-        <xs:attributeGroup ref="document-attributes"/>
-    </xs:complexType>
-</xs:element>
-"""
-
-
-class XMLScorePartwise(XMLElement):
-    TYPE = XSDComplexTypeScorePartwise
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.find(f".//{ns}element[@name='score-partwise']"))
-
-    def write(self, path, intelligent_choice=False):
-        with open(path, 'w') as file:
-            file.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n')
-            file.write(self.to_string(intelligent_choice=intelligent_choice))
-
-    @property
-    def __doc__(self):
-        return self.XSD_TREE.get_doc()
-
-
-class XMLPart(XMLElement):
-    TYPE = XSDComplexTypePart
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(f".//{ns}element[@name='score-partwise']//{ns}element")[0])
-
-    @property
-    def __doc__(self):
-        return self.XSD_TREE.get_doc()
-
-
-class XMLMeasure(XMLElement):
-    TYPE = XSDComplexTypeMeasure
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(f".//{ns}element[@name='score-partwise']//{ns}element")[1])
-
-    @property
-    def __doc__(self):
-        return self.XSD_TREE.get_doc()
-
-
-class XMLDirective(XMLElement):
-    TYPE = XSDComplexTypeDirective
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.find(".//{*}complexType[@name='attributes']//{*}element[@name='directive']"))
-
-    @property
-    def __doc__(self):
-        return self.XSD_TREE.get_doc()
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_xml_elements.py
 # -----------------------------------------------------

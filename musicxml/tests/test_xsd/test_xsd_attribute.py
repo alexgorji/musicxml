@@ -1,22 +1,21 @@
 from unittest import TestCase
 
-from musicxml.xsd.xsdattribute.core import XSDAttribute
 from musicxml.xsd.xsdattribute import *
 from musicxml.xsd.xsdsimpletype import *
 from musicxml.xsd.xsdtree import XSDTree
 from xml.etree import ElementTree as ET
 
-from musicxml.util.helperclasses import MusicXmlTestCase
+from musicxml.tests.util import MusicXmlTestCase
 
 
 class TestXSDAttribute(TestCase):
-    def test_xsd_attribute_from_xsd_tree(self):
+    def test_xsd_attribute_from_XSD_TREE(self):
         """
         Test that an XSDAttribute can be created out of a XSDTree with tag attribute.
         """
         el = ET.fromstring('<xs:attribute xmlns:xs="http://www.w3.org/2001/XMLSchema" name="type" type="xs:token" />')
-        xsd_tree = XSDTree(el)
-        attribute = XSDAttribute(xsd_tree)
+        XSD_TREE = XSDTree(el)
+        attribute = XSDAttribute(XSD_TREE)
         assert attribute.name == 'type'
         assert attribute.type_ == XSDSimpleTypeToken
         assert attribute.is_required is False
