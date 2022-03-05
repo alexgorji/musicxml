@@ -6,8 +6,11 @@ from musicxml.xmlelement.exceptions import XMLChildContainerFactoryError, XMLChi
 from musicxml.xsd.xsdelement import XSDElement
 from musicxml.xsd.xsdindicator import *
 from musicxml.xsd.xsdtree import XSDTree
-from musicxml.tree.tree import Tree
+from tree.tree import Tree
+
 import xml.etree.ElementTree as ET
+
+from tree.tree import Tree
 
 
 def _convert_xsd_child_to_xsd_container(xsd_child):

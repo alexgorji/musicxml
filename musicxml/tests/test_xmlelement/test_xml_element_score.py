@@ -9,10 +9,6 @@ parent_folder = Path(__file__).parent
 
 class TestScore(TestCase):
 
-    def test_score_partwise_doc(self):
-        score = XMLScorePartwise()
-        assert score.__doc__ == 'The score-partwise element is the root element for a partwise MusicXML score. It includes a score-header group followed by a series of parts with measures inside. The document-attributes attribute group includes the version attribute.'
-
     def test_score_partwise_type(self):
         score = XMLScorePartwise()
         assert score.TYPE == XSDComplexTypeScorePartwise
@@ -27,6 +23,27 @@ class TestScore(TestCase):
     def test_score_partwise_indicator(self):
         score = XMLScorePartwise()
         assert isinstance(score.TYPE.get_xsd_indicator()[0], XSDSequence)
+
+    def test_xsd_tree(self):
+        score = XMLScorePartwise()
+
+        expected = """element@name=score-partwise@block=extension substitution@final=#all
+    annotation
+        documentation
+    complexType
+        sequence
+            group@ref=score-header
+            element@name=part@maxOccurs=unbounded
+                complexType
+                    sequence
+                        element@name=measure@maxOccurs=unbounded
+                            complexType
+                                group@ref=music-data
+                                attributeGroup@ref=measure-attributes
+                    attributeGroup@ref=part-attributes
+        attributeGroup@ref=document-attributes
+"""
+        assert score.xsd_tree.tree_representation() == expected
 
     def test_minimum_score(self):
         score = XMLScorePartwise()

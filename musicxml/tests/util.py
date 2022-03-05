@@ -1,5 +1,5 @@
 from unittest import TestCase
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree as ET
 
 from musicxml.generate_classes.utils import musicxml_xsd_path, ns
 from musicxml.xsd.xsdtree import XSDTree

@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 
 class XSDComplexType(XSDTreeElement):
     _SIMPLE_CONTENT = None
+    _SEARCH_FOR_ELEMENT = ''
 
     def __init__(self, value=None, parent=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,14 +44,14 @@ class XSDComplexType(XSDTreeElement):
     @classmethod
     def get_xsd_attributes(cls):
         output = []
-        if cls.XSD_TREE.get_simple_content_extension():
-            for child in cls.XSD_TREE.get_simple_content_extension().get_children():
+        if cls.get_xsd_tree().get_simple_content_extension():
+            for child in cls.get_xsd_tree().get_simple_content_extension().get_children():
                 if child.tag == 'attribute':
                     output.append(XSDAttribute(child))
                 elif child.tag == 'attributeGroup':
                     output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
-        elif cls.XSD_TREE.get_complex_content():
-            complex_content_extension = cls.XSD_TREE.get_complex_content_extension()
+        elif cls.get_xsd_tree().get_complex_content():
+            complex_content_extension = cls.get_xsd_tree().get_complex_content_extension()
             complex_type_extension_base_class_name = convert_to_xsd_class_name(complex_content_extension.get_attributes()['base'],
                                                                                'complex_type')
             extension_base = eval(complex_type_extension_base_class_name)
@@ -62,7 +63,7 @@ class XSDComplexType(XSDTreeElement):
                     output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
             return output
         else:
-            for child in cls.XSD_TREE.get_children():
+            for child in cls.get_xsd_tree().get_children():
                 if child.tag == 'attribute':
                     output.append(XSDAttribute(child))
                 elif child.tag == 'attributeGroup':
@@ -76,7 +77,7 @@ class XSDComplexType(XSDTreeElement):
             max_ = ch.get_attributes().get('maxOccurs')
             return 1 if not min_ else int(min_), 1 if not max_ else 'unbounded' if max_ == 'unbounded' else int(max_)
 
-        for child in cls.XSD_TREE.get_children():
+        for child in cls.get_xsd_tree().get_children():
             if child.tag == 'sequence':
                 return XSDSequence(child), *get_occurrences(child)
             if child.tag == 'choice':
@@ -88,51 +89,21 @@ class XSDComplexType(XSDTreeElement):
                                                       'complex_type')).get_xsd_indicator()
 
 
-xsd_tree_score_partwise = XSDTree(musicxml_xsd_et_root.find(".//{*}element[@name='score-partwise']"))
-"""
-<xs:element name="score-partwise" block="extension substitution" final="#all">
-    <xs:annotation>
-        <xs:documentation>The score-partwise element is the root element for a partwise MusicXML score. It includes a score-header group followed by a series of parts with measures inside. The document-attributes attribute group includes the version attribute.</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-        <xs:sequence>
-            <xs:group ref="score-header"/>
-            <xs:element name="part" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="measure" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:group ref="music-data"/>
-                                <xs:attributeGroup ref="measure-attributes"/>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attributeGroup ref="part-attributes"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-        <xs:attributeGroup ref="document-attributes"/>
-    </xs:complexType>
-</xs:element>
-"""
-
-
 class XSDComplexTypeScorePartwise(XSDComplexType):
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(".//{*}element[@name='score-partwise']//{*}complexType")[0])
+    _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']//{*}complexType"
 
 
 class XSDComplexTypePart(XSDComplexType):
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(".//{*}element[@name='score-partwise']//{*}complexType")[1])
+    _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']//{*}complexType//{*}complexType"
 
 
 class XSDComplexTypeMeasure(XSDComplexType):
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.findall(".//{*}element[@name='score-partwise']//{*}complexType")[2])
+    _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']//{*}complexType//{*}complexType//{*}complexType"
 
 
 class XSDComplexTypeDirective(XSDComplexType):
     _SIMPLE_CONTENT = XSDSimpleTypeString
-
-    XSD_TREE = XSDTree(musicxml_xsd_et_root.find(".//{*}complexType[@name='attributes']//{*}complexType"))
+    _SEARCH_FOR_ELEMENT = ".//{*}complexType[@name='attributes']//{*}complexType"
 
 
 # Note's choice is being manually reordered to avoid using intelligent choice for each Note without grace.
@@ -147,9 +118,10 @@ The attack and release attributes are used to alter the starting and stopping ti
 
 If a note is played only particular times through a repeat, the time-only attribute shows which times to play the note.
 
-The pizzicato attribute is used when just this note is sounded pizzicato, vs. the pizzicato element which changes overall playback between pizzicato and arco."""
+The pizzicato attribute is used when just this note is sounded pizzicato, vs. the pizzicato element which changes overall playback between pizzicato and arco.
+"""
 
-    XSD_TREE = XSDTree(ET.fromstring("""
+    _XSD_TREE = XSDTree(ET.fromstring("""
 <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="note">
     <xs:annotation>
         <xs:documentation>Notes are the most common type of MusicXML data. The MusicXML format distinguishes between elements used for sound information and elements used for notation information (e.g., tie is used for sound, tied for notation). Thus grace notes do not have a duration element. Cue notes have a duration element, as do forward elements, but no tie elements. Having these two types of information available can make interchange easier, as some programs handle one type of information more readily than the other.
@@ -228,7 +200,7 @@ The pizzicato attribute is used when just this note is sounded pizzicato, vs. th
     <xs:attributeGroup ref="optional-unique-id" />
 </xs:complexType>
 """
-                                     ))
+                                      ))
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_complex_types.py
 # -----------------------------------------------------

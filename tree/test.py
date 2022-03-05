@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from musicxml.tree.tree import Tree, ChildNotFoundError
+from tree.tree import Tree, ChildNotFoundError
 
 
 class A(Tree):
@@ -18,6 +18,12 @@ class A(Tree):
         child = type(self)(parent=self, name=name)
         return super().add_child(child)
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class TestTree(TestCase):
     def setUp(self) -> None:
@@ -34,6 +40,7 @@ class TestTree(TestCase):
     def test_get_root(self):
         assert self.greatgrandchild1.get_root() == self.root
         assert self.child4.get_root() == self.root
+        assert self.root.get_root() == self.root
 
     def test_is_leaf(self):
         assert self.greatgrandchild1.is_leaf is True
@@ -44,12 +51,21 @@ class TestTree(TestCase):
         assert list(self.root.traverse()) == [self.root, self.child1, self.child2, self.grandchild1, self.grandchild2,
                                               self.greatgrandchild1, self.child3, self.child4, self.grandchild3]
 
+    def test_traverse_breadth_first_search(self):
+        expected = [self.root, self.child1, self.child2, self.child3, self.child4, self.grandchild1, self.grandchild2, self.grandchild3,
+                    self.greatgrandchild1]
+        assert list(self.root.traverse(mode='bfs')) == expected
+
     def test_iterate_leaves(self):
         assert list(self.root.iterate_leaves()) == [self.child1, self.grandchild1, self.greatgrandchild1,
                                                     self.child3, self.grandchild3]
 
-    def test_get_layer_number(self):
-        assert [node.get_layer_number() for node in self.root.traverse()] == [0, 1, 1, 2, 2, 3, 1, 1, 2]
+    def test_level(self):
+        assert [node.level for node in self.root.traverse()] == [0, 1, 1, 2, 2, 3, 1, 1, 2]
+        assert self.greatgrandchild1.level == 3
+        assert self.grandchild2.level == 2
+        assert self.child4.level == 1
+        assert self.root.level == 0
 
     def test_tree_repr(self):
         expected = """root
@@ -63,12 +79,6 @@ class TestTree(TestCase):
         grandchild3
 """
         assert self.root.tree_representation(lambda x: x.name) == expected
-
-    def test_level(self):
-        assert self.greatgrandchild1.level == 3
-        assert self.grandchild2.level == 2
-        assert self.child4.level == 1
-        assert self.root.level == 0
 
     def test_reversed_path_to_root(self):
         assert list(self.greatgrandchild1.reversed_path_to_root()) == [self.greatgrandchild1, self.grandchild2, self.child2, self.root]
@@ -100,3 +110,32 @@ class TestTree(TestCase):
             self.child2.replace_child(None, None)
         with self.assertRaises(TypeError):
             self.root.replace_child(self.child1, 34)
+
+    def test_previous(self):
+        assert self.child4.previous == self.child3
+        assert self.child3.previous == self.child2
+        assert self.child2.previous == self.child1
+        assert self.child1.previous is None
+
+    def test_next(self):
+        assert self.child1.next == self.child2
+        assert self.child2.next == self.child3
+        assert self.child3.next == self.child4
+        assert self.child4.next is None
+
+    def test_get_leaves(self):
+        assert self.root.get_leaves(key=lambda x: x.name) == ['child1', ['grandchild1', ['greatgrandchild1']], 'child3', ['grandchild3']]
+
+    def test_get_layer(self):
+        assert self.root.get_layer(0) == [self.root]
+        assert self.root.get_layer(1) == [self.child1, self.child2, self.child3, self.child4]
+        assert self.root.get_layer(2) == [self.child1, self.grandchild1, self.grandchild2, self.child3, self.grandchild3]
+        assert self.root.get_layer(3) == [self.child1, self.grandchild1, self.greatgrandchild1, self.child3, self.grandchild3]
+        assert self.root.get_layer(4) == [self.child1, self.grandchild1, self.greatgrandchild1, self.child3, self.grandchild3]
+
+    def test_find_grandchild(self):
+        assert [n for n in self.root.traverse() if n.level == 2] == [self.grandchild1, self.grandchild2, self.grandchild3]
+        for n in self.root.traverse():
+            if n.level == 2:
+                print(n)
+                break
