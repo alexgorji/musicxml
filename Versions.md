@@ -1,6 +1,6 @@
 # Version 0.1.2
 
-This version is the first uploaded version to PyPi
+This version is the first uploaded version to PyPI
 
 # Version 0.1.3
 
@@ -58,3 +58,7 @@ Release together with musicscore2
 `XMLElement.replace_child` returns new child
 `XMLSenzaMisura` with default value "" in order to be optional.
 
+# Version 1.1.1
+`README.rst`
+`intro_musicxml.rst`
+`usage.rst`

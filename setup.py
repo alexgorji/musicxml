@@ -1,10 +1,10 @@
 import setuptools
 from pathlib import Path
 
-long_description = (Path(__file__).parent / "README.md").read_text()
+long_description = (Path(__file__).parent / "README.rst").read_text()
 setuptools.setup(
     name="musicxml",
-    version="1.1",
+    version="1.1.1",
     author="Alex Gorji",
     author_email="aligorji@hotmail.com",
     description="generating musicxml",
