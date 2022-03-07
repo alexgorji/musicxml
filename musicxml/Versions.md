@@ -49,3 +49,12 @@ error messages improved.
 # Version 0.1.5
 Bug fix: `XMLChildContainer.add_element()`: if container has a parent_element and container gets a duplicated parent, duplicated parent
 replaces parent_element's container if needed. (Necessary for `XMLEncoding`)
+
+# Version 1.0
+Release together with musicscore2
+
+# Version 1.1
+`XMLElement.xsd_check `attribute added.
+`XMLElement.replace_child` returns new child
+`XMLSenzaMisura` with default value "" in order to be optional.
+
