@@ -25,9 +25,10 @@ class XMLElement(Tree):
                    'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check'}
     TYPE = None
     _SEARCH_FOR_ELEMENT = ''
+    xsd_tree = None
 
     def __init__(self, value_=None, xsd_check=True, **kwargs):
-        self.xsd_tree = XSDTree(musicxml_xsd_et_root.find(self._SEARCH_FOR_ELEMENT))
+        self._fill_xsd_tree()
         self._type = None
         super().__init__()
         self._xsd_check = None
@@ -41,6 +42,11 @@ class XMLElement(Tree):
         self._set_attributes(kwargs)
 
         self._create_child_container_tree()
+
+    @classmethod
+    def _fill_xsd_tree(cls):
+        if cls.xsd_tree is None:
+            cls.xsd_tree = XSDTree(musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT))
 
     def _check_attribute(self, name, value):
         attributes = self.TYPE.get_xsd_attributes()
@@ -405,7 +411,7 @@ A senza-misura element explicitly indicates that no time signature is present. T
 
     def __init__(self, value_='', *args, **kwargs):
         super().__init__(value_=value_, *args, **kwargs)
-        
+
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_xml_elements.py
 # -----------------------------------------------------

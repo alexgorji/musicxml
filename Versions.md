@@ -62,3 +62,7 @@ Release together with musicscore2
 `README.rst`
 `intro_musicxml.rst`
 `usage.rst`
+
+# Version 1.2
+performance enhancement: `XMLElment.xsd_tree` is only initiated the first time the class is initiated to avoid using find function in 
+xml.etree.Element to often.
