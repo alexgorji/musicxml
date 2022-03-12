@@ -64,5 +64,11 @@ Release together with musicscore2
 `usage.rst`
 
 # Version 1.2
-performance enhancement: `XMLElment.xsd_tree` is only initiated the first time the class is initiated to avoid using find function in 
+performance optimisation: `XMLElment.xsd_tree` is only initiated the first time the class is initiated to avoid using find function in 
 xml.etree.Element to often.
+
+# Version 1.3
+performance optimisation: tree.traverse(), iter_leaves(), reversed_path_to_root() are being cached. To reset call tree.reset_frozen()
+performance optimisation: tree.is_leaf is not checked each time. tree.add_chord() sets parten's is_leaf to False
+performance optimisation: xsdcomplextype _XSD_ATTRIBUTES added. This class attribute will be filled only once which improves XSDComplexType.get_xsd_attributes() method.
+
