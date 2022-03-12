@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 class XSDComplexType(XSDTreeElement):
     _SIMPLE_CONTENT = None
     _SEARCH_FOR_ELEMENT = ''
+    _XSD_ATTRIBUTES = None
 
     def __init__(self, value=None, parent=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,32 +44,33 @@ class XSDComplexType(XSDTreeElement):
 
     @classmethod
     def get_xsd_attributes(cls):
-        output = []
-        if cls.get_xsd_tree().get_simple_content_extension():
-            for child in cls.get_xsd_tree().get_simple_content_extension().get_children():
-                if child.tag == 'attribute':
-                    output.append(XSDAttribute(child))
-                elif child.tag == 'attributeGroup':
-                    output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
-        elif cls.get_xsd_tree().get_complex_content():
-            complex_content_extension = cls.get_xsd_tree().get_complex_content_extension()
-            complex_type_extension_base_class_name = convert_to_xsd_class_name(complex_content_extension.get_attributes()['base'],
-                                                                               'complex_type')
-            extension_base = eval(complex_type_extension_base_class_name)
-            output.extend(extension_base.get_xsd_attributes())
-            for child in complex_content_extension.get_children():
-                if child.tag == 'attribute':
-                    output.append(XSDAttribute(child))
-                elif child.tag == 'attributeGroup':
-                    output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
-            return output
-        else:
-            for child in cls.get_xsd_tree().get_children():
-                if child.tag == 'attribute':
-                    output.append(XSDAttribute(child))
-                elif child.tag == 'attributeGroup':
-                    output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
-        return output
+        if cls._XSD_ATTRIBUTES is None:
+            cls._XSD_ATTRIBUTES = []
+            if cls.get_xsd_tree().get_simple_content_extension():
+                for child in cls.get_xsd_tree().get_simple_content_extension().get_children():
+                    if child.tag == 'attribute':
+                        cls._XSD_ATTRIBUTES.append(XSDAttribute(child))
+                    elif child.tag == 'attributeGroup':
+                        cls._XSD_ATTRIBUTES.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
+            elif cls.get_xsd_tree().get_complex_content():
+                complex_content_extension = cls.get_xsd_tree().get_complex_content_extension()
+                complex_type_extension_base_class_name = convert_to_xsd_class_name(complex_content_extension.get_attributes()['base'],
+                                                                                   'complex_type')
+                extension_base = eval(complex_type_extension_base_class_name)
+                cls._XSD_ATTRIBUTES.extend(extension_base.get_xsd_attributes())
+                for child in complex_content_extension.get_children():
+                    if child.tag == 'attribute':
+                        cls._XSD_ATTRIBUTES.append(XSDAttribute(child))
+                    elif child.tag == 'attributeGroup':
+                        cls._XSD_ATTRIBUTES.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
+                # return output
+            else:
+                for child in cls.get_xsd_tree().get_children():
+                    if child.tag == 'attribute':
+                        cls._XSD_ATTRIBUTES.append(XSDAttribute(child))
+                    elif child.tag == 'attributeGroup':
+                        cls._XSD_ATTRIBUTES.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
+        return cls._XSD_ATTRIBUTES
 
     @classmethod
     def get_xsd_indicator(cls):

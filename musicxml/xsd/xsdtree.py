@@ -29,7 +29,7 @@ class XSDTree(Tree):
         self._xsd_element_tree_element = None
         self._xml_tree_class_name = None
         self._xsd_indicator = None
-
+        self._attributes = None
         self.xml_element_tree_element = xml_element_tree_element
 
     # ------------------
@@ -144,7 +144,9 @@ class XSDTree(Tree):
     # ------------------
     # public methods
     def get_attributes(self):
-        return self.xml_element_tree_element.attrib
+        if self._attributes is None:
+            self._attributes = self.xml_element_tree_element.attrib
+        return self._attributes
 
     def get_children(self):
         if not self._children:
