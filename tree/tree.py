@@ -21,6 +21,9 @@ class Tree(ABC):
         self._parent = None
         self._children = []
         self._traversed = None
+        self._is_leaf = None
+        self._iterated_leaves = None
+        self._reversed_path_to_root = None
 
     @abstractmethod
     def _check_child_to_be_added(self, child):
@@ -47,10 +50,12 @@ class Tree(ABC):
         :return: ``True`` if self has no children. ``False`` if self has one or more children.
         :rtype: bool
         """
-        if not self.get_children():
-            return True
-        else:
-            return False
+        if self._is_leaf is None:
+            if not self.get_children():
+                self._is_leaf = True
+            else:
+                self._is_leaf = False
+        return self._is_leaf
 
     @property
     def is_root(self) -> bool:
@@ -239,9 +244,12 @@ class Tree(ABC):
         """
         :return: A generator iterating over all leaves.
         """
-        for node in self.traverse():
-            if node.is_leaf:
-                yield node
+        if self._iterated_leaves is None:
+            self._iterated_leaves = [n for n in self.traverse() if n.is_leaf]
+        return iter(self._iterated_leaves)
+        # for node in self.traverse():
+        #     if node.is_leaf:
+        #         yield node
 
     def remove(self, child: 'Tree') -> None:
         """
@@ -287,19 +295,28 @@ class Tree(ABC):
         self.reset_frozen()
         new._parent = self
 
-    def reversed_path_to_root(self) -> Iterator['Tree']:
-        """
-        :return: path from self upwards through all ancestors up to the ``root``.
-        """
+    def _raw_reversed_path_to_root(self):
         yield self
         if self.get_parent():
             for node in self.get_parent().reversed_path_to_root():
                 yield node
 
+    def reversed_path_to_root(self) -> Iterator['Tree']:
+        """
+        :return: path from self upwards through all ancestors up to the ``root``.
+        """
+        if self._reversed_path_to_root is None:
+            self._reversed_path_to_root = list(self._raw_reversed_path_to_root())
+        return self._reversed_path_to_root
+
     def reset_frozen(self):
         if self.up:
             self.up.reset_frozen()
         self._traversed = None
+        if self._is_leaf is True:
+            self._is_leaf = None
+        self._iterated_leaves = None
+        # self._reversed_path_to_root = None
 
     def traverse(self) -> Iterator['Tree']:
         """
