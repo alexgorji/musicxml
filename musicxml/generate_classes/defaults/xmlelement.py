@@ -3,6 +3,7 @@
 # -----------------------------------------------------
 import copy
 import xml.etree.ElementTree as ET
+# import lxml.etree as ET
 from typing import Optional, List, Callable, Union
 
 from musicxml.exceptions import XSDWrongAttribute, XSDAttributeRequiredException, XMLElementChildrenRequired
