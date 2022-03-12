@@ -20,10 +20,17 @@ class Tree(ABC):
         super().__init__(*args, **kwargs)
         self._parent = None
         self._children = []
+        self._traversed = None
 
     @abstractmethod
     def _check_child_to_be_added(self, child):
         pass
+
+    def _raw_traverse(self):
+        yield self
+        for child in self.get_children():
+            for node in child._raw_traverse():
+                yield node
 
     @property
     def compact_repr(self) -> str:
@@ -115,6 +122,7 @@ class Tree(ABC):
         self._check_child_to_be_added(child)
         child._parent = self
         self._children.append(child)
+        self.reset_frozen()
         return child
 
     def get_children(self) -> List['Tree']:
@@ -246,6 +254,7 @@ class Tree(ABC):
             raise ChildNotFoundError
         child._parent = None
         self.get_children().remove(child)
+        self.reset_frozen()
 
     def remove_children(self) -> None:
         """
@@ -275,6 +284,7 @@ class Tree(ABC):
         self.get_children().remove(old_child)
         self.get_children().insert(old_index, new)
         old_child._parent = None
+        self.reset_frozen()
         new._parent = self
 
     def reversed_path_to_root(self) -> Iterator['Tree']:
@@ -286,27 +296,20 @@ class Tree(ABC):
             for node in self.get_parent().reversed_path_to_root():
                 yield node
 
-    def traverse(self, mode: str = 'dfs') -> Iterator['Tree']:
-        """
-        Traverse all nodes tree nodes.
+    def reset_frozen(self):
+        if self.up:
+            self.up.reset_frozen()
+        self._traversed = None
 
-        :param str mode:  ``dfs``: depth first search; ``bfs``: breadth first search
+    def traverse(self) -> Iterator['Tree']:
+        """
+        Traverse all tree nodes.
+
         :return: generator
         """
-        if mode == 'dfs':
-            yield self
-            for child in self.get_children():
-                for node in child.traverse(mode=mode):
-                    yield node
-        elif mode == 'bfs':
-            queue = [self]
-            while queue:
-                current = queue.pop()
-                yield current
-                for child in current.get_children():
-                    queue.insert(0, child)
-        else:
-            raise NotImplementedError
+        if self._traversed is None:
+            self._traversed = list(self._raw_traverse())
+        return iter(self._traversed)
 
     def tree_representation(self, key: Optional[Callable] = None, tab: Optional[Callable] = None) -> str:
         """

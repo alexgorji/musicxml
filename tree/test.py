@@ -51,11 +51,6 @@ class TestTree(TestCase):
         assert list(self.root.traverse()) == [self.root, self.child1, self.child2, self.grandchild1, self.grandchild2,
                                               self.greatgrandchild1, self.child3, self.child4, self.grandchild3]
 
-    def test_traverse_breadth_first_search(self):
-        expected = [self.root, self.child1, self.child2, self.child3, self.child4, self.grandchild1, self.grandchild2, self.grandchild3,
-                    self.greatgrandchild1]
-        assert list(self.root.traverse(mode='bfs')) == expected
-
     def test_iterate_leaves(self):
         assert list(self.root.iterate_leaves()) == [self.child1, self.grandchild1, self.greatgrandchild1,
                                                     self.child3, self.grandchild3]
