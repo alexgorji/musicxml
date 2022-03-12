@@ -6,6 +6,8 @@ import xml.etree.ElementTree as ET
 
 class XSDAttribute:
     def __init__(self, xsd_tree):
+        self._name = None
+        self._ref = None
         self._xsd_tree = None
         self.xsd_tree = xsd_tree
         self._type = None
@@ -51,11 +53,15 @@ class XSDAttribute:
 
     @property
     def name(self):
-        return self.xsd_tree.get_attributes().get('name')
+        if self._name is None:
+            self._name = self.xsd_tree.get_attributes().get('name')
+        return self._name
 
     @property
     def ref(self):
-        return self.xsd_tree.get_attributes().get('ref')
+        if self._ref is None:
+            self._ref = self.xsd_tree.get_attributes().get('ref')
+        return self._ref
 
     @property
     def type_(self):
@@ -84,16 +90,18 @@ class XSDAttribute:
 
 
 class XSDAttributeGroup(XSDTreeElement):
+    _XSD_ATTRIBUTES = None
 
     @classmethod
     def get_xsd_attributes(cls):
-        output = []
-        for child in cls.XSD_TREE.get_children():
-            if child.tag == 'attribute':
-                output.append(XSDAttribute(child))
-            if child.tag == 'attributeGroup':
-                output.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
-        return output
+        if cls._XSD_ATTRIBUTES is None:
+            cls._XSD_ATTRIBUTES = []
+            for child in cls.XSD_TREE.get_children():
+                if child.tag == 'attribute':
+                    cls._XSD_ATTRIBUTES.append(XSDAttribute(child))
+                if child.tag == 'attributeGroup':
+                    cls._XSD_ATTRIBUTES.extend(eval(child.xsd_element_class_name).get_xsd_attributes())
+        return cls._XSD_ATTRIBUTES
 
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_attributes.py

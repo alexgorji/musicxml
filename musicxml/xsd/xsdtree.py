@@ -292,6 +292,7 @@ class XSDTreeElement:
     def get_xsd_tree(cls):
         if cls._XSD_TREE:
             return cls._XSD_TREE
+
         found_xsd_element = musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT)
         if not found_xsd_element:
             return cls.XSD_TREE

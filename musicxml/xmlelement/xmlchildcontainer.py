@@ -395,6 +395,7 @@ class XMLChildContainer(Tree):
 
     def add_element(self, xml_element, forward=None, intelligent_choice=True):
         self.reset_frozen()
+        
         if self._requirements_not_fulfilled is None:
             self.check_required_elements()
 
