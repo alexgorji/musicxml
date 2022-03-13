@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from contextlib import redirect_stdout
 from typing import Optional
 
-from musicxml.generate_classes.utils import musicxml_xsd_et_root
+from musicxml.generate_classes.utils import musicxml_xsd_et_root, xml_xsd_et_root
 from musicxml.util.helprervariables import xml_name_first_character_without_colon, name_character_without_colon, name_character, \
     xml_name_first_character
 from tree.tree import Tree
@@ -303,3 +303,22 @@ class XSDTreeElement:
     @classmethod
     def get_xsd(cls):
         return cls.get_xsd_tree().get_xsd()
+
+
+def _generate_xsd_tree():
+    """
+    Makes a dictionary out of musicxml_xsd_et_root children with appropriate keys
+    """
+    output = {'simpleType': {}, 'complexType': {}, 'element': {}, 'group': {}, 'attribute': {}, 'attributeGroup': {}}
+    for root in [xml_xsd_et_root, musicxml_xsd_et_root]:
+        for node in root.iter():
+            tag_ = node.tag.split('}')[1]
+            name = node.attrib.get('name')
+            if name and tag_ in output:
+                ET.indent(node, space='    ')
+                output[tag_][name] = XSDTree(xml_element_tree_element=node)
+
+    return output
+
+
+XSD_TREE_DICT = _generate_xsd_tree()

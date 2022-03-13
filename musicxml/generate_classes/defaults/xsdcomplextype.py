@@ -3,7 +3,7 @@ from musicxml.util.core import convert_to_xsd_class_name
 from musicxml.xsd.xsdsimpletype import *
 from musicxml.xsd.xsdattribute import *
 from musicxml.xsd.xsdindicator import *
-from musicxml.xsd.xsdtree import XSDTreeElement, XSDTree
+from musicxml.xsd.xsdtree import XSDTreeElement, XSDTree, XSD_TREE_DICT
 import xml.etree.ElementTree as ET
 
 

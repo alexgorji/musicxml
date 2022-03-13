@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from typing import Any, Optional
 
 from musicxml.util.core import get_cleaned_token
-from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement
+from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement, XSD_TREE_DICT
 
 
 class XSDSimpleType(XSDTreeElement):

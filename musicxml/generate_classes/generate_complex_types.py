@@ -5,7 +5,7 @@ from string import Template
 import xml.etree.ElementTree as ET
 
 from musicxml.generate_classes.utils import get_complex_type_all_base_classes, get_all_et_elements, musicxml_xsd_et_root
-from musicxml.xsd.xsdtree import XSDTree
+from musicxml.xsd.xsdtree import XSDTree, XSD_TREE_DICT
 from musicxml.xsd.xsdsimpletype import *
 
 sources_path = Path(__file__).parent / 'musicxml_4_0.xsd'
@@ -17,14 +17,14 @@ class $class_name($base_classes):
     \"\"\"$doc\"\"\"
     
     _SIMPLE_CONTENT = $simple_content
-    _SEARCH_FOR_ELEMENT = "$search_for"
+    _XSD_TREE = XSD_TREE_DICT['complexType']['$name']
 """
 
 xsd_complex_types = ['XSDComplexType', 'XSDComplexTypeScorePartwise', 'XSDComplexTypePart', 'XSDComplexTypeMeasure',
                      'XSDComplexTypeDirective', 'XSDComplexTypeNote']
 
 
-def complex_type_class_as_string(complex_type_element_name):
+def complex_type_class_as_string(complex_type):
     def get_doc():
         output = xsd_tree.get_doc()
         if simple_content:
@@ -39,10 +39,10 @@ def complex_type_class_as_string(complex_type_element_name):
             output = ""
         return output
 
-    search_for = f".//{{*}}complexType[@name='{complex_type_element_name}']"
-    found_et_xml = musicxml_xsd_et_root.find(search_for)
-    complex_type_element = copy.deepcopy(found_et_xml)
-    xsd_tree = XSDTree(complex_type_element)
+    # complex_type_element = copy.deepcopy(found_et_xml)
+    name = complex_type[0]
+    xsd_tree = complex_type[1]
+    # xsd_tree = XSDTree(complex_type_element)
     class_name = xsd_tree.xsd_element_class_name
     xsd_complex_types.append(class_name)
     base_class_names = []
@@ -56,23 +56,25 @@ def complex_type_class_as_string(complex_type_element_name):
             base_class_names.append(cls_name)
 
     t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_class_names), simple_content=simple_content,
-                                             doc=get_doc(), search_for=search_for)
+                                             doc=get_doc(), name=name)
     return t
 
 
-all_complex_type_et_elements = [ct for ct in get_all_et_elements(sources_path, 'complexType') if ct.attrib['name'] != 'note']
+# all_complex_type_et_elements = [ct for ct in get_all_et_elements(sources_path, 'complexType') if ct.attrib['name'] != 'note']
 
-all_complex_type_names = [ct.attrib.get('name') for ct in musicxml_xsd_et_root.findall(
-    f".//{{*}}complexType") if ct.attrib.get('name')]
+# all_complex_type_names = [ct.attrib.get('name') for ct in musicxml_xsd_et_root.findall(
+#     f".//{{*}}complexType") if ct.attrib.get('name')]
 
-all_complex_type_names.remove('note')
-# all_complex_type_names.extend(['part', 'measure'])
+# all_complex_type_names.remove('note')
+
+all_complex_type_et_elements = XSD_TREE_DICT['complexType'].copy()
+all_complex_type_et_elements.pop('note')
 
 with open(target_path, 'w+') as f:
     with open(default_path, 'r') as default:
         with redirect_stdout(f):
             print(default.read())
     with redirect_stdout(f):
-        for complex_type_name in all_complex_type_names:
-            print(complex_type_class_as_string(complex_type_name))
+        for complex_type in all_complex_type_et_elements.items():
+            print(complex_type_class_as_string(complex_type))
         print(f'__all__={xsd_complex_types}')

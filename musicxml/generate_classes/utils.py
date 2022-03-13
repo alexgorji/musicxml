@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-
 ns = '{http://www.w3.org/2001/XMLSchema}'
 xml_xsd_path = Path(__file__).parent / 'xml.xsd'
 musicxml_xsd_path = Path(__file__).parent / 'musicxml_4_0.xsd'
