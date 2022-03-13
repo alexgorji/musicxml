@@ -43,7 +43,7 @@ class TestScore(TestCase):
                     attributeGroup@ref=part-attributes
         attributeGroup@ref=document-attributes
 """
-        assert score.xsd_tree.tree_representation() == expected
+        assert score.XSD_TREE.tree_representation() == expected
 
     def test_minimum_score(self):
         score = XMLScorePartwise()

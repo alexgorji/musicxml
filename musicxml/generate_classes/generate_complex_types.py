@@ -39,10 +39,8 @@ def complex_type_class_as_string(complex_type):
             output = ""
         return output
 
-    # complex_type_element = copy.deepcopy(found_et_xml)
     name = complex_type[0]
     xsd_tree = complex_type[1]
-    # xsd_tree = XSDTree(complex_type_element)
     class_name = xsd_tree.xsd_element_class_name
     xsd_complex_types.append(class_name)
     base_class_names = []

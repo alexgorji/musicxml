@@ -15,18 +15,18 @@ from musicxml.xmlelement.exceptions import XMLElementCannotHaveChildrenError
 from musicxml.xmlelement.xmlchildcontainer import DuplicationXSDSequence
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
-from musicxml.xsd.xsdtree import XSDTree
+from musicxml.xsd.xsdtree import XSDTree, XSD_TREE_DICT
 
 
 class XMLElement(Tree):
     """
     Parent class of all xml elements.
     """
-    _PROPERTIES = {'xsd_tree', 'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
+    _PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
                    'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check'}
     TYPE = None
     _SEARCH_FOR_ELEMENT = ''
-    xsd_tree = None
+    XSD_TREE = None
 
     def __init__(self, value_=None, xsd_check=True, **kwargs):
         self._fill_xsd_tree()
@@ -46,8 +46,8 @@ class XMLElement(Tree):
 
     @classmethod
     def _fill_xsd_tree(cls):
-        if cls.xsd_tree is None:
-            cls.xsd_tree = XSDTree(musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT))
+        if cls.XSD_TREE is None:
+            cls.XSD_TREE = XSDTree(musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT))
 
     def _check_attribute(self, name, value):
         attributes = self.TYPE.get_xsd_attributes()
@@ -194,7 +194,7 @@ class XMLElement(Tree):
 
     @property
     def name(self):
-        return self.xsd_tree.get_attributes()['name']
+        return self.XSD_TREE.name
 
     @property
     def possible_children_names(self):
@@ -223,7 +223,7 @@ class XMLElement(Tree):
         """
         :return: Snippet of musicxml xsd file which is relevant for this XMLElement.
         """
-        return cls.xsd_tree.get_xsd()
+        return cls.XSD_TREE.get_xsd()
 
     @property
     def xsd_check(self) -> bool:

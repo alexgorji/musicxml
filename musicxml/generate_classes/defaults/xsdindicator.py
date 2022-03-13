@@ -1,5 +1,5 @@
 from musicxml.util.core import cap_first, convert_to_xml_class_name
-from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement
+from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement, XSD_TREE_DICT
 import xml.etree.ElementTree as ET
 
 
@@ -56,6 +56,9 @@ class XSDSequence:
             raise ValueError
         self._xsd_tree = value
 
+    def __copy__(self):
+        return self.__class__(xsd_tree=self.xsd_tree)
+
 
 class XSDChoice:
     def __init__(self, xsd_tree):
@@ -74,12 +77,14 @@ class XSDChoice:
             raise ValueError
         self._xsd_tree = value
 
+    def __copy__(self):
+        return self.__class__(xsd_tree=self.xsd_tree)
+
 
 class XSDGroup(XSDTreeElement):
 
     def __init__(self):
         self._sequence = None
-        self._name = None
 
     @property
     def name(self):
@@ -96,6 +101,12 @@ class XSDGroup(XSDTreeElement):
     @property
     def xsd_tree(self):
         return self.XSD_TREE
+
+    def __copy__(self):
+        copied = self.__class__()
+        copied._sequence = self.sequence
+        copied.XSD_TREE = self.XSD_TREE
+        return copied
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_indicators.py
 # -----------------------------------------------------

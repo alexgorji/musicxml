@@ -1,5 +1,5 @@
 from musicxml.util.core import convert_to_xsd_class_name
-from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement
+from musicxml.xsd.xsdtree import XSDTree, XSDTreeElement, XSD_TREE_DICT
 from musicxml.xsd.xsdsimpletype import *
 import xml.etree.ElementTree as ET
 

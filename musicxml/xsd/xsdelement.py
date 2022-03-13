@@ -40,4 +40,4 @@ class XSDElement:
         return self._xml_elements
 
     def __copy__(self):
-        return self.__class__(copy.deepcopy(self.xsd_tree))
+        return self.__class__(self.xsd_tree.__deepcopy__())

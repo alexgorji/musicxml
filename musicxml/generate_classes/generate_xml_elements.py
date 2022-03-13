@@ -4,10 +4,9 @@ from contextlib import redirect_stdout
 from pathlib import Path
 from string import Template
 
-from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
 from musicxml.util.core import convert_to_xml_class_name, convert_to_xsd_class_name
 from musicxml.xmlelement.containers import containers
-from musicxml.xsd.xsdtree import XSDTree
+from musicxml.xsd.xsdtree import XSDTree, XSD_TREE_DICT
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdcomplextype import __all__ as all_complex_types
 from musicxml.xsd.xsdsimpletype import *
@@ -23,13 +22,14 @@ class $class_name($base_classes):
     \"\"\"
     
     TYPE = $xsd_type
-    _SEARCH_FOR_ELEMENT = "$search_for"
+    _SEARCH_FOR_ELEMENT = $search_for
+    XSD_TREE = XSD_TREE_DICT['element'].get('$name')
 """
 
 typed_elements = set(
-    (node.attrib['name'], node.attrib['type']) for node in musicxml_xsd_et_root.iter() if node.tag == f'{ns}element' and
-    node.attrib.get('type') is not None
+    (item[0], item[1].type) for item in XSD_TREE_DICT['element'].items() if item[1].type is not None
 )
+
 typed_elements.add(('score-partwise', 'score-partwise'))
 typed_elements.add(('part', 'part'))
 typed_elements.add(('measure', 'measure'))
@@ -203,31 +203,24 @@ def element_class_as_string(element_name_type):
             output += get_possible_parents()
         return output
 
-    search_for = extra_classes[element_name_type[0]]['search_for'] if extra_classes.get(
-        element_name_type[0]) else f".//{{*}}element[@name='{element_name_type[0]}'][@type='{element_name_type[1]}']"
-
-    found_et_xml = musicxml_xsd_et_root.find(search_for)
-    copied_el = copy.deepcopy(found_et_xml)
-    if copied_el.attrib.get('minOccurs'):
-        copied_el.attrib.pop('minOccurs')
-    if copied_el.attrib.get('maxOccurs'):
-        copied_el.attrib.pop('maxOccurs')
-    xsd_tree = XSDTree(copied_el)
-    class_name = convert_to_xml_class_name(xsd_tree.name)
+    search_for = f'"{extra_classes[element_name_type[0]]["search_for"]}"' if extra_classes.get(element_name_type[0]) else None
+    name = element_name_type[0]
+    xsd_tree = XSD_TREE_DICT['element'][name]
+    class_name = convert_to_xml_class_name(name)
     xml_element_class_names.append(class_name)
 
     xsd_type = extra_classes[element_name_type[0]]['xsd_type'] if extra_classes.get(element_name_type[0]) else None
     if not xsd_type:
         try:
-            xsd_type = convert_to_xsd_class_name(xsd_tree.get_attributes()['type'], 'complex_type')
+            xsd_type = convert_to_xsd_class_name(xsd_tree.type, 'complex_type')
             if xsd_type not in all_complex_types:
                 raise ValueError
         except ValueError:
-            xsd_type = convert_to_xsd_class_name(xsd_tree.get_attributes()['type'], 'simple_type')
+            xsd_type = convert_to_xsd_class_name(xsd_tree.type, 'simple_type')
     base_classes = ('XMLElement',)
 
     t = Template(template_string).substitute(class_name=class_name, base_classes=', '.join(base_classes), xsd_type=xsd_type,
-                                             search_for=search_for, doc=get_doc())
+                                             name=name, search_for=search_for, doc=get_doc())
     if element_name_type[0] == 'score-partwise':
         t += '\n'
         t += """    def write(self, path: 'pathlib.Path', intelligent_choice: bool=False) -> None:

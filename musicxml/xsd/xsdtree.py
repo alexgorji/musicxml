@@ -1,3 +1,4 @@
+import copy
 import io
 import re
 import xml.etree.ElementTree as ET
@@ -30,6 +31,9 @@ class XSDTree(Tree):
         self._xml_tree_class_name = None
         self._xsd_indicator = None
         self._attributes = None
+        self._text = None
+        self._type = 'notset'
+        self._name = 'notset'
         self.xml_element_tree_element = xml_element_tree_element
 
     # ------------------
@@ -102,10 +106,12 @@ class XSDTree(Tree):
 
     @property
     def name(self):
-        try:
-            return self.xml_element_tree_element.attrib['name']
-        except KeyError:
-            return
+        if self._name == 'notset':
+            try:
+                self._name = self.xml_element_tree_element.attrib['name']
+            except KeyError:
+                self._name = None
+        return self._name
 
     @property
     def namespace(self):
@@ -121,7 +127,18 @@ class XSDTree(Tree):
 
     @property
     def text(self):
-        return self.xml_element_tree_element.text
+        if not self._text:
+            self._text = self.xml_element_tree_element.text
+        return self._text
+
+    @property
+    def type(self):
+        if self._type == 'notset':
+            try:
+                self._type = self.xml_element_tree_element.attrib['type']
+            except KeyError:
+                self._type = None
+        return self._type
 
     @property
     def xml_element_tree_element(self):
@@ -146,6 +163,11 @@ class XSDTree(Tree):
     def get_attributes(self):
         if self._attributes is None:
             self._attributes = self.xml_element_tree_element.attrib
+            # if self.tag == 'element':
+            #     if 'minOccurs' in self._attributes:
+            #         self._attributes.pop('minOccurs')
+            #     if 'maxOccurs' in self._attributes:
+            #         self._attributes.pop('maxOccurs')
         return self._attributes
 
     def get_children(self):
@@ -257,7 +279,6 @@ class XSDTree(Tree):
             output = ET.Element(el.tag, el.attrib)
             output.text = el.text
             return output
-            # return copy.deepcopy(el)
 
         copied = self.__class__(xml_element_tree_element=copy_et_element(self.xml_element_tree_element))
         copied._tag = self.tag
@@ -305,6 +326,22 @@ class XSDTreeElement:
         return cls.get_xsd_tree().get_xsd()
 
 
+extra_elements = {
+    'score-partwise':
+        {'search_for': ".//{*}element[@name='score-partwise']",
+         },
+    'part':
+        {'search_for': ".//{*}element[@name='score-partwise']//{*}element[@name='part']",
+         },
+    'measure':
+        {'search_for': ".//{*}element[@name='score-partwise']//{*}element[@name='measure']",
+         },
+    'directive':
+        {'search_for': ".//{*}complexType[@name='attributes']//{*}element[@name='directive']",
+         }
+}
+
+
 def _generate_xsd_tree():
     """
     Makes a dictionary out of musicxml_xsd_et_root children with appropriate keys
@@ -317,6 +354,12 @@ def _generate_xsd_tree():
             if name and tag_ in output:
                 ET.indent(node, space='    ')
                 output[tag_][name] = XSDTree(xml_element_tree_element=node)
+    for el_name in extra_elements:
+        tag_ = 'element'
+        name = el_name
+        node = musicxml_xsd_et_root.find(extra_elements[el_name]['search_for'])
+        ET.indent(node, space='    ')
+        output[tag_][name] = XSDTree(xml_element_tree_element=node)
 
     return output
 

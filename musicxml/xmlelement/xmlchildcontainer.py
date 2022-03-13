@@ -17,7 +17,7 @@ def _convert_xsd_child_to_xsd_container(xsd_child):
     min_occurrences = xsd_child.get_attributes().get('minOccurs')
     max_occurrences = xsd_child.get_attributes().get('maxOccurs')
 
-    copied_xsd_child = copy.deepcopy(xsd_child)
+    copied_xsd_child = xsd_child.__deepcopy__()
     if min_occurrences is not None:
         copied_xsd_child.get_attributes().pop('minOccurs')
     if max_occurrences is not None:
@@ -395,7 +395,7 @@ class XMLChildContainer(Tree):
 
     def add_element(self, xml_element, forward=None, intelligent_choice=True):
         self.reset_frozen()
-        
+
         if self._requirements_not_fulfilled is None:
             self.check_required_elements()
 
@@ -581,7 +581,7 @@ class XMLChildContainer(Tree):
         return f"XMLChildContainer:{self.compact_repr} {self.get_coordinates_in_tree()}"
 
     def __copy__(self):
-        copied = self.__class__(content=copy.copy(self.content), min_occurrences=self.min_occurrences,
+        copied = self.__class__(content=self.content.__copy__(), min_occurrences=self.min_occurrences,
                                 max_occurrences=self.max_occurrences,
                                 populate_children=False)
         for child in self.get_children():
