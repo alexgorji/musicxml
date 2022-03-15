@@ -74,7 +74,7 @@ end writing score :0:02:52.296188
     69930    0.663    0.000    1.747    0.000 xmlchildcontainer.py:566(set_force_validate)
   1213765    0.651    0.000    0.921    0.000 tree.py:106(up)
    558233    0.633    0.000    1.447    0.000 xsdelement.py:7(__init__)
-    22434    0.633    0.000    5.639    0.000 xmlchildcontainer.py:284(_set_requirement_not_fulfilled)
+    22434    0.633    0.000    5.639    0.000 xmlchildcontainer.py:284(_set_requirements_fulfilled)
   2701094    0.632    0.000    0.632    0.000 xmlchildcontainer.py:366(force_validate)
   2841366    0.608    0.000    0.608    0.000 xmlchildcontainer.py:384(requirements_not_fulfilled)
 239711/22429    0.606    0.000    8.099    0.000 xmlchildcontainer.py:532(<listcomp>)

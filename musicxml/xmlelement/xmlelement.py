@@ -313,7 +313,7 @@ class XMLElement(Tree):
             parent_container = child.parent_xsd_element.parent_container.get_parent()
             if parent_container.chosen_child == child.parent_xsd_element.parent_container:
                 parent_container.chosen_child = None
-                parent_container.requirements_not_fulfilled = True
+                parent_container.requirements_fulfilled = False
             child.parent_xsd_element.xml_elements.remove(child)
             child.parent_xsd_element = None
             remove_duplictation()
@@ -394,24 +394,6 @@ class XMLElement(Tree):
                     if '-'.join(child_name.split('_')) in self.possible_children_names:
                         return None
                 raise AttributeError(self._get_attributes_error_message(item))
-
-#
-# class XMLSenzaMisura(XMLElement):
-#     """
-#     `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/senza-misura/>`_
-#
-# A senza-misura element explicitly indicates that no time signature is present. The optional element content indicates the symbol to be used, if any, such as an X. The time element's symbol attribute is not used when a senza-misura element is present.
-#
-#
-#
-# ``Possible parents``::obj:`~XMLTime`
-#     """
-#
-#     TYPE = XSDSimpleTypeString
-#     _SEARCH_FOR_ELEMENT = ".//{*}element[@name='senza-misura'][@type='xs:string']"
-#
-#     def __init__(self, value_='', *args, **kwargs):
-#         super().__init__(value_=value_, *args, **kwargs)
 
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_xml_elements.py

@@ -58,6 +58,6 @@ def show_force_valid(node):
 
 def show_requirements_not_fulfilled(node):
     output = node.compact_repr
-    if node.requirements_not_fulfilled:
+    if node.requirements_fulfilled:
         output += ': !!!NOT FULTILLED!!!'
     return output

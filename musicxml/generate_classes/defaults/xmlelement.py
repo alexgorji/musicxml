@@ -313,7 +313,7 @@ class XMLElement(Tree):
             parent_container = child.parent_xsd_element.parent_container.get_parent()
             if parent_container.chosen_child == child.parent_xsd_element.parent_container:
                 parent_container.chosen_child = None
-                parent_container.requirements_not_fulfilled = True
+                parent_container.requirements_fulfilled = False
             child.parent_xsd_element.xml_elements.remove(child)
             child.parent_xsd_element = None
             remove_duplictation()
