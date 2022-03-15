@@ -72,3 +72,10 @@ performance optimisation: tree.traverse(), iter_leaves(), reversed_path_to_root(
 performance optimisation: tree.is_leaf is not checked each time. tree.add_chord() sets parten's is_leaf to False
 performance optimisation: xsdcomplextype _XSD_ATTRIBUTES added. This class attribute will be filled only once which improves XSDComplexType.get_xsd_attributes() method.
 
+# Version 1.3.1
+``XSD_TREE_DICT`` is now used for generating all classes. No performance optimization but a bit tidier. 
+``__copy__`` added to indicators
+``XMLElement.value_`` default value set to '' instead of None
+``xmlchildcontainer.requirements_not_fulfilled`` renamed and refactored to ``requirements_fulfilled``
+bug fix: if sequene has maxOccur==unbounded parent can be duplicated.
+
