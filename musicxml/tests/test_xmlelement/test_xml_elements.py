@@ -744,24 +744,14 @@ class TestXMLElements(TestCase):
         assert p.to_string() == expected
 
     def test_xml_ornaments(self):
-        n = XMLNote()
-        n.add_child(XMLRest())
-        n.add_child(XMLDuration(1))
-        n.xml_notations = XMLNotations()
-        n.xml_notations.xml_ornaments = XMLOrnaments()
-        n.xml_notations.xml_ornaments.add_child(XMLTrillMark(default_y=10))
-        n.xml_notations.xml_ornaments.add_child(XMLWavyLine(number=1, type='start', default_y=10))
-        n.xml_notations.xml_ornaments.add_child(XMLWavyLine(number=1, type='stop', default_y=81))
-        expected = """<note>
-  <rest />
-  <duration>1</duration>
-  <notations>
-    <ornaments>
-      <trill-mark default-y="10" />
-      <wavy-line number="1" type="start" default-y="10" />
-      <wavy-line number="1" type="stop" relative-x="81" />
-     </ornaments>
-  </notations>
-</note>
+        ornaments = XMLOrnaments()
+        ornaments.add_child(XMLTrillMark(default_y=10))
+        ornaments.add_child(XMLWavyLine(number=1, type='start', default_y=10))
+        ornaments.add_child(XMLWavyLine(number=1, type='stop', relative_x=81))
+        expected = """<ornaments>
+  <trill-mark default-y="10" />
+  <wavy-line number="1" type="start" default-y="10" />
+  <wavy-line number="1" type="stop" relative-x="81" />
+</ornaments>
 """
-        assert n.to_string() == expected
+        assert ornaments.to_string() == expected

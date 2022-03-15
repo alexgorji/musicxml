@@ -415,8 +415,15 @@ class XMLChildContainer(Tree):
             if not choice_with_chosen_child:
                 return leaves
 
-            elif not output and choice_with_chosen_child.max_occurrences != 'unbounded':
-                return None
+            elif not output:
+                if choice_with_chosen_child.max_occurrences == 1:
+                    if choice_with_chosen_child.up and isinstance(choice_with_chosen_child.up.content, XSDSequence) and \
+                            choice_with_chosen_child.up.max_occurrences == 'unbounded':
+                        return []
+                    else:
+                        return None
+                else:
+                    return []
             else:
                 return output
 
