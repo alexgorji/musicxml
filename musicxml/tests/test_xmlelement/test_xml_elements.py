@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
+from musicxml.xmlelement.exceptions import XMLChildContainerChoiceHasAnotherChosenChild
 from musicxml.xmlelement.xmlelement import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *

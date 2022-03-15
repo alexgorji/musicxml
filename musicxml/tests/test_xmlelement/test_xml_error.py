@@ -4,16 +4,16 @@ from musicxml.xmlelement.xmlelement import *
 
 
 class TestXMLElementError(TestCase):
-    def test_simple_type_wrong_type(self):
-        with self.assertRaises(TypeError) as err:
-            XMLVoice()
-        assert err.exception.args[0] == "XMLVoice's value 'None' can only be of types ['str'] not NoneType."
+    # def test_simple_type_wrong_type(self):
+    #     with self.assertRaises(TypeError) as err:
+    #         XMLVoice()
+    #     assert err.exception.args[0] == "XMLVoice's value 'None' can only be of types ['str'] not NoneType."
 
     def test_simple_type_wrong_type_with_enumeration(self):
-        with self.assertRaises(TypeError) as err:
+        with self.assertRaises(ValueError) as err:
             XMLStep()
         assert err.exception.args[
-                   0] == "XMLStep's value 'None' can only be of types ['str'] not NoneType. XMLStep.value must in ['A', 'B', 'C', 'D', 'E', 'F', 'G']"
+                   0] == "XMLStep.value '' must be in ['A', 'B', 'C', 'D', 'E', 'F', 'G']"
 
     def test_simple_type_value_error_enumeration(self):
         with self.assertRaises(ValueError) as err:

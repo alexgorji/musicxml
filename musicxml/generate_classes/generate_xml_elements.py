@@ -85,7 +85,7 @@ extra_classes = {
          }
 }
 
-xml_element_class_names = ['XMLSenzaMisura']
+xml_element_class_names = []
 
 
 def element_class_as_string(element_name_type):
@@ -238,7 +238,7 @@ def element_class_as_string(element_name_type):
     return t
 
 
-typed_elements.remove(('senza-misura', 'xs:string'))
+# typed_elements.remove(('senza-misura', 'xs:string'))
 
 with open(target_path, 'w+') as f:
     with open(default_path, 'r') as default:
