@@ -17,6 +17,6 @@ def p():
     print(f"end writing score :{end - start_reading}")
 
 
-with open(Path(__file__).with_suffix('.txt'), '+w') as f:
-    with redirect_stdout(f):
-        cProfile.run('p()', sort="tottime")
+# with open(Path(__file__).with_suffix('.txt'), '+w') as f:
+#     with redirect_stdout(f):
+#         cProfile.run('p()', sort="tottime")
