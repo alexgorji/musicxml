@@ -48,6 +48,10 @@ class TestChildContainer(TestCase):
         with self.assertRaises(TypeError):
             XMLChildContainer(3)
 
+    def test_children_container_reset_frozen(self):
+        container = XMLChildContainer(self.element)
+        container.reset_frozen()
+
     def test_min_max_occurrences(self):
         container = XMLChildContainer(self.element)
         assert container.min_occurrences == 1
