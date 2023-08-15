@@ -79,7 +79,7 @@ performance optimisation: xsdcomplextype _XSD_ATTRIBUTES added. This class attri
 ``xmlchildcontainer.requirements_not_fulfilled`` renamed and refactored to ``requirements_fulfilled``
 bug fix: if sequene has maxOccur==unbounded parent can be duplicated.
 
-# Version 1.3.2
-bug fix: ``tree.Tree.reset_frozen()`` has not been added to PyPi package. Via pip installed 'musicscore2' couldn't work.
+~~# Version 1.3.2
+bug fix: ``tree.Tree.reset_frozen()`` has not been added to PyPi package. Via pip installed 'musicscore2' couldn't work.~~
 
 
