@@ -134,6 +134,13 @@ class Tree(ABC):
         """
         return self._children
 
+    def get_children_of_type(self, type_) -> List['Tree']:
+        """
+        :return: list of added children of type_.
+        :rtype: List[:obj:`~tree.tree.Tree`]
+        """
+        return [ch for ch in self.get_children() if isinstance(ch, type_)]
+
     def get_coordinates_in_tree(self) -> str:
         """
         :return: 0 for ``root``. 1, 2, ... for layer 1. Other layers: x.y.z.... Example: 3.2.2 => third child of secod child of second child

@@ -116,13 +116,14 @@ class XMLElement(Tree):
         ET.indent(self._et_xml_element, space="  ", level=self.level)
 
     def _final_checks(self, intelligent_choice=False):
-        self._check_required_value()
-        if self._child_container_tree:
-            required_children = self._child_container_tree.get_required_element_names(intelligent_choice=intelligent_choice)
-            if required_children:
-                raise XMLElementChildrenRequired(f"{self.__class__.__name__} requires at least following children: {required_children}")
+        if self.xsd_check:
+            self._check_required_value()
+            if self._child_container_tree:
+                required_children = self._child_container_tree.get_required_element_names(intelligent_choice=intelligent_choice)
+                if required_children:
+                    raise XMLElementChildrenRequired(f"{self.__class__.__name__} requires at least following children: {required_children}")
 
-        self._check_required_attributes()
+            self._check_required_attributes()
 
         for child in self.get_children():
             child._final_checks(intelligent_choice=intelligent_choice)
