@@ -1,8 +1,7 @@
 from unittest import TestCase
 
 from musicxml.exceptions import XMLElementChildrenRequired, XSDAttributeRequiredException, XSDWrongAttribute
-from musicxml.xmlelement.exceptions import XMLChildContainerChoiceHasAnotherChosenChild
-from musicxml.xmlelement.xmlelement import *
+from musicxml import *
 from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdsimpletype import *
 
@@ -235,10 +234,14 @@ class TestXMLElements(TestCase):
         Test that XMLCreditWords can have attributes
         """
         cw = XMLCreditWords('something')
-        assert [a.name for a in cw.TYPE.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x', 'relative-y',
-                                                                  'font-family', 'font-style', 'font-size', 'font-weight', 'color',
-                                                                  'halign', 'valign', 'underline', 'overline', 'line-through', 'rotation',
-                                                                  'letter-spacing', 'line-height', 'lang', 'space', 'dir', 'enclosure',
+        assert [a.name for a in cw.TYPE.get_xsd_attributes()] == ['justify', 'default-x', 'default-y', 'relative-x',
+                                                                  'relative-y',
+                                                                  'font-family', 'font-style', 'font-size',
+                                                                  'font-weight', 'color',
+                                                                  'halign', 'valign', 'underline', 'overline',
+                                                                  'line-through', 'rotation',
+                                                                  'letter-spacing', 'line-height', 'lang', 'space',
+                                                                  'dir', 'enclosure',
                                                                   'id']
 
     def test_xml_element_directive(self):
@@ -326,7 +329,8 @@ class TestXMLElements(TestCase):
     def test_xml_ending(self):
         expected = """<ending default-y="40" end-length="30" font-size="7.6" number="1" print-object="yes" type="start" />
 """
-        e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start', value_="")
+        e = XMLEnding(default_y=40, end_length=30, font_size=7.6, number='1', print_object='yes', type='start',
+                      value_="")
         assert e.to_string() == expected
 
     def test_get_unordered_children(self):
@@ -348,9 +352,11 @@ class TestXMLElements(TestCase):
         nn = n.add_child(XMLNotations())
         nn.add_child(XMLTied(orientation='over', type='start'))
 
-        assert [el.__class__.__name__ for el in n.get_children(ordered=False)] == ['XMLType', 'XMLDuration', 'XMLPitch', 'XMLTie',
+        assert [el.__class__.__name__ for el in n.get_children(ordered=False)] == ['XMLType', 'XMLDuration', 'XMLPitch',
+                                                                                   'XMLTie',
                                                                                    'XMLVoice',
-                                                                                   'XMLStem', 'XMLStaff', 'XMLNotations']
+                                                                                   'XMLStem', 'XMLStaff',
+                                                                                   'XMLNotations']
 
     def test_find_children(self):
         """
@@ -387,9 +393,12 @@ class TestXMLElements(TestCase):
 
     def test_possible_children_names(self):
         n = XMLNote()
-        assert n.possible_children_names == {'beam', 'footnote', 'accidental', 'rest', 'unpitched', 'dot', 'time-modification', 'tie',
-                                             'instrument', 'level', 'notehead', 'duration', 'voice', 'stem', 'chord', 'grace',
-                                             'pitch', 'lyric', 'staff', 'listen', 'notations', 'type', 'cue', 'play', 'notehead-text'}
+        assert n.possible_children_names == {'beam', 'footnote', 'accidental', 'rest', 'unpitched', 'dot',
+                                             'time-modification', 'tie',
+                                             'instrument', 'level', 'notehead', 'duration', 'voice', 'stem', 'chord',
+                                             'grace',
+                                             'pitch', 'lyric', 'staff', 'listen', 'notations', 'type', 'cue', 'play',
+                                             'notehead-text'}
 
     def test_convert_attribute_to_child(self):
         """
