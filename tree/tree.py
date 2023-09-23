@@ -12,7 +12,7 @@ class ChildNotFoundError(TreeException):
 
 class Tree(ABC):
     """
-    An abstract lightweight tree class for managing tree structures in musicxml and musictree packages.
+    An abstract lightweight tree class for managing tree structures in musicxml and musicscore packages.
     """
     _TREE_ATTRIBUTES = {'compact_repr', 'is_leaf', 'level', '_parent', '_children', 'up'}
 
