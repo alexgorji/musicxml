@@ -134,12 +134,12 @@ class Tree(ABC):
         """
         return self._children
 
-    def get_children_of_type(self, type_) -> List['Tree']:
+    def get_children_of_type(self, type) -> List['Tree']:
         """
-        :return: list of added children of type_.
+        :return: list of added children of type.
         :rtype: List[:obj:`~tree.tree.Tree`]
         """
-        return [ch for ch in self.get_children() if isinstance(ch, type_)]
+        return [ch for ch in self.get_children() if isinstance(ch, type)]
 
     def get_coordinates_in_tree(self) -> str:
         """
