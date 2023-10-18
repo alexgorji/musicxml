@@ -403,7 +403,7 @@ class XMLElement(Tree):
 
 class XMLAccent(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accent/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accent/>`__
     
     The accent element indicates a regular horizontal accent mark.
     
@@ -423,7 +423,7 @@ class XMLAccent(XMLElement):
 
 class XMLAccidental(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental/>`__
     
     
     
@@ -446,7 +446,7 @@ class XMLAccidental(XMLElement):
 
 class XMLAccidentalMark(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental-mark/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental-mark/>`__
     
     
     
@@ -469,7 +469,7 @@ class XMLAccidentalMark(XMLElement):
 
 class XMLAccidentalText(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental-text/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental-text/>`__
     
     
     
@@ -490,7 +490,7 @@ class XMLAccidentalText(XMLElement):
 
 class XMLAccord(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accord/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accord/>`__
     
     
     
@@ -520,7 +520,7 @@ class XMLAccord(XMLElement):
 
 class XMLAccordionHigh(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-high/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-high/>`__
     
     The accordion-high element indicates the presence of a dot in the high (4') section of the registration symbol. This element is omitted if no dot is present.
     
@@ -538,7 +538,7 @@ class XMLAccordionHigh(XMLElement):
 
 class XMLAccordionLow(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-low/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-low/>`__
     
     The accordion-low element indicates the presence of a dot in the low (16') section of the registration symbol. This element is omitted if no dot is present.
     
@@ -556,7 +556,7 @@ class XMLAccordionLow(XMLElement):
 
 class XMLAccordionMiddle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-middle/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-middle/>`__
     
     The accordion-middle element indicates the presence of 1 to 3 dots in the middle (8') section of the registration symbol. This element is omitted if no dots are present.
     
@@ -574,7 +574,7 @@ class XMLAccordionMiddle(XMLElement):
 
 class XMLAccordionRegistration(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-registration/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accordion-registration/>`__
     
     
     
@@ -603,7 +603,7 @@ class XMLAccordionRegistration(XMLElement):
 
 class XMLActualNotes(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/actual-notes/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/actual-notes/>`__
 
 The actual-notes element describes how many notes are played in the time usually occupied by the number in the normal-notes element.
 
@@ -619,7 +619,7 @@ The actual-notes element describes how many notes are played in the time usually
 
 class XMLAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/alter/>`__
     
     
     
@@ -635,7 +635,7 @@ class XMLAlter(XMLElement):
 
 class XMLAppearance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/appearance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/appearance/>`__
     
     
     
@@ -664,7 +664,7 @@ class XMLAppearance(XMLElement):
 
 class XMLArpeggiate(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arpeggiate/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arpeggiate/>`__
     
     
     
@@ -682,7 +682,7 @@ class XMLArpeggiate(XMLElement):
 
 class XMLArrow(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow/>`__
     
     
     
@@ -713,7 +713,7 @@ class XMLArrow(XMLElement):
 
 class XMLArrowDirection(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow-direction/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow-direction/>`__
     
     
     
@@ -732,7 +732,7 @@ class XMLArrowDirection(XMLElement):
 
 class XMLArrowStyle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow-style/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrow-style/>`__
     
     
     
@@ -751,7 +751,7 @@ class XMLArrowStyle(XMLElement):
 
 class XMLArrowhead(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrowhead/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/arrowhead/>`__
     
     
     
@@ -767,7 +767,7 @@ class XMLArrowhead(XMLElement):
 
 class XMLArticulations(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/articulations/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/articulations/>`__
     
     
     
@@ -810,7 +810,7 @@ class XMLArticulations(XMLElement):
 
 class XMLArtificial(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/artificial/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/artificial/>`__
     
     The artificial element indicates that this is an artificial harmonic.
     
@@ -828,7 +828,7 @@ class XMLArtificial(XMLElement):
 
 class XMLAssess(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/assess/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/assess/>`__
     
     
     
@@ -846,7 +846,7 @@ class XMLAssess(XMLElement):
 
 class XMLAttributes(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/attributes/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/attributes/>`__
     
     
     
@@ -891,7 +891,7 @@ class XMLAttributes(XMLElement):
 
 class XMLBackup(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/backup/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/backup/>`__
     
     
     
@@ -926,7 +926,7 @@ class XMLBackup(XMLElement):
 
 class XMLBarStyle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bar-style/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bar-style/>`__
     
     
     
@@ -949,7 +949,7 @@ class XMLBarStyle(XMLElement):
 
 class XMLBarline(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barline/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barline/>`__
     
     
     
@@ -992,7 +992,7 @@ class XMLBarline(XMLElement):
 
 class XMLBarre(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barre/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/barre/>`__
     
     
     
@@ -1010,7 +1010,7 @@ class XMLBarre(XMLElement):
 
 class XMLBasePitch(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/base-pitch/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/base-pitch/>`__
     
     The base pitch is the pitch at which the string is played before touching to create the harmonic.
     
@@ -1028,7 +1028,7 @@ class XMLBasePitch(XMLElement):
 
 class XMLBass(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass/>`__
     
     
     
@@ -1057,7 +1057,7 @@ class XMLBass(XMLElement):
 
 class XMLBassAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-alter/>`__
     
     The bass-alter element represents the chromatic alteration of the bass of the current chord within the harmony element. In some chord styles, the text for the bass-step element may include bass-alter information. In that case, the print-object attribute of the bass-alter element can be set to no. The location attribute indicates whether the alteration should appear to the left or the right of the bass-step; it is right if not specified.
     
@@ -1079,7 +1079,7 @@ class XMLBassAlter(XMLElement):
 
 class XMLBassSeparator(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-separator/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-separator/>`__
     
     The optional bass-separator element indicates that text, rather than a line or slash, separates the bass from what precedes it.
     
@@ -1099,7 +1099,7 @@ class XMLBassSeparator(XMLElement):
 
 class XMLBassStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bass-step/>`__
     
     
     
@@ -1122,7 +1122,7 @@ class XMLBassStep(XMLElement):
 
 class XMLBeam(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beam/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beam/>`__
     
     
     
@@ -1151,7 +1151,7 @@ class XMLBeam(XMLElement):
 
 class XMLBeatRepeat(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-repeat/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-repeat/>`__
     
     
     
@@ -1186,7 +1186,7 @@ class XMLBeatRepeat(XMLElement):
 
 class XMLBeatType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-type/>`__
 
 The beat-type element indicates the beat unit, as found in the denominator of a time signature.
 
@@ -1202,7 +1202,7 @@ The beat-type element indicates the beat unit, as found in the denominator of a 
 
 class XMLBeatUnit(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit/>`__
     
     The beat-unit element indicates the graphical note type to use in a metronome mark.
     
@@ -1223,7 +1223,7 @@ class XMLBeatUnit(XMLElement):
 
 class XMLBeatUnitDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit-dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit-dot/>`__
     
     The beat-unit-dot element is used to specify any augmentation dots for a metronome mark note.
     
@@ -1241,7 +1241,7 @@ class XMLBeatUnitDot(XMLElement):
 
 class XMLBeatUnitTied(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit-tied/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beat-unit-tied/>`__
     
     
     
@@ -1268,7 +1268,7 @@ class XMLBeatUnitTied(XMLElement):
 
 class XMLBeater(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beater/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beater/>`__
     
     
     
@@ -1291,7 +1291,7 @@ class XMLBeater(XMLElement):
 
 class XMLBeats(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beats/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/beats/>`__
 
 The beats element indicates the number of beats, as found in the numerator of a time signature.
 
@@ -1307,7 +1307,7 @@ The beats element indicates the number of beats, as found in the numerator of a 
 
 class XMLBend(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bend/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bend/>`__
     
     
     
@@ -1338,7 +1338,7 @@ class XMLBend(XMLElement):
 
 class XMLBendAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bend-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bend-alter/>`__
     
     The bend-alter element indicates the number of semitones in the bend, similar to the alter element. As with the alter element, numbers like 0.5 can be used to indicate microtones. Negative values indicate pre-bends or releases. The pre-bend and release elements are used to distinguish what is intended. Because the bend-alter element represents the number of steps in the bend, a release after a bend has a negative bend-alter value, not a zero value.
     
@@ -1356,7 +1356,7 @@ class XMLBendAlter(XMLElement):
 
 class XMLBookmark(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bookmark/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bookmark/>`__
     
     
     
@@ -1374,7 +1374,7 @@ class XMLBookmark(XMLElement):
 
 class XMLBottomMargin(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bottom-margin/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bottom-margin/>`__
     
     
     
@@ -1392,7 +1392,7 @@ class XMLBottomMargin(XMLElement):
 
 class XMLBracket(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bracket/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/bracket/>`__
     
     
     
@@ -1410,7 +1410,7 @@ class XMLBracket(XMLElement):
 
 class XMLBrassBend(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/brass-bend/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/brass-bend/>`__
     
     The brass-bend element represents the u-shaped bend symbol used in brass notation, distinct from the bend element used in guitar music.
     
@@ -1430,7 +1430,7 @@ class XMLBrassBend(XMLElement):
 
 class XMLBreathMark(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/breath-mark/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/breath-mark/>`__
     
     
     
@@ -1453,7 +1453,7 @@ class XMLBreathMark(XMLElement):
 
 class XMLCaesura(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/caesura/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/caesura/>`__
     
     
     
@@ -1476,7 +1476,7 @@ class XMLCaesura(XMLElement):
 
 class XMLCancel(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/cancel/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/cancel/>`__
     
     
     
@@ -1496,7 +1496,7 @@ class XMLCancel(XMLElement):
 
 class XMLCapo(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/capo/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/capo/>`__
 
 The capo element indicates at which fret a capo should be placed on a fretted instrument. This changes the open tuning of the strings specified by staff-tuning by the specified number of half-steps.
 
@@ -1512,7 +1512,7 @@ The capo element indicates at which fret a capo should be placed on a fretted in
 
 class XMLChord(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/chord/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/chord/>`__
     
     The chord element indicates that this note is an additional chord tone with the preceding note.
     
@@ -1534,7 +1534,7 @@ class XMLChord(XMLElement):
 
 class XMLChromatic(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/chromatic/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/chromatic/>`__
     
     The chromatic element represents the number of semitones needed to get from written to sounding pitch. This value does not include octave-change values; the values for both elements need to be added to the written pitch to get the correct sounding pitch.
     
@@ -1552,7 +1552,7 @@ class XMLChromatic(XMLElement):
 
 class XMLCircularArrow(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/circular-arrow/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/circular-arrow/>`__
     
     
     
@@ -1571,7 +1571,7 @@ class XMLCircularArrow(XMLElement):
 
 class XMLClef(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/clef/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/clef/>`__
     
     Clefs are represented by a combination of sign, line, and clef-octave-change elements.
     
@@ -1609,7 +1609,7 @@ class XMLClef(XMLElement):
 
 class XMLClefOctaveChange(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/clef-octave-change/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/clef-octave-change/>`__
 
 The clef-octave-change element is used for transposing clefs. A treble clef for tenors would have a value of -1.
 
@@ -1625,7 +1625,7 @@ The clef-octave-change element is used for transposing clefs. A treble clef for 
 
 class XMLCoda(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/coda/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/coda/>`__
     
     
     
@@ -1643,7 +1643,7 @@ class XMLCoda(XMLElement):
 
 class XMLConcertScore(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/concert-score/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/concert-score/>`__
     
     The presence of a concert-score element indicates that a score is displayed in concert pitch. It is used for scores that contain parts for transposing instruments.
     
@@ -1663,7 +1663,7 @@ class XMLConcertScore(XMLElement):
 
 class XMLCreator(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/creator/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/creator/>`__
     
     The creator element is borrowed from Dublin Core. It is used for the creators of the score. The type attribute is used to distinguish different creative contributions. Thus, there can be multiple creators within an identification. Standard type values are composer, lyricist, and arranger. Other type values may be used for different types of creative roles. The type attribute should usually be used even if there is just a single creator element. The MusicXML format does not use the creator / contributor distinction from Dublin Core.
     
@@ -1683,7 +1683,7 @@ class XMLCreator(XMLElement):
 
 class XMLCredit(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit/>`__
     
     
     
@@ -1730,7 +1730,7 @@ class XMLCredit(XMLElement):
 
 class XMLCreditImage(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-image/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-image/>`__
     
     
     
@@ -1746,7 +1746,7 @@ class XMLCreditImage(XMLElement):
 
 class XMLCreditSymbol(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-symbol/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-symbol/>`__
     
     
     
@@ -1766,7 +1766,7 @@ class XMLCreditSymbol(XMLElement):
 
 class XMLCreditType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-type/>`__
 
 
 
@@ -1780,7 +1780,7 @@ class XMLCreditType(XMLElement):
 
 class XMLCreditWords(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-words/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/credit-words/>`__
     
     
     
@@ -1796,7 +1796,7 @@ class XMLCreditWords(XMLElement):
 
 class XMLCue(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/cue/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/cue/>`__
     
     The cue element indicates the presence of a cue note. In MusicXML, a cue note is a silent note with no playback. Normal notes that play can be specified as cue size using the type element. A cue note that is specified as full size using the type element will still remain silent.
     
@@ -1814,7 +1814,7 @@ class XMLCue(XMLElement):
 
 class XMLDamp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/damp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/damp/>`__
     
     The damp element specifies a harp damping mark.
     
@@ -1834,7 +1834,7 @@ class XMLDamp(XMLElement):
 
 class XMLDampAll(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/damp-all/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/damp-all/>`__
     
     The damp-all element specifies a harp damping mark for all strings.
     
@@ -1854,7 +1854,7 @@ class XMLDampAll(XMLElement):
 
 class XMLDashes(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dashes/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dashes/>`__
     
     
     
@@ -1872,7 +1872,7 @@ class XMLDashes(XMLElement):
 
 class XMLDefaults(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/defaults/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/defaults/>`__
     
     
     
@@ -1908,7 +1908,7 @@ class XMLDefaults(XMLElement):
 
 class XMLDegree(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree/>`__
     
     
     
@@ -1939,7 +1939,7 @@ class XMLDegree(XMLElement):
 
 class XMLDegreeAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-alter/>`__
     
     
     
@@ -1959,7 +1959,7 @@ class XMLDegreeAlter(XMLElement):
 
 class XMLDegreeType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-type/>`__
     
     
     
@@ -1982,7 +1982,7 @@ class XMLDegreeType(XMLElement):
 
 class XMLDegreeValue(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-value/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/degree-value/>`__
     
     
     
@@ -2000,7 +2000,7 @@ class XMLDegreeValue(XMLElement):
 
 class XMLDelayedInvertedTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/delayed-inverted-turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/delayed-inverted-turn/>`__
     
     The delayed-inverted-turn element indicates an inverted turn that is delayed until the end of the current note.
     
@@ -2020,7 +2020,7 @@ class XMLDelayedInvertedTurn(XMLElement):
 
 class XMLDelayedTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/delayed-turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/delayed-turn/>`__
     
     The delayed-turn element indicates a normal turn that is delayed until the end of the current note.
     
@@ -2040,7 +2040,7 @@ class XMLDelayedTurn(XMLElement):
 
 class XMLDetachedLegato(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/detached-legato/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/detached-legato/>`__
     
     The detached-legato element indicates the combination of a tenuto line and staccato dot symbol.
     
@@ -2060,7 +2060,7 @@ class XMLDetachedLegato(XMLElement):
 
 class XMLDiatonic(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/diatonic/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/diatonic/>`__
 
 The diatonic element specifies the number of pitch steps needed to go from written to sounding pitch. This allows for correct spelling of enharmonic transpositions. This value does not include octave-change values; the values for both elements need to be added to the written pitch to get the correct sounding pitch.
 
@@ -2076,7 +2076,7 @@ The diatonic element specifies the number of pitch steps needed to go from writt
 
 class XMLDirection(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction/>`__
     
     
     
@@ -2122,7 +2122,7 @@ class XMLDirection(XMLElement):
 
 class XMLDirectionType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/direction-type/>`__
     
     
     
@@ -2173,7 +2173,7 @@ class XMLDirectionType(XMLElement):
 
 class XMLDirective(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/directive/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/directive/>`__
 
 Directives are like directions, but can be grouped together with attributes for convenience. This is typically used for tempo markings at the beginning of a piece of music. This element was deprecated in Version 2.0 in favor of the direction element's directive attribute. Language names come from ISO 639, with optional country subcodes from ISO 3166.
 
@@ -2191,7 +2191,7 @@ Directives are like directions, but can be grouped together with attributes for 
 
 class XMLDisplayOctave(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-octave/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-octave/>`__
     
     
     
@@ -2207,7 +2207,7 @@ class XMLDisplayOctave(XMLElement):
 
 class XMLDisplayStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-step/>`__
     
     
     
@@ -2226,7 +2226,7 @@ class XMLDisplayStep(XMLElement):
 
 class XMLDisplayText(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-text/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/display-text/>`__
     
     
     
@@ -2242,7 +2242,7 @@ class XMLDisplayText(XMLElement):
 
 class XMLDistance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/distance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/distance/>`__
     
     
     
@@ -2264,7 +2264,7 @@ class XMLDistance(XMLElement):
 
 class XMLDivisions(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/divisions/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/divisions/>`__
     
     Musical notation duration is commonly represented as fractions. The divisions element indicates how many divisions per quarter note are used to indicate a note's duration. For example, if duration = 1 and divisions = 2, this is an eighth note duration. Duration and divisions are used directly for generating sound output, so they must be chosen to take tuplets into account. Using a divisions element lets us use just one number to represent a duration for each note in the score, while retaining the full power of a fractional representation. If maximum compatibility with Standard MIDI 1.0 files is important, do not have the divisions value exceed 16383.
     
@@ -2282,7 +2282,7 @@ class XMLDivisions(XMLElement):
 
 class XMLDoit(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/doit/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/doit/>`__
     
     The doit element is an indeterminate slide attached to a single note. The doit appears after the main note and goes above the main pitch.
     
@@ -2302,7 +2302,7 @@ class XMLDoit(XMLElement):
 
 class XMLDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dot/>`__
     
     One dot element is used for each dot of prolongation. The placement attribute is used to specify whether the dot should appear above or below the staff line. It is ignored for notes that appear on a staff space.
     
@@ -2322,7 +2322,7 @@ class XMLDot(XMLElement):
 
 class XMLDouble(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/double/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/double/>`__
     
     If the double element is present, it indicates that the music is doubled one octave from what is currently written.
     
@@ -2342,7 +2342,7 @@ class XMLDouble(XMLElement):
 
 class XMLDoubleTongue(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/double-tongue/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/double-tongue/>`__
     
     The double-tongue element represents the double tongue symbol (two dots arranged horizontally).
     
@@ -2362,7 +2362,7 @@ class XMLDoubleTongue(XMLElement):
 
 class XMLDownBow(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/down-bow/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/down-bow/>`__
     
     The down-bow element represents the symbol that is used both for down-bowing on bowed instruments, and down-stroke on plucked instruments.
     
@@ -2382,7 +2382,7 @@ class XMLDownBow(XMLElement):
 
 class XMLDuration(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/duration/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/duration/>`__
     
     Duration is a positive number specified in division units. This is the intended duration vs. notated duration (for instance, differences in dotted notes in Baroque-era music). Differences in duration specific to an interpretation or performance should be represented using the note element's attack and release attributes.
     
@@ -2402,7 +2402,7 @@ class XMLDuration(XMLElement):
 
 class XMLDynamics(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dynamics/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/dynamics/>`__
     
     
     
@@ -2459,7 +2459,7 @@ class XMLDynamics(XMLElement):
 
 class XMLEffect(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/effect/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/effect/>`__
     
     
     
@@ -2482,7 +2482,7 @@ class XMLEffect(XMLElement):
 
 class XMLElevation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/elevation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/elevation/>`__
     
     The elevation and pan elements allow placing of sound in a 3-D space relative to the listener. Both are expressed in degrees ranging from -180 to 180. For elevation, 0 is level with the listener, 90 is directly above, and -90 is directly below.
     
@@ -2500,7 +2500,7 @@ class XMLElevation(XMLElement):
 
 class XMLElision(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/elision/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/elision/>`__
     
     
     
@@ -2518,7 +2518,7 @@ class XMLElision(XMLElement):
 
 class XMLEncoder(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoder/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoder/>`__
     
     
     
@@ -2536,7 +2536,7 @@ class XMLEncoder(XMLElement):
 
 class XMLEncoding(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding/>`__
     
     
     
@@ -2565,7 +2565,7 @@ class XMLEncoding(XMLElement):
 
 class XMLEncodingDate(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding-date/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding-date/>`__
     
     
     
@@ -2585,7 +2585,7 @@ class XMLEncodingDate(XMLElement):
 
 class XMLEncodingDescription(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding-description/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/encoding-description/>`__
 
 
 
@@ -2599,7 +2599,7 @@ class XMLEncodingDescription(XMLElement):
 
 class XMLEndLine(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/end-line/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/end-line/>`__
     
     The end-line element comes from RP-017 for Standard MIDI File Lyric meta-events. It facilitates lyric display for Karaoke and similar applications.
     
@@ -2617,7 +2617,7 @@ class XMLEndLine(XMLElement):
 
 class XMLEndParagraph(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/end-paragraph/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/end-paragraph/>`__
     
     The end-paragraph element comes from RP-017 for Standard MIDI File Lyric meta-events. It facilitates lyric display for Karaoke and similar applications.
     
@@ -2635,7 +2635,7 @@ class XMLEndParagraph(XMLElement):
 
 class XMLEnding(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ending/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ending/>`__
     
     
     
@@ -2655,7 +2655,7 @@ class XMLEnding(XMLElement):
 
 class XMLEnsemble(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ensemble/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ensemble/>`__
     
     The ensemble element is present if performance is intended by an ensemble such as an orchestral section. The text of the ensemble element contains the size of the section, or is empty if the ensemble size is not specified.
     
@@ -2677,7 +2677,7 @@ class XMLEnsemble(XMLElement):
 
 class XMLExceptVoice(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/except-voice/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/except-voice/>`__
 
 The except-voice element is used to specify a combination of slash notation and regular notation. Any note elements that are in voices specified by the except-voice elements are displayed in normal notation, in addition to the slash notation that is always displayed.
 
@@ -2693,7 +2693,7 @@ The except-voice element is used to specify a combination of slash notation and 
 
 class XMLExtend(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/extend/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/extend/>`__
     
     
     
@@ -2711,7 +2711,7 @@ class XMLExtend(XMLElement):
 
 class XMLEyeglasses(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/eyeglasses/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/eyeglasses/>`__
     
     The eyeglasses element represents the eyeglasses symbol, common in commercial music.
     
@@ -2731,7 +2731,7 @@ class XMLEyeglasses(XMLElement):
 
 class XMLF(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/f/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/f/>`__
     
     
     
@@ -2747,7 +2747,7 @@ class XMLF(XMLElement):
 
 class XMLFalloff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/falloff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/falloff/>`__
     
     The falloff element is an indeterminate slide attached to a single note. The falloff appears after the main note and goes below the main pitch.
     
@@ -2767,7 +2767,7 @@ class XMLFalloff(XMLElement):
 
 class XMLFeature(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/feature/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/feature/>`__
     
     
     
@@ -2785,7 +2785,7 @@ class XMLFeature(XMLElement):
 
 class XMLFermata(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fermata/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fermata/>`__
     
     
     
@@ -2808,7 +2808,7 @@ class XMLFermata(XMLElement):
 
 class XMLFf(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ff/>`__
     
     
     
@@ -2824,7 +2824,7 @@ class XMLFf(XMLElement):
 
 class XMLFff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fff/>`__
     
     
     
@@ -2840,7 +2840,7 @@ class XMLFff(XMLElement):
 
 class XMLFfff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ffff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ffff/>`__
     
     
     
@@ -2856,7 +2856,7 @@ class XMLFfff(XMLElement):
 
 class XMLFffff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fffff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fffff/>`__
     
     
     
@@ -2872,7 +2872,7 @@ class XMLFffff(XMLElement):
 
 class XMLFfffff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ffffff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ffffff/>`__
     
     
     
@@ -2888,7 +2888,7 @@ class XMLFfffff(XMLElement):
 
 class XMLFifths(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fifths/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fifths/>`__
     
     
     
@@ -2904,7 +2904,7 @@ class XMLFifths(XMLElement):
 
 class XMLFigure(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figure/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figure/>`__
     
     
     
@@ -2940,7 +2940,7 @@ class XMLFigure(XMLElement):
 
 class XMLFigureNumber(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figure-number/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figure-number/>`__
     
     A figure-number is a number. Overstrikes of the figure number are represented in the suffix element.
     
@@ -2960,7 +2960,7 @@ class XMLFigureNumber(XMLElement):
 
 class XMLFiguredBass(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figured-bass/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/figured-bass/>`__
     
     
     
@@ -3000,7 +3000,7 @@ class XMLFiguredBass(XMLElement):
 
 class XMLFingering(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fingering/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fingering/>`__
     
     
     
@@ -3018,7 +3018,7 @@ class XMLFingering(XMLElement):
 
 class XMLFingernails(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fingernails/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fingernails/>`__
     
     The fingernails element is used in notation for harp and other plucked string instruments.
     
@@ -3038,7 +3038,7 @@ class XMLFingernails(XMLElement):
 
 class XMLFirst(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/first/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/first/>`__
 
 
 
@@ -3052,7 +3052,7 @@ class XMLFirst(XMLElement):
 
 class XMLFirstFret(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/first-fret/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/first-fret/>`__
     
     
     
@@ -3070,7 +3070,7 @@ class XMLFirstFret(XMLElement):
 
 class XMLFlip(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/flip/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/flip/>`__
     
     The flip element represents the flip symbol used in brass notation.
     
@@ -3090,7 +3090,7 @@ class XMLFlip(XMLElement):
 
 class XMLFootnote(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/footnote/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/footnote/>`__
     
     
     
@@ -3106,7 +3106,7 @@ class XMLFootnote(XMLElement):
 
 class XMLForPart(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/for-part/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/for-part/>`__
     
     The for-part element is used in a concert score to indicate the transposition for a transposed part created from that score. It is only used in score files that contain a concert-score element in the defaults. This allows concert scores with transposed parts to be represented in a single uncompressed MusicXML file.
     
@@ -3138,7 +3138,7 @@ class XMLForPart(XMLElement):
 
 class XMLForward(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/forward/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/forward/>`__
     
     
     
@@ -3179,7 +3179,7 @@ class XMLForward(XMLElement):
 
 class XMLFp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fp/>`__
     
     
     
@@ -3195,7 +3195,7 @@ class XMLFp(XMLElement):
 
 class XMLFrame(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame/>`__
     
     
     
@@ -3225,7 +3225,7 @@ class XMLFrame(XMLElement):
 
 class XMLFrameFrets(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-frets/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-frets/>`__
 
 The frame-frets element gives the overall size of the frame in horizontal spaces (frets).
 
@@ -3241,7 +3241,7 @@ The frame-frets element gives the overall size of the frame in horizontal spaces
 
 class XMLFrameNote(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-note/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-note/>`__
     
     
     
@@ -3269,7 +3269,7 @@ class XMLFrameNote(XMLElement):
 
 class XMLFrameStrings(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-strings/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/frame-strings/>`__
 
 The frame-strings element gives the overall size of the frame in vertical lines (strings).
 
@@ -3285,7 +3285,7 @@ The frame-strings element gives the overall size of the frame in vertical lines 
 
 class XMLFret(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fret/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fret/>`__
     
     
     
@@ -3303,7 +3303,7 @@ class XMLFret(XMLElement):
 
 class XMLFunction(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/function/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/function/>`__
     
     The function element represents classical functional harmony with an indication like I, II, III rather than C, D, E. It represents the Roman numeral part of a functional harmony rather than the complete function itself. It has been deprecated as of MusicXML 4.0 in favor of the numeral element.
     
@@ -3323,7 +3323,7 @@ class XMLFunction(XMLElement):
 
 class XMLFz(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fz/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/fz/>`__
     
     
     
@@ -3339,7 +3339,7 @@ class XMLFz(XMLElement):
 
 class XMLGlass(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glass/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glass/>`__
     
     
     
@@ -3362,7 +3362,7 @@ class XMLGlass(XMLElement):
 
 class XMLGlissando(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glissando/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glissando/>`__
     
     
     
@@ -3380,7 +3380,7 @@ class XMLGlissando(XMLElement):
 
 class XMLGlyph(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glyph/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/glyph/>`__
     
     
     
@@ -3400,7 +3400,7 @@ class XMLGlyph(XMLElement):
 
 class XMLGolpe(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/golpe/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/golpe/>`__
     
     The golpe element represents the golpe symbol that is used for tapping the pick guard in guitar music.
     
@@ -3420,7 +3420,7 @@ class XMLGolpe(XMLElement):
 
 class XMLGrace(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/grace/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/grace/>`__
     
     
     
@@ -3438,7 +3438,7 @@ class XMLGrace(XMLElement):
 
 class XMLGroup(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group/>`__
 
 The group element allows the use of different versions of the part for different purposes. Typical values include score, parts, sound, and data. Ordering information can be derived from the ordering within a MusicXML score or opus.
 
@@ -3454,7 +3454,7 @@ The group element allows the use of different versions of the part for different
 
 class XMLGroupAbbreviation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-abbreviation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-abbreviation/>`__
     
     
     
@@ -3472,7 +3472,7 @@ class XMLGroupAbbreviation(XMLElement):
 
 class XMLGroupAbbreviationDisplay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-abbreviation-display/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-abbreviation-display/>`__
     
     Formatting specified in the group-abbreviation-display element overrides formatting specified in the group-abbreviation element.
     
@@ -3503,7 +3503,7 @@ class XMLGroupAbbreviationDisplay(XMLElement):
 
 class XMLGroupBarline(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-barline/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-barline/>`__
     
     
     
@@ -3526,7 +3526,7 @@ class XMLGroupBarline(XMLElement):
 
 class XMLGroupLink(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-link/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-link/>`__
 
 Multiple part-link elements can reference different types of linked documents, such as parts and condensed score. The optional group-link elements identify the groups used in the linked document. The content of a group-link element should match the content of a group element in the linked document.
 
@@ -3542,7 +3542,7 @@ Multiple part-link elements can reference different types of linked documents, s
 
 class XMLGroupName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-name/>`__
     
     
     
@@ -3560,7 +3560,7 @@ class XMLGroupName(XMLElement):
 
 class XMLGroupNameDisplay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-name-display/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-name-display/>`__
     
     Formatting specified in the group-name-display element overrides formatting specified in the group-name element.
     
@@ -3591,7 +3591,7 @@ class XMLGroupNameDisplay(XMLElement):
 
 class XMLGroupSymbol(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-symbol/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-symbol/>`__
     
     
     
@@ -3614,7 +3614,7 @@ class XMLGroupSymbol(XMLElement):
 
 class XMLGroupTime(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-time/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/group-time/>`__
     
     The group-time element indicates that the displayed time signatures should stretch across all parts and staves in the group.
     
@@ -3632,7 +3632,7 @@ class XMLGroupTime(XMLElement):
 
 class XMLGrouping(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/grouping/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/grouping/>`__
     
     
     
@@ -3661,7 +3661,7 @@ class XMLGrouping(XMLElement):
 
 class XMLHalfMuted(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/half-muted/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/half-muted/>`__
     
     The half-muted element represents the half-muted symbol, which looks like a circle with a plus sign inside. The smufl attribute can be used to distinguish different SMuFL glyphs that have a similar appearance such as brassMuteHalfClosed and guitarHalfOpenPedal. If not present, the default glyph is brassMuteHalfClosed.
     
@@ -3681,7 +3681,7 @@ class XMLHalfMuted(XMLElement):
 
 class XMLHammerOn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hammer-on/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hammer-on/>`__
     
     
     
@@ -3699,7 +3699,7 @@ class XMLHammerOn(XMLElement):
 
 class XMLHandbell(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/handbell/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/handbell/>`__
     
     
     
@@ -3722,7 +3722,7 @@ class XMLHandbell(XMLElement):
 
 class XMLHarmonClosed(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmon-closed/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmon-closed/>`__
     
     
     
@@ -3745,7 +3745,7 @@ class XMLHarmonClosed(XMLElement):
 
 class XMLHarmonMute(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmon-mute/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmon-mute/>`__
     
     
     
@@ -3772,7 +3772,7 @@ class XMLHarmonMute(XMLElement):
 
 class XMLHarmonic(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmonic/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmonic/>`__
     
     
     
@@ -3805,7 +3805,7 @@ class XMLHarmonic(XMLElement):
 
 class XMLHarmony(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmony/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmony/>`__
     
     
     
@@ -3858,7 +3858,7 @@ class XMLHarmony(XMLElement):
 
 class XMLHarpPedals(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harp-pedals/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harp-pedals/>`__
     
     
     
@@ -3885,7 +3885,7 @@ class XMLHarpPedals(XMLElement):
 
 class XMLHaydn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/haydn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/haydn/>`__
     
     The haydn element represents the Haydn ornament. This is defined in SMuFL as ornamentHaydn.
     
@@ -3905,7 +3905,7 @@ class XMLHaydn(XMLElement):
 
 class XMLHeel(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/heel/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/heel/>`__
     
     
     
@@ -3923,7 +3923,7 @@ class XMLHeel(XMLElement):
 
 class XMLHole(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole/>`__
     
     
     
@@ -3952,7 +3952,7 @@ class XMLHole(XMLElement):
 
 class XMLHoleClosed(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-closed/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-closed/>`__
     
     
     
@@ -3975,7 +3975,7 @@ class XMLHoleClosed(XMLElement):
 
 class XMLHoleShape(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-shape/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-shape/>`__
 
 The optional hole-shape element indicates the shape of the hole symbol; the default is a circle.
 
@@ -3991,7 +3991,7 @@ The optional hole-shape element indicates the shape of the hole symbol; the defa
 
 class XMLHoleType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/hole-type/>`__
 
 The content of the optional hole-type element indicates what the hole symbol represents in terms of instrument fingering or other techniques.
 
@@ -4007,7 +4007,7 @@ The content of the optional hole-type element indicates what the hole symbol rep
 
 class XMLHumming(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/humming/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/humming/>`__
     
     The humming element represents a humming voice.
     
@@ -4025,7 +4025,7 @@ class XMLHumming(XMLElement):
 
 class XMLIdentification(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/identification/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/identification/>`__
     
     
     
@@ -4055,7 +4055,7 @@ class XMLIdentification(XMLElement):
 
 class XMLImage(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/image/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/image/>`__
     
     
     
@@ -4071,7 +4071,7 @@ class XMLImage(XMLElement):
 
 class XMLInstrument(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument/>`__
     
     
     
@@ -4089,7 +4089,7 @@ class XMLInstrument(XMLElement):
 
 class XMLInstrumentAbbreviation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-abbreviation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-abbreviation/>`__
 
 The optional instrument-abbreviation element is typically used within a software application, rather than appearing on the printed page of a score.
 
@@ -4105,7 +4105,7 @@ The optional instrument-abbreviation element is typically used within a software
 
 class XMLInstrumentChange(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-change/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-change/>`__
     
     
     
@@ -4137,7 +4137,7 @@ class XMLInstrumentChange(XMLElement):
 
 class XMLInstrumentLink(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-link/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-link/>`__
     
     
     
@@ -4155,7 +4155,7 @@ class XMLInstrumentLink(XMLElement):
 
 class XMLInstrumentName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-name/>`__
 
 The instrument-name element is typically used within a software application, rather than appearing on the printed page of a score.
 
@@ -4171,7 +4171,7 @@ The instrument-name element is typically used within a software application, rat
 
 class XMLInstrumentSound(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-sound/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instrument-sound/>`__
 
 The instrument-sound element describes the default timbre of the score-instrument. This description is independent of a particular virtual or MIDI instrument specification and allows playback to be shared more easily between applications and libraries.
 
@@ -4187,7 +4187,7 @@ The instrument-sound element describes the default timbre of the score-instrumen
 
 class XMLInstruments(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instruments/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/instruments/>`__
 
 The instruments element is only used if more than one instrument is represented in the part (e.g., oboe I and II where they play together most of the time). If absent, a value of 1 is assumed.
 
@@ -4203,7 +4203,7 @@ The instruments element is only used if more than one instrument is represented 
 
 class XMLInterchangeable(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/interchangeable/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/interchangeable/>`__
     
     
     
@@ -4234,7 +4234,7 @@ class XMLInterchangeable(XMLElement):
 
 class XMLInversion(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inversion/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inversion/>`__
     
     
     
@@ -4252,7 +4252,7 @@ class XMLInversion(XMLElement):
 
 class XMLInvertedMordent(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-mordent/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-mordent/>`__
     
     The inverted-mordent element represents the sign without the vertical line. The choice of which mordent is inverted differs between MusicXML and SMuFL. The long attribute is "no" by default.
     
@@ -4272,7 +4272,7 @@ class XMLInvertedMordent(XMLElement):
 
 class XMLInvertedTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-turn/>`__
     
     The inverted-turn element has the shape which goes down and then up.
     
@@ -4292,7 +4292,7 @@ class XMLInvertedTurn(XMLElement):
 
 class XMLInvertedVerticalTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-vertical-turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/inverted-vertical-turn/>`__
     
     The inverted-vertical-turn element has the turn symbol shape arranged vertically going from upper right to lower left.
     
@@ -4312,7 +4312,7 @@ class XMLInvertedVerticalTurn(XMLElement):
 
 class XMLIpa(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ipa/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ipa/>`__
 
 The ipa element represents International Phonetic Alphabet (IPA) sounds for vocal music. String content is limited to IPA 2015 symbols represented in Unicode 13.0.
 
@@ -4328,7 +4328,7 @@ The ipa element represents International Phonetic Alphabet (IPA) sounds for voca
 
 class XMLKey(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key/>`__
     
     The key element represents a key signature. Both traditional and non-traditional key signatures are supported. The optional number attribute refers to staff numbers. If absent, the key signature applies to all staves in the part.
     
@@ -4368,7 +4368,7 @@ class XMLKey(XMLElement):
 
 class XMLKeyAccidental(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-accidental/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-accidental/>`__
     
     Non-traditional key signatures are represented using a list of altered tones. The key-accidental element indicates the accidental to be displayed in the key signature, represented in the same manner as the accidental element. It is used for disambiguating microtonal accidentals.
     
@@ -4393,7 +4393,7 @@ class XMLKeyAccidental(XMLElement):
 
 class XMLKeyAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-alter/>`__
     
     Non-traditional key signatures are represented using a list of altered tones. The key-alter element represents the alteration for a given pitch step, represented with semitones in the same manner as the alter element.
     
@@ -4411,7 +4411,7 @@ class XMLKeyAlter(XMLElement):
 
 class XMLKeyOctave(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-octave/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-octave/>`__
     
     The optional list of key-octave elements is used to specify in which octave each element of the key signature appears.
     
@@ -4433,7 +4433,7 @@ class XMLKeyOctave(XMLElement):
 
 class XMLKeyStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key-step/>`__
     
     Non-traditional key signatures are represented using a list of altered tones. The key-step element indicates the pitch step to be altered, represented using the same names as in the step element.
     
@@ -4454,7 +4454,7 @@ class XMLKeyStep(XMLElement):
 
 class XMLKind(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/kind/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/kind/>`__
     
     
     
@@ -4538,7 +4538,7 @@ class XMLKind(XMLElement):
 
 class XMLLaughing(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/laughing/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/laughing/>`__
     
     The laughing element represents a laughing voice.
     
@@ -4556,7 +4556,7 @@ class XMLLaughing(XMLElement):
 
 class XMLLeftDivider(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/left-divider/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/left-divider/>`__
     
     
     
@@ -4574,7 +4574,7 @@ class XMLLeftDivider(XMLElement):
 
 class XMLLeftMargin(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/left-margin/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/left-margin/>`__
     
     
     
@@ -4592,7 +4592,7 @@ class XMLLeftMargin(XMLElement):
 
 class XMLLevel(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/level/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/level/>`__
     
     
     
@@ -4614,7 +4614,7 @@ class XMLLevel(XMLElement):
 
 class XMLLine(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line/>`__
     
     Line numbers are counted from the bottom of the staff. They are only needed with the G, F, and C signs in order to position a pitch correctly on the staff. Standard values are 2 for the G sign (treble clef), 4 for the F sign (bass clef), and 3 for the C sign (alto clef). Line values can be used to specify positions outside the staff, such as a C clef positioned in the middle of a grand staff.
     
@@ -4632,7 +4632,7 @@ class XMLLine(XMLElement):
 
 class XMLLineDetail(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line-detail/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line-detail/>`__
     
     
     
@@ -4650,7 +4650,7 @@ class XMLLineDetail(XMLElement):
 
 class XMLLineWidth(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line-width/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/line-width/>`__
     
     
     
@@ -4672,7 +4672,7 @@ class XMLLineWidth(XMLElement):
 
 class XMLLink(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/link/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/link/>`__
     
     
     
@@ -4688,7 +4688,7 @@ class XMLLink(XMLElement):
 
 class XMLListen(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/listen/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/listen/>`__
     
     
     
@@ -4715,7 +4715,7 @@ class XMLListen(XMLElement):
 
 class XMLListening(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/listening/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/listening/>`__
     
     
     
@@ -4745,7 +4745,7 @@ class XMLListening(XMLElement):
 
 class XMLLyric(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric/>`__
     
     
     
@@ -4796,7 +4796,7 @@ class XMLLyric(XMLElement):
 
 class XMLLyricFont(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric-font/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric-font/>`__
     
     
     
@@ -4814,7 +4814,7 @@ class XMLLyricFont(XMLElement):
 
 class XMLLyricLanguage(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric-language/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/lyric-language/>`__
     
     
     
@@ -4832,7 +4832,7 @@ class XMLLyricLanguage(XMLElement):
 
 class XMLMeasure(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-partwise/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-partwise/>`__
 
 
 
@@ -4872,7 +4872,7 @@ class XMLMeasure(XMLElement):
 
 class XMLMeasureDistance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-distance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-distance/>`__
     
     The measure-distance element specifies the horizontal distance from the previous measure. This value is only used for systems where there is horizontal whitespace in the middle of a system, as in systems with codas. To specify the measure width, use the width attribute of the measure element.
     
@@ -4892,7 +4892,7 @@ class XMLMeasureDistance(XMLElement):
 
 class XMLMeasureLayout(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-layout/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-layout/>`__
     
     
     
@@ -4917,7 +4917,7 @@ class XMLMeasureLayout(XMLElement):
 
 class XMLMeasureNumbering(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-numbering/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-numbering/>`__
     
     
     
@@ -4944,7 +4944,7 @@ class XMLMeasureNumbering(XMLElement):
 
 class XMLMeasureRepeat(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-repeat/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-repeat/>`__
     
     
     
@@ -4966,7 +4966,7 @@ class XMLMeasureRepeat(XMLElement):
 
 class XMLMeasureStyle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-style/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/measure-style/>`__
     
     A measure-style indicates a special way to print partial to multiple measures within a part. This includes multiple rests over several measures, repeats of beats, single, or multiple measures, and use of slash notation.
     
@@ -5000,7 +5000,7 @@ class XMLMeasureStyle(XMLElement):
 
 class XMLMembrane(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/membrane/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/membrane/>`__
     
     
     
@@ -5023,7 +5023,7 @@ class XMLMembrane(XMLElement):
 
 class XMLMetal(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metal/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metal/>`__
     
     
     
@@ -5046,7 +5046,7 @@ class XMLMetal(XMLElement):
 
 class XMLMetronome(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome/>`__
     
     
     
@@ -5092,7 +5092,7 @@ class XMLMetronome(XMLElement):
 
 class XMLMetronomeArrows(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-arrows/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-arrows/>`__
     
     If the metronome-arrows element is present, it indicates that metric modulation arrows are displayed on both sides of the metronome mark.
     
@@ -5110,7 +5110,7 @@ class XMLMetronomeArrows(XMLElement):
 
 class XMLMetronomeBeam(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-beam/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-beam/>`__
     
     
     
@@ -5133,7 +5133,7 @@ class XMLMetronomeBeam(XMLElement):
 
 class XMLMetronomeDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-dot/>`__
     
     The metronome-dot element works like the dot element in defining metric relationships.
     
@@ -5151,7 +5151,7 @@ class XMLMetronomeDot(XMLElement):
 
 class XMLMetronomeNote(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-note/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-note/>`__
     
     
     
@@ -5180,7 +5180,7 @@ class XMLMetronomeNote(XMLElement):
 
 class XMLMetronomeRelation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-relation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-relation/>`__
 
 The metronome-relation element describes the relationship symbol that goes between the two sets of metronome-note elements. The currently allowed value is equals, but this may expand in future versions. If the element is empty, the equals value is used.
 
@@ -5196,7 +5196,7 @@ The metronome-relation element describes the relationship symbol that goes betwe
 
 class XMLMetronomeTied(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-tied/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-tied/>`__
     
     
     
@@ -5214,7 +5214,7 @@ class XMLMetronomeTied(XMLElement):
 
 class XMLMetronomeTuplet(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-tuplet/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-tuplet/>`__
     
     
     
@@ -5245,7 +5245,7 @@ class XMLMetronomeTuplet(XMLElement):
 
 class XMLMetronomeType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/metronome-type/>`__
     
     The metronome-type element works like the type element in defining metric relationships.
     
@@ -5266,7 +5266,7 @@ class XMLMetronomeType(XMLElement):
 
 class XMLMf(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mf/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mf/>`__
     
     
     
@@ -5282,7 +5282,7 @@ class XMLMf(XMLElement):
 
 class XMLMidiBank(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-bank/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-bank/>`__
     
     The midi-bank element specifies a MIDI 1.0 bank number ranging from 1 to 16,384.
     
@@ -5300,7 +5300,7 @@ class XMLMidiBank(XMLElement):
 
 class XMLMidiChannel(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-channel/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-channel/>`__
     
     The midi-channel element specifies a MIDI 1.0 channel numbers ranging from 1 to 16.
     
@@ -5318,7 +5318,7 @@ class XMLMidiChannel(XMLElement):
 
 class XMLMidiDevice(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-device/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-device/>`__
     
     
     
@@ -5336,7 +5336,7 @@ class XMLMidiDevice(XMLElement):
 
 class XMLMidiInstrument(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-instrument/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-instrument/>`__
     
     
     
@@ -5370,7 +5370,7 @@ class XMLMidiInstrument(XMLElement):
 
 class XMLMidiName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-name/>`__
 
 The midi-name element corresponds to a ProgramName meta-event within a Standard MIDI File.
 
@@ -5386,7 +5386,7 @@ The midi-name element corresponds to a ProgramName meta-event within a Standard 
 
 class XMLMidiProgram(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-program/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-program/>`__
     
     The midi-program element specifies a MIDI 1.0 program number ranging from 1 to 128.
     
@@ -5404,7 +5404,7 @@ class XMLMidiProgram(XMLElement):
 
 class XMLMidiUnpitched(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-unpitched/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/midi-unpitched/>`__
     
     For unpitched instruments, the midi-unpitched element specifies a MIDI 1.0 note number ranging from 1 to 128. It is usually used with MIDI banks for percussion. Note that MIDI 1.0 note numbers are generally specified from 0 to 127 rather than the 1 to 128 numbering used in this element.
     
@@ -5422,7 +5422,7 @@ class XMLMidiUnpitched(XMLElement):
 
 class XMLMillimeters(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/millimeters/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/millimeters/>`__
     
     
     
@@ -5438,7 +5438,7 @@ class XMLMillimeters(XMLElement):
 
 class XMLMiscellaneous(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/miscellaneous/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/miscellaneous/>`__
     
     
     
@@ -5463,7 +5463,7 @@ class XMLMiscellaneous(XMLElement):
 
 class XMLMiscellaneousField(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/miscellaneous-field/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/miscellaneous-field/>`__
     
     
     
@@ -5481,7 +5481,7 @@ class XMLMiscellaneousField(XMLElement):
 
 class XMLMode(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mode/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mode/>`__
     
     
     
@@ -5497,7 +5497,7 @@ class XMLMode(XMLElement):
 
 class XMLMordent(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mordent/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mordent/>`__
     
     The mordent element represents the sign with the vertical line. The choice of which mordent sign is inverted differs between MusicXML and SMuFL. The long attribute is "no" by default.
     
@@ -5517,7 +5517,7 @@ class XMLMordent(XMLElement):
 
 class XMLMovementNumber(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/movement-number/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/movement-number/>`__
 
 The movement-number element specifies the number of a movement.
 
@@ -5533,7 +5533,7 @@ The movement-number element specifies the number of a movement.
 
 class XMLMovementTitle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/movement-title/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/movement-title/>`__
 
 The movement-title element specifies the title of a movement, not including its number.
 
@@ -5549,7 +5549,7 @@ The movement-title element specifies the title of a movement, not including its 
 
 class XMLMp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mp/>`__
     
     
     
@@ -5565,7 +5565,7 @@ class XMLMp(XMLElement):
 
 class XMLMultipleRest(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/multiple-rest/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/multiple-rest/>`__
     
     
     
@@ -5583,7 +5583,7 @@ class XMLMultipleRest(XMLElement):
 
 class XMLMusicFont(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/music-font/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/music-font/>`__
     
     
     
@@ -5601,7 +5601,7 @@ class XMLMusicFont(XMLElement):
 
 class XMLMute(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mute/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mute/>`__
     
     
     
@@ -5620,7 +5620,7 @@ class XMLMute(XMLElement):
 
 class XMLN(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/n/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/n/>`__
     
     
     
@@ -5636,7 +5636,7 @@ class XMLN(XMLElement):
 
 class XMLNatural(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/natural/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/natural/>`__
     
     The natural element indicates that this is a natural harmonic. These are usually notated at base pitch rather than sounding pitch.
     
@@ -5654,7 +5654,7 @@ class XMLNatural(XMLElement):
 
 class XMLNonArpeggiate(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/non-arpeggiate/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/non-arpeggiate/>`__
     
     
     
@@ -5672,7 +5672,7 @@ class XMLNonArpeggiate(XMLElement):
 
 class XMLNormalDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-dot/>`__
     
     The normal-dot element is used to specify dotted normal tuplet types.
     
@@ -5690,7 +5690,7 @@ class XMLNormalDot(XMLElement):
 
 class XMLNormalNotes(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-notes/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-notes/>`__
 
 The normal-notes element describes how many notes are usually played in the time occupied by the number in the actual-notes element.
 
@@ -5706,7 +5706,7 @@ The normal-notes element describes how many notes are usually played in the time
 
 class XMLNormalType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/normal-type/>`__
     
     If the type associated with the number in the normal-notes element is different than the current note type (e.g., a quarter note within an eighth note triplet), then the normal-notes type (e.g. eighth) is specified in the normal-type and normal-dot elements.
     
@@ -5727,7 +5727,7 @@ class XMLNormalType(XMLElement):
 
 class XMLNotations(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notations/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notations/>`__
     
     
     
@@ -5776,7 +5776,7 @@ class XMLNotations(XMLElement):
 
 class XMLNote(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note/>`__
     
     
     
@@ -5886,7 +5886,7 @@ class XMLNote(XMLElement):
 
 class XMLNoteSize(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note-size/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/note-size/>`__
     
     
     
@@ -5906,7 +5906,7 @@ class XMLNoteSize(XMLElement):
 
 class XMLNotehead(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notehead/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notehead/>`__
     
     
     
@@ -5941,7 +5941,7 @@ class XMLNotehead(XMLElement):
 
 class XMLNoteheadText(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notehead-text/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/notehead-text/>`__
     
     
     
@@ -5968,7 +5968,7 @@ class XMLNoteheadText(XMLElement):
 
 class XMLNumeral(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral/>`__
     
     
     
@@ -5995,7 +5995,7 @@ class XMLNumeral(XMLElement):
 
 class XMLNumeralAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-alter/>`__
     
     The numeral-alter element represents an alteration to the numeral-root, similar to the alter element for a pitch. The print-object attribute can be used to hide an alteration in cases such as when the MusicXML encoding of a 6 or 7 numeral-root in a minor key requires an alteration that is not displayed. The location attribute indicates whether the alteration should appear to the left or the right of the numeral-root. It is left by default.
     
@@ -6017,7 +6017,7 @@ class XMLNumeralAlter(XMLElement):
 
 class XMLNumeralFifths(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-fifths/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-fifths/>`__
     
     
     
@@ -6033,7 +6033,7 @@ class XMLNumeralFifths(XMLElement):
 
 class XMLNumeralKey(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-key/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-key/>`__
     
     
     
@@ -6061,7 +6061,7 @@ class XMLNumeralKey(XMLElement):
 
 class XMLNumeralMode(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-mode/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-mode/>`__
     
     
     
@@ -6080,7 +6080,7 @@ class XMLNumeralMode(XMLElement):
 
 class XMLNumeralRoot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-root/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/numeral-root/>`__
     
     
     
@@ -6100,7 +6100,7 @@ class XMLNumeralRoot(XMLElement):
 
 class XMLOctave(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave/>`__
     
     
     
@@ -6116,7 +6116,7 @@ class XMLOctave(XMLElement):
 
 class XMLOctaveChange(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave-change/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave-change/>`__
 
 The octave-change element indicates how many octaves to add to get from written pitch to sounding pitch. The octave-change element should be included when using transposition intervals of an octave or more, and should not be present for intervals of less than an octave.
 
@@ -6132,7 +6132,7 @@ The octave-change element indicates how many octaves to add to get from written 
 
 class XMLOctaveShift(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave-shift/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/octave-shift/>`__
     
     
     
@@ -6150,7 +6150,7 @@ class XMLOctaveShift(XMLElement):
 
 class XMLOffset(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/offset/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/offset/>`__
     
     
     
@@ -6172,7 +6172,7 @@ class XMLOffset(XMLElement):
 
 class XMLOpen(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/open/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/open/>`__
     
     The open element represents the open symbol, which looks like a circle. The smufl attribute can be used to distinguish different SMuFL glyphs that have a similar appearance such as brassMuteOpen and guitarOpenPedal. If not present, the default glyph is brassMuteOpen.
     
@@ -6192,7 +6192,7 @@ class XMLOpen(XMLElement):
 
 class XMLOpenString(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/open-string/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/open-string/>`__
     
     The open-string element represents the zero-shaped open string symbol.
     
@@ -6212,7 +6212,7 @@ class XMLOpenString(XMLElement):
 
 class XMLOpus(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/opus/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/opus/>`__
     
     
     
@@ -6228,7 +6228,7 @@ class XMLOpus(XMLElement):
 
 class XMLOrnaments(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ornaments/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ornaments/>`__
     
     
     
@@ -6271,7 +6271,7 @@ class XMLOrnaments(XMLElement):
 
 class XMLOtherAppearance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-appearance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-appearance/>`__
     
     
     
@@ -6289,7 +6289,7 @@ class XMLOtherAppearance(XMLElement):
 
 class XMLOtherArticulation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-articulation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-articulation/>`__
     
     The other-articulation element is used to define any articulations not yet in the MusicXML format. The smufl attribute can be used to specify a particular articulation, allowing application interoperability without requiring every SMuFL articulation to have a MusicXML element equivalent. Using the other-articulation element without the smufl attribute allows for extended representation, though without application interoperability.
     
@@ -6309,7 +6309,7 @@ class XMLOtherArticulation(XMLElement):
 
 class XMLOtherDirection(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-direction/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-direction/>`__
     
     
     
@@ -6327,7 +6327,7 @@ class XMLOtherDirection(XMLElement):
 
 class XMLOtherDynamics(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-dynamics/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-dynamics/>`__
     
     
     
@@ -6345,7 +6345,7 @@ class XMLOtherDynamics(XMLElement):
 
 class XMLOtherListen(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-listen/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-listen/>`__
     
     
     
@@ -6363,7 +6363,7 @@ class XMLOtherListen(XMLElement):
 
 class XMLOtherListening(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-listening/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-listening/>`__
     
     
     
@@ -6381,7 +6381,7 @@ class XMLOtherListening(XMLElement):
 
 class XMLOtherNotation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-notation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-notation/>`__
     
     
     
@@ -6399,7 +6399,7 @@ class XMLOtherNotation(XMLElement):
 
 class XMLOtherOrnament(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-ornament/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-ornament/>`__
     
     The other-ornament element is used to define any ornaments not yet in the MusicXML format. The smufl attribute can be used to specify a particular ornament, allowing application interoperability without requiring every SMuFL ornament to have a MusicXML element equivalent. Using the other-ornament element without the smufl attribute allows for extended representation, though without application interoperability.
     
@@ -6419,7 +6419,7 @@ class XMLOtherOrnament(XMLElement):
 
 class XMLOtherPercussion(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-percussion/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-percussion/>`__
     
     The other-percussion element represents percussion pictograms not defined elsewhere.
     
@@ -6439,7 +6439,7 @@ class XMLOtherPercussion(XMLElement):
 
 class XMLOtherPlay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-play/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-play/>`__
     
     
     
@@ -6457,7 +6457,7 @@ class XMLOtherPlay(XMLElement):
 
 class XMLOtherTechnical(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-technical/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/other-technical/>`__
     
     The other-technical element is used to define any technical indications not yet in the MusicXML format. The smufl attribute can be used to specify a particular glyph, allowing application interoperability without requiring every SMuFL technical indication to have a MusicXML element equivalent. Using the other-technical element without the smufl attribute allows for extended representation, though without application interoperability.
     
@@ -6477,7 +6477,7 @@ class XMLOtherTechnical(XMLElement):
 
 class XMLP(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/p/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/p/>`__
     
     
     
@@ -6493,7 +6493,7 @@ class XMLP(XMLElement):
 
 class XMLPageHeight(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-height/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-height/>`__
     
     
     
@@ -6511,7 +6511,7 @@ class XMLPageHeight(XMLElement):
 
 class XMLPageLayout(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-layout/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-layout/>`__
     
     
     
@@ -6543,7 +6543,7 @@ class XMLPageLayout(XMLElement):
 
 class XMLPageMargins(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-margins/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-margins/>`__
     
     
     
@@ -6576,7 +6576,7 @@ class XMLPageMargins(XMLElement):
 
 class XMLPageWidth(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-width/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/page-width/>`__
     
     
     
@@ -6594,7 +6594,7 @@ class XMLPageWidth(XMLElement):
 
 class XMLPan(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pan/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pan/>`__
     
     The pan and elevation elements allow placing of sound in a 3-D space relative to the listener. Both are expressed in degrees ranging from -180 to 180. For pan, 0 is straight ahead, -90 is hard left, 90 is hard right, and -180 and 180 are directly behind the listener.
     
@@ -6612,7 +6612,7 @@ class XMLPan(XMLElement):
 
 class XMLPart(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part/>`__
 
 
 
@@ -6637,7 +6637,7 @@ class XMLPart(XMLElement):
 
 class XMLPartAbbreviation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-abbreviation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-abbreviation/>`__
     
     
     
@@ -6655,7 +6655,7 @@ class XMLPartAbbreviation(XMLElement):
 
 class XMLPartAbbreviationDisplay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-abbreviation-display/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-abbreviation-display/>`__
     
     
     
@@ -6684,7 +6684,7 @@ class XMLPartAbbreviationDisplay(XMLElement):
 
 class XMLPartClef(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-clef/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-clef/>`__
     
     The part-clef element is used for transpositions that also include a change of clef, as for instruments such as bass clarinet.
     
@@ -6714,7 +6714,7 @@ class XMLPartClef(XMLElement):
 
 class XMLPartGroup(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-group/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-group/>`__
     
     
     
@@ -6759,7 +6759,7 @@ class XMLPartGroup(XMLElement):
 
 class XMLPartLink(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-link/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-link/>`__
     
     
     
@@ -6785,7 +6785,7 @@ class XMLPartLink(XMLElement):
 
 class XMLPartList(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-list/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-list/>`__
     
     
     
@@ -6822,7 +6822,7 @@ class XMLPartList(XMLElement):
 
 class XMLPartName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-name/>`__
     
     
     
@@ -6840,7 +6840,7 @@ class XMLPartName(XMLElement):
 
 class XMLPartNameDisplay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-name-display/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-name-display/>`__
     
     
     
@@ -6869,7 +6869,7 @@ class XMLPartNameDisplay(XMLElement):
 
 class XMLPartSymbol(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-symbol/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-symbol/>`__
     
     The part-symbol element indicates how a symbol for a multi-staff part is indicated in the score.
     
@@ -6894,7 +6894,7 @@ class XMLPartSymbol(XMLElement):
 
 class XMLPartTranspose(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-transpose/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-transpose/>`__
     
     The chromatic element in a part-transpose element will usually have a non-zero value, since octave transpositions can be represented in concert scores using the transpose element.
     
@@ -6925,7 +6925,7 @@ class XMLPartTranspose(XMLElement):
 
 class XMLPedal(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal/>`__
     
     
     
@@ -6943,7 +6943,7 @@ class XMLPedal(XMLElement):
 
 class XMLPedalAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-alter/>`__
     
     The pedal-alter element defines the chromatic alteration for a single harp pedal.
     
@@ -6961,7 +6961,7 @@ class XMLPedalAlter(XMLElement):
 
 class XMLPedalStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-step/>`__
     
     The pedal-step element defines the pitch step for a single harp pedal.
     
@@ -6982,7 +6982,7 @@ class XMLPedalStep(XMLElement):
 
 class XMLPedalTuning(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-tuning/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pedal-tuning/>`__
     
     
     
@@ -7008,7 +7008,7 @@ class XMLPedalTuning(XMLElement):
 
 class XMLPerMinute(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/per-minute/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/per-minute/>`__
     
     
     
@@ -7026,7 +7026,7 @@ class XMLPerMinute(XMLElement):
 
 class XMLPercussion(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/percussion/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/percussion/>`__
     
     
     
@@ -7063,7 +7063,7 @@ class XMLPercussion(XMLElement):
 
 class XMLPf(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pf/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pf/>`__
     
     
     
@@ -7079,7 +7079,7 @@ class XMLPf(XMLElement):
 
 class XMLPitch(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pitch/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pitch/>`__
     
     
     
@@ -7106,7 +7106,7 @@ class XMLPitch(XMLElement):
 
 class XMLPitched(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pitched/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pitched/>`__
     
     
     
@@ -7129,7 +7129,7 @@ class XMLPitched(XMLElement):
 
 class XMLPlay(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/play/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/play/>`__
     
     
     
@@ -7160,7 +7160,7 @@ class XMLPlay(XMLElement):
 
 class XMLPlayer(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/player/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/player/>`__
     
     
     
@@ -7187,7 +7187,7 @@ class XMLPlayer(XMLElement):
 
 class XMLPlayerName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/player-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/player-name/>`__
 
 The player-name element is typically used within a software application, rather than appearing on the printed page of a score.
 
@@ -7203,7 +7203,7 @@ The player-name element is typically used within a software application, rather 
 
 class XMLPlop(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/plop/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/plop/>`__
     
     The plop element is an indeterminate slide attached to a single note. The plop appears before the main note and comes from above the main pitch.
     
@@ -7223,7 +7223,7 @@ class XMLPlop(XMLElement):
 
 class XMLPluck(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pluck/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pluck/>`__
     
     The pluck element is used to specify the plucking fingering on a fretted instrument, where the fingering element refers to the fretting fingering. Typical values are p, i, m, a for pulgar/thumb, indicio/index, medio/middle, and anular/ring fingers.
     
@@ -7243,7 +7243,7 @@ class XMLPluck(XMLElement):
 
 class XMLPp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pp/>`__
     
     
     
@@ -7259,7 +7259,7 @@ class XMLPp(XMLElement):
 
 class XMLPpp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ppp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ppp/>`__
     
     
     
@@ -7275,7 +7275,7 @@ class XMLPpp(XMLElement):
 
 class XMLPppp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pppp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pppp/>`__
     
     
     
@@ -7291,7 +7291,7 @@ class XMLPppp(XMLElement):
 
 class XMLPpppp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ppppp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/ppppp/>`__
     
     
     
@@ -7307,7 +7307,7 @@ class XMLPpppp(XMLElement):
 
 class XMLPppppp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pppppp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pppppp/>`__
     
     
     
@@ -7323,7 +7323,7 @@ class XMLPppppp(XMLElement):
 
 class XMLPreBend(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pre-bend/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pre-bend/>`__
     
     The pre-bend element indicates that a bend is a pre-bend rather than a normal bend or a release.
     
@@ -7341,7 +7341,7 @@ class XMLPreBend(XMLElement):
 
 class XMLPrefix(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/prefix/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/prefix/>`__
     
     Values for the prefix element include plus and the accidental values sharp, flat, natural, double-sharp, flat-flat, and sharp-sharp. The prefix element may contain additional values for symbols specific to particular figured bass styles.
     
@@ -7361,7 +7361,7 @@ class XMLPrefix(XMLElement):
 
 class XMLPrincipalVoice(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/principal-voice/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/principal-voice/>`__
     
     
     
@@ -7379,7 +7379,7 @@ class XMLPrincipalVoice(XMLElement):
 
 class XMLPrint(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/print/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/print/>`__
     
     
     
@@ -7416,7 +7416,7 @@ class XMLPrint(XMLElement):
 
 class XMLPullOff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pull-off/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/pull-off/>`__
     
     
     
@@ -7434,7 +7434,7 @@ class XMLPullOff(XMLElement):
 
 class XMLRehearsal(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rehearsal/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rehearsal/>`__
     
     The rehearsal element specifies letters, numbers, and section names that are notated in the score for reference during rehearsal. The enclosure is square if not specified. The language is Italian ("it") if not specified. Left justification is used if not specified.
     
@@ -7452,7 +7452,7 @@ class XMLRehearsal(XMLElement):
 
 class XMLRelation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/relation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/relation/>`__
     
     A related resource for the music that is encoded. This is similar to the Dublin Core relation element. Standard type values are music, words, and arrangement, but other types may be used.
     
@@ -7472,7 +7472,7 @@ class XMLRelation(XMLElement):
 
 class XMLRelease(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/release/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/release/>`__
     
     
     
@@ -7490,7 +7490,7 @@ class XMLRelease(XMLElement):
 
 class XMLRepeat(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/repeat/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/repeat/>`__
     
     
     
@@ -7508,7 +7508,7 @@ class XMLRepeat(XMLElement):
 
 class XMLRest(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rest/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rest/>`__
     
     
     
@@ -7538,7 +7538,7 @@ class XMLRest(XMLElement):
 
 class XMLRf(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rf/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rf/>`__
     
     
     
@@ -7554,7 +7554,7 @@ class XMLRf(XMLElement):
 
 class XMLRfz(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rfz/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rfz/>`__
     
     
     
@@ -7570,7 +7570,7 @@ class XMLRfz(XMLElement):
 
 class XMLRightDivider(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/right-divider/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/right-divider/>`__
     
     
     
@@ -7588,7 +7588,7 @@ class XMLRightDivider(XMLElement):
 
 class XMLRightMargin(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/right-margin/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/right-margin/>`__
     
     
     
@@ -7606,7 +7606,7 @@ class XMLRightMargin(XMLElement):
 
 class XMLRights(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rights/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/rights/>`__
     
     The rights element is borrowed from Dublin Core. It contains copyright and other intellectual property notices. Words, music, and derivatives can have different types, so multiple rights elements with different type attributes are supported. Standard type values are music, words, and arrangement, but other types may be used. The type attribute is only needed when there are multiple rights elements.
     
@@ -7626,7 +7626,7 @@ class XMLRights(XMLElement):
 
 class XMLRoot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root/>`__
     
     
     
@@ -7652,7 +7652,7 @@ class XMLRoot(XMLElement):
 
 class XMLRootAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root-alter/>`__
     
     The root-alter element represents the chromatic alteration of the root of the current chord within the harmony element. In some chord styles, the text for the root-step element may include root-alter information. In that case, the print-object attribute of the root-alter element can be set to no. The location attribute indicates whether the alteration should appear to the left or the right of the root-step; it is right by default.
     
@@ -7674,7 +7674,7 @@ class XMLRootAlter(XMLElement):
 
 class XMLRootStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/root-step/>`__
     
     
     
@@ -7697,7 +7697,7 @@ class XMLRootStep(XMLElement):
 
 class XMLScaling(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scaling/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scaling/>`__
     
     
     
@@ -7723,7 +7723,7 @@ class XMLScaling(XMLElement):
 
 class XMLSchleifer(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/schleifer/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/schleifer/>`__
     
     The name for this ornament is based on the German, to avoid confusion with the more common slide element defined earlier.
     
@@ -7743,7 +7743,7 @@ class XMLSchleifer(XMLElement):
 
 class XMLScoop(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scoop/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scoop/>`__
     
     The scoop element is an indeterminate slide attached to a single note. The scoop appears before the main note and comes from below the main pitch.
     
@@ -7763,7 +7763,7 @@ class XMLScoop(XMLElement):
 
 class XMLScordatura(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scordatura/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/scordatura/>`__
     
     
     
@@ -7790,7 +7790,7 @@ class XMLScordatura(XMLElement):
 
 class XMLScoreInstrument(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-instrument/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-instrument/>`__
     
     
     
@@ -7829,7 +7829,7 @@ class XMLScoreInstrument(XMLElement):
 
 class XMLScorePart(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-part/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-part/>`__
     
     Each MusicXML part corresponds to a track in a Standard MIDI Format 1 file. The score-instrument elements are used when there are multiple instruments per track. The midi-device element is used to make a MIDI device or port assignment for the given track. Initial midi-instrument assignments may be made here as well.
     
@@ -7869,7 +7869,7 @@ class XMLScorePart(XMLElement):
 
 class XMLScorePartwise(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-partwise/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/score-partwise/>`__
 
 The score-partwise element is the root element for a partwise MusicXML score. It includes a score-header group followed by a series of parts with measures inside. The document-attributes attribute group includes the version attribute.
 
@@ -7915,7 +7915,7 @@ The score-partwise element is the root element for a partwise MusicXML score. It
 
 class XMLSecond(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/second/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/second/>`__
 
 
 
@@ -7929,7 +7929,7 @@ class XMLSecond(XMLElement):
 
 class XMLSegno(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/segno/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/segno/>`__
     
     
     
@@ -7947,7 +7947,7 @@ class XMLSegno(XMLElement):
 
 class XMLSemiPitched(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/semi-pitched/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/semi-pitched/>`__
     
     
     
@@ -7966,7 +7966,7 @@ class XMLSemiPitched(XMLElement):
 
 class XMLSenzaMisura(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/senza-misura/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/senza-misura/>`__
 
 A senza-misura element explicitly indicates that no time signature is present. The optional element content indicates the symbol to be used, if any, such as an X. The time element's symbol attribute is not used when a senza-misura element is present.
 
@@ -7982,7 +7982,7 @@ A senza-misura element explicitly indicates that no time signature is present. T
 
 class XMLSf(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sf/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sf/>`__
     
     
     
@@ -7998,7 +7998,7 @@ class XMLSf(XMLElement):
 
 class XMLSffz(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sffz/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sffz/>`__
     
     
     
@@ -8014,7 +8014,7 @@ class XMLSffz(XMLElement):
 
 class XMLSfp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfp/>`__
     
     
     
@@ -8030,7 +8030,7 @@ class XMLSfp(XMLElement):
 
 class XMLSfpp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfpp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfpp/>`__
     
     
     
@@ -8046,7 +8046,7 @@ class XMLSfpp(XMLElement):
 
 class XMLSfz(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfz/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfz/>`__
     
     
     
@@ -8062,7 +8062,7 @@ class XMLSfz(XMLElement):
 
 class XMLSfzp(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfzp/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sfzp/>`__
     
     
     
@@ -8078,7 +8078,7 @@ class XMLSfzp(XMLElement):
 
 class XMLShake(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/shake/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/shake/>`__
     
     The shake element has a similar appearance to an inverted-mordent element.
     
@@ -8098,7 +8098,7 @@ class XMLShake(XMLElement):
 
 class XMLSign(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sign/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sign/>`__
     
     The sign element represents the clef symbol.
     
@@ -8121,7 +8121,7 @@ class XMLSign(XMLElement):
 
 class XMLSlash(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash/>`__
     
     
     
@@ -8152,7 +8152,7 @@ class XMLSlash(XMLElement):
 
 class XMLSlashDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash-dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash-dot/>`__
     
     The slash-dot element is used to specify any augmentation dots in the note type used to display repetition marks.
     
@@ -8170,7 +8170,7 @@ class XMLSlashDot(XMLElement):
 
 class XMLSlashType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slash-type/>`__
     
     The slash-type element indicates the graphical note type to use for the display of repetition marks.
     
@@ -8191,7 +8191,7 @@ class XMLSlashType(XMLElement):
 
 class XMLSlide(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slide/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slide/>`__
     
     
     
@@ -8209,7 +8209,7 @@ class XMLSlide(XMLElement):
 
 class XMLSlur(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slur/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/slur/>`__
     
     
     
@@ -8227,7 +8227,7 @@ class XMLSlur(XMLElement):
 
 class XMLSmear(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/smear/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/smear/>`__
     
     The smear element represents the tilde-shaped smear symbol used in brass notation.
     
@@ -8247,7 +8247,7 @@ class XMLSmear(XMLElement):
 
 class XMLSnapPizzicato(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/snap-pizzicato/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/snap-pizzicato/>`__
     
     The snap-pizzicato element represents the snap pizzicato symbol. This is a circle with a line, where the line comes inside the circle. It is distinct from the thumb-position symbol, where the line does not come inside the circle.
     
@@ -8267,7 +8267,7 @@ class XMLSnapPizzicato(XMLElement):
 
 class XMLSoftAccent(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/soft-accent/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/soft-accent/>`__
     
     The soft-accent element indicates a soft accent that is not as heavy as a normal accent. It is often notated as <>. It can be combined with other articulations to implement the first eight symbols in the SMuFL Articulation supplement range.
     
@@ -8287,7 +8287,7 @@ class XMLSoftAccent(XMLElement):
 
 class XMLSoftware(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/software/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/software/>`__
 
 
 
@@ -8301,7 +8301,7 @@ class XMLSoftware(XMLElement):
 
 class XMLSolo(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/solo/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/solo/>`__
     
     The solo element is present if performance is intended by a solo instrument.
     
@@ -8319,7 +8319,7 @@ class XMLSolo(XMLElement):
 
 class XMLSound(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sound/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sound/>`__
     
     
     
@@ -8378,7 +8378,7 @@ class XMLSound(XMLElement):
 
 class XMLSoundingPitch(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sounding-pitch/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sounding-pitch/>`__
     
     The sounding-pitch is the pitch which is heard when playing the harmonic.
     
@@ -8396,7 +8396,7 @@ class XMLSoundingPitch(XMLElement):
 
 class XMLSource(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/source/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/source/>`__
 
 The source for the music that is encoded. This is similar to the Dublin Core source element.
 
@@ -8412,7 +8412,7 @@ The source for the music that is encoded. This is similar to the Dublin Core sou
 
 class XMLSpiccato(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/spiccato/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/spiccato/>`__
     
     The spiccato element is used for a stroke articulation, as opposed to a dot or a wedge.
     
@@ -8432,7 +8432,7 @@ class XMLSpiccato(XMLElement):
 
 class XMLStaccatissimo(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staccatissimo/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staccatissimo/>`__
     
     The staccatissimo element is used for a wedge articulation, as opposed to a dot or a stroke.
     
@@ -8452,7 +8452,7 @@ class XMLStaccatissimo(XMLElement):
 
 class XMLStaccato(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staccato/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staccato/>`__
     
     The staccato element is used for a dot articulation, as opposed to a stroke or a wedge.
     
@@ -8472,7 +8472,7 @@ class XMLStaccato(XMLElement):
 
 class XMLStaff(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff/>`__
 
 Staff assignment is only needed for music notated on multiple staves. Used by both notes and directions. Staff values are numbers, with 1 referring to the top-most staff in a part.
 
@@ -8488,7 +8488,7 @@ Staff assignment is only needed for music notated on multiple staves. Used by bo
 
 class XMLStaffDetails(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-details/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-details/>`__
     
     The staff-details element is used to indicate different types of staves.
     
@@ -8523,7 +8523,7 @@ class XMLStaffDetails(XMLElement):
 
 class XMLStaffDistance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-distance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-distance/>`__
     
     
     
@@ -8541,7 +8541,7 @@ class XMLStaffDistance(XMLElement):
 
 class XMLStaffDivide(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-divide/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-divide/>`__
     
     
     
@@ -8559,7 +8559,7 @@ class XMLStaffDivide(XMLElement):
 
 class XMLStaffLayout(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-layout/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-layout/>`__
     
     
     
@@ -8588,7 +8588,7 @@ class XMLStaffLayout(XMLElement):
 
 class XMLStaffLines(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-lines/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-lines/>`__
 
 The staff-lines element specifies the number of lines and is usually used for a non 5-line staff. If the staff-lines element is present, the appearance of each line may be individually specified with a line-detail element.
 
@@ -8604,7 +8604,7 @@ The staff-lines element specifies the number of lines and is usually used for a 
 
 class XMLStaffSize(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-size/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-size/>`__
     
     
     
@@ -8626,7 +8626,7 @@ class XMLStaffSize(XMLElement):
 
 class XMLStaffTuning(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-tuning/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-tuning/>`__
     
     
     
@@ -8656,7 +8656,7 @@ class XMLStaffTuning(XMLElement):
 
 class XMLStaffType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff-type/>`__
     
     
     
@@ -8675,7 +8675,7 @@ class XMLStaffType(XMLElement):
 
 class XMLStaves(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staves/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staves/>`__
 
 The staves element is used if there is more than one staff represented in the given part (e.g., 2 staves for typical piano parts). If absent, a value of 1 is assumed. Staves are ordered from top to bottom in a part in numerical order, with staff 1 above staff 2.
 
@@ -8691,7 +8691,7 @@ The staves element is used if there is more than one staff represented in the gi
 
 class XMLStem(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stem/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stem/>`__
     
     
     
@@ -8714,7 +8714,7 @@ class XMLStem(XMLElement):
 
 class XMLStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/step/>`__
     
     
     
@@ -8733,7 +8733,7 @@ class XMLStep(XMLElement):
 
 class XMLStick(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick/>`__
     
     
     
@@ -8761,7 +8761,7 @@ class XMLStick(XMLElement):
 
 class XMLStickLocation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-location/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-location/>`__
     
     
     
@@ -8780,7 +8780,7 @@ class XMLStickLocation(XMLElement):
 
 class XMLStickMaterial(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-material/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-material/>`__
     
     
     
@@ -8799,7 +8799,7 @@ class XMLStickMaterial(XMLElement):
 
 class XMLStickType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stick-type/>`__
     
     
     
@@ -8818,7 +8818,7 @@ class XMLStickType(XMLElement):
 
 class XMLStopped(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stopped/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stopped/>`__
     
     The stopped element represents the stopped symbol, which looks like a plus sign. The smufl attribute distinguishes different SMuFL glyphs that have a similar appearance such as handbellsMalletBellSuspended and guitarClosePedal. If not present, the default glyph is brassMuteClosed.
     
@@ -8838,7 +8838,7 @@ class XMLStopped(XMLElement):
 
 class XMLStraight(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/straight/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/straight/>`__
     
     
     
@@ -8854,7 +8854,7 @@ class XMLStraight(XMLElement):
 
 class XMLStress(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stress/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/stress/>`__
     
     The stress element indicates a stressed note.
     
@@ -8874,7 +8874,7 @@ class XMLStress(XMLElement):
 
 class XMLString(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/string/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/string/>`__
     
     
     
@@ -8894,7 +8894,7 @@ class XMLString(XMLElement):
 
 class XMLStringMute(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/string-mute/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/string-mute/>`__
     
     
     
@@ -8912,7 +8912,7 @@ class XMLStringMute(XMLElement):
 
 class XMLStrongAccent(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/strong-accent/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/strong-accent/>`__
     
     The strong-accent element indicates a vertical accent mark.
     
@@ -8932,7 +8932,7 @@ class XMLStrongAccent(XMLElement):
 
 class XMLSuffix(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/suffix/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/suffix/>`__
     
     Values for the suffix element include plus and the accidental values sharp, flat, natural, double-sharp, flat-flat, and sharp-sharp. Suffixes include both symbols that come after the figure number and those that overstrike the figure number. The suffix values slash, back-slash, and vertical are used for slashed numbers indicating chromatic alteration. The orientation and display of the slash usually depends on the figure number. The suffix element may contain additional values for symbols specific to particular figured bass styles.
     
@@ -8952,7 +8952,7 @@ class XMLSuffix(XMLElement):
 
 class XMLSupports(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/supports/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/supports/>`__
     
     
     
@@ -8970,7 +8970,7 @@ class XMLSupports(XMLElement):
 
 class XMLSwing(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing/>`__
     
     
     
@@ -9011,7 +9011,7 @@ class XMLSwing(XMLElement):
 
 class XMLSwingStyle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing-style/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing-style/>`__
 
 
 
@@ -9025,7 +9025,7 @@ class XMLSwingStyle(XMLElement):
 
 class XMLSwingType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/swing-type/>`__
     
     
     
@@ -9044,7 +9044,7 @@ class XMLSwingType(XMLElement):
 
 class XMLSyllabic(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/syllabic/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/syllabic/>`__
     
     
     
@@ -9063,7 +9063,7 @@ class XMLSyllabic(XMLElement):
 
 class XMLSymbol(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/symbol/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/symbol/>`__
     
     The symbol element specifies a musical symbol using a canonical SMuFL glyph name. It is used when an occasional musical symbol is interspersed into text. It should not be used in place of semantic markup, such as metronome marks that mix text and symbols. Left justification is used if not specified. Enclosure is none if not specified.
     
@@ -9085,7 +9085,7 @@ class XMLSymbol(XMLElement):
 
 class XMLSync(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sync/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/sync/>`__
     
     
     
@@ -9105,7 +9105,7 @@ class XMLSync(XMLElement):
 
 class XMLSystemDistance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-distance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-distance/>`__
     
     
     
@@ -9123,7 +9123,7 @@ class XMLSystemDistance(XMLElement):
 
 class XMLSystemDividers(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-dividers/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-dividers/>`__
     
     
     
@@ -9151,7 +9151,7 @@ class XMLSystemDividers(XMLElement):
 
 class XMLSystemLayout(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-layout/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-layout/>`__
     
     
     
@@ -9185,7 +9185,7 @@ class XMLSystemLayout(XMLElement):
 
 class XMLSystemMargins(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-margins/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/system-margins/>`__
     
     
     
@@ -9212,7 +9212,7 @@ class XMLSystemMargins(XMLElement):
 
 class XMLTap(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tap/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tap/>`__
     
     
     
@@ -9230,7 +9230,7 @@ class XMLTap(XMLElement):
 
 class XMLTechnical(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/technical/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/technical/>`__
     
     
     
@@ -9287,7 +9287,7 @@ class XMLTechnical(XMLElement):
 
 class XMLTenths(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tenths/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tenths/>`__
     
     
     
@@ -9305,7 +9305,7 @@ class XMLTenths(XMLElement):
 
 class XMLTenuto(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tenuto/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tenuto/>`__
     
     The tenuto element indicates a tenuto line symbol.
     
@@ -9325,7 +9325,7 @@ class XMLTenuto(XMLElement):
 
 class XMLText(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/text/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/text/>`__
     
     
     
@@ -9343,7 +9343,7 @@ class XMLText(XMLElement):
 
 class XMLThumbPosition(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/thumb-position/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/thumb-position/>`__
     
     The thumb-position element represents the thumb position symbol. This is a circle with a line, where the line does not come within the circle. It is distinct from the snap pizzicato symbol, where the line comes inside the circle.
     
@@ -9363,7 +9363,7 @@ class XMLThumbPosition(XMLElement):
 
 class XMLTie(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tie/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tie/>`__
     
     
     
@@ -9381,7 +9381,7 @@ class XMLTie(XMLElement):
 
 class XMLTied(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tied/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tied/>`__
     
     
     
@@ -9407,7 +9407,7 @@ class XMLTied(XMLElement):
 
 class XMLTime(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time/>`__
     
     Time signatures are represented by the beats element for the numerator and the beat-type element for the denominator.
     
@@ -9444,7 +9444,7 @@ class XMLTime(XMLElement):
 
 class XMLTimeModification(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time-modification/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time-modification/>`__
     
     
     
@@ -9473,7 +9473,7 @@ class XMLTimeModification(XMLElement):
 
 class XMLTimeRelation(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time-relation/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/time-relation/>`__
     
     
     
@@ -9492,7 +9492,7 @@ class XMLTimeRelation(XMLElement):
 
 class XMLTimpani(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/timpani/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/timpani/>`__
     
     
     
@@ -9510,7 +9510,7 @@ class XMLTimpani(XMLElement):
 
 class XMLToe(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/toe/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/toe/>`__
     
     
     
@@ -9528,7 +9528,7 @@ class XMLToe(XMLElement):
 
 class XMLTopMargin(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/top-margin/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/top-margin/>`__
     
     
     
@@ -9546,7 +9546,7 @@ class XMLTopMargin(XMLElement):
 
 class XMLTopSystemDistance(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/top-system-distance/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/top-system-distance/>`__
     
     
     
@@ -9564,7 +9564,7 @@ class XMLTopSystemDistance(XMLElement):
 
 class XMLTouchingPitch(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/touching-pitch/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/touching-pitch/>`__
     
     The touching-pitch is the pitch at which the string is touched lightly to produce the harmonic.
     
@@ -9582,7 +9582,7 @@ class XMLTouchingPitch(XMLElement):
 
 class XMLTranspose(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/transpose/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/transpose/>`__
     
     If the part is being encoded for a transposing instrument in written vs. concert pitch, the transposition must be encoded in the transpose element using the transpose type.
     
@@ -9615,7 +9615,7 @@ class XMLTranspose(XMLElement):
 
 class XMLTremolo(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tremolo/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tremolo/>`__
     
     
     
@@ -9641,7 +9641,7 @@ class XMLTremolo(XMLElement):
 
 class XMLTrillMark(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/trill-mark/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/trill-mark/>`__
     
     The trill-mark element represents the trill-mark symbol.
     
@@ -9661,7 +9661,7 @@ class XMLTrillMark(XMLElement):
 
 class XMLTripleTongue(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/triple-tongue/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/triple-tongue/>`__
     
     The triple-tongue element represents the triple tongue symbol (three dots arranged horizontally).
     
@@ -9681,7 +9681,7 @@ class XMLTripleTongue(XMLElement):
 
 class XMLTuningAlter(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-alter/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-alter/>`__
     
     The tuning-alter element is represented like the alter element, with a different name to reflect its different function in string tuning.
     
@@ -9699,7 +9699,7 @@ class XMLTuningAlter(XMLElement):
 
 class XMLTuningOctave(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-octave/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-octave/>`__
     
     The tuning-octave element is represented like the octave element, with a different name to reflect its different function in string tuning.
     
@@ -9717,7 +9717,7 @@ class XMLTuningOctave(XMLElement):
 
 class XMLTuningStep(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-step/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuning-step/>`__
     
     The tuning-step element is represented like the step element, with a different name to reflect its different function in string tuning.
     
@@ -9738,7 +9738,7 @@ class XMLTuningStep(XMLElement):
 
 class XMLTuplet(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet/>`__
     
     
     
@@ -9770,7 +9770,7 @@ class XMLTuplet(XMLElement):
 
 class XMLTupletActual(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-actual/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-actual/>`__
     
     The tuplet-actual element provide optional full control over how the actual part of the tuplet is displayed, including number and note type (with dots). If any of these elements are absent, their values are based on the time-modification element.
     
@@ -9799,7 +9799,7 @@ class XMLTupletActual(XMLElement):
 
 class XMLTupletDot(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-dot/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-dot/>`__
     
     
     
@@ -9817,7 +9817,7 @@ class XMLTupletDot(XMLElement):
 
 class XMLTupletNormal(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-normal/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-normal/>`__
     
     The tuplet-normal element provide optional full control over how the normal part of the tuplet is displayed, including number and note type (with dots). If any of these elements are absent, their values are based on the time-modification element.
     
@@ -9846,7 +9846,7 @@ class XMLTupletNormal(XMLElement):
 
 class XMLTupletNumber(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-number/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-number/>`__
     
     
     
@@ -9864,7 +9864,7 @@ class XMLTupletNumber(XMLElement):
 
 class XMLTupletType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/tuplet-type/>`__
     
     
     
@@ -9887,7 +9887,7 @@ class XMLTupletType(XMLElement):
 
 class XMLTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/turn/>`__
     
     The turn element is the normal turn shape which goes up then down.
     
@@ -9907,7 +9907,7 @@ class XMLTurn(XMLElement):
 
 class XMLType(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/type/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/type/>`__
     
     
     
@@ -9930,7 +9930,7 @@ class XMLType(XMLElement):
 
 class XMLUnpitched(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/unpitched/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/unpitched/>`__
     
     
     
@@ -9958,7 +9958,7 @@ class XMLUnpitched(XMLElement):
 
 class XMLUnstress(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/unstress/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/unstress/>`__
     
     The unstress element indicates an unstressed note. It is often notated using a u-shaped symbol.
     
@@ -9978,7 +9978,7 @@ class XMLUnstress(XMLElement):
 
 class XMLUpBow(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/up-bow/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/up-bow/>`__
     
     The up-bow element represents the symbol that is used both for up-bowing on bowed instruments, and up-stroke on plucked instruments.
     
@@ -9998,7 +9998,7 @@ class XMLUpBow(XMLElement):
 
 class XMLVerticalTurn(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/vertical-turn/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/vertical-turn/>`__
     
     The vertical-turn element has the turn symbol shape arranged vertically going from upper left to lower right.
     
@@ -10018,7 +10018,7 @@ class XMLVerticalTurn(XMLElement):
 
 class XMLVirtualInstrument(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-instrument/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-instrument/>`__
     
     
     
@@ -10044,7 +10044,7 @@ class XMLVirtualInstrument(XMLElement):
 
 class XMLVirtualLibrary(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-library/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-library/>`__
 
 The virtual-library element indicates the virtual instrument library name.
 
@@ -10060,7 +10060,7 @@ The virtual-library element indicates the virtual instrument library name.
 
 class XMLVirtualName(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-name/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/virtual-name/>`__
 
 The virtual-name element indicates the library-specific name for the virtual instrument.
 
@@ -10076,7 +10076,7 @@ The virtual-name element indicates the library-specific name for the virtual ins
 
 class XMLVoice(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/voice/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/voice/>`__
 
 
 
@@ -10090,7 +10090,7 @@ class XMLVoice(XMLElement):
 
 class XMLVolume(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/volume/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/volume/>`__
     
     The volume element value is a percentage of the maximum ranging from 0 to 100, with decimal values allowed. This corresponds to a scaling value for the MIDI 1.0 channel volume controller.
     
@@ -10108,7 +10108,7 @@ class XMLVolume(XMLElement):
 
 class XMLWait(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wait/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wait/>`__
     
     
     
@@ -10126,7 +10126,7 @@ class XMLWait(XMLElement):
 
 class XMLWavyLine(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wavy-line/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wavy-line/>`__
     
     
     
@@ -10144,7 +10144,7 @@ class XMLWavyLine(XMLElement):
 
 class XMLWedge(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wedge/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wedge/>`__
     
     
     
@@ -10162,7 +10162,7 @@ class XMLWedge(XMLElement):
 
 class XMLWithBar(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/with-bar/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/with-bar/>`__
     
     The with-bar element indicates that the bend is to be done at the bridge with a whammy or vibrato bar. The content of the element indicates how this should be notated. Content values of "scoop" and "dip" refer to the SMuFL guitarVibratoBarScoop and guitarVibratoBarDip glyphs.
     
@@ -10182,7 +10182,7 @@ class XMLWithBar(XMLElement):
 
 class XMLWood(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wood/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/wood/>`__
     
     
     
@@ -10205,7 +10205,7 @@ class XMLWood(XMLElement):
 
 class XMLWordFont(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/word-font/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/word-font/>`__
     
     
     
@@ -10223,7 +10223,7 @@ class XMLWordFont(XMLElement):
 
 class XMLWords(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/words/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/words/>`__
     
     The words element specifies a standard text direction. The enclosure is none if not specified. The language is Italian ("it") if not specified. Left justification is used if not specified.
     
@@ -10241,7 +10241,7 @@ class XMLWords(XMLElement):
 
 class XMLWork(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work/>`__
     
     
     
@@ -10268,7 +10268,7 @@ class XMLWork(XMLElement):
 
 class XMLWorkNumber(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work-number/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work-number/>`__
 
 The work-number element specifies the number of a work, such as its opus number.
 
@@ -10284,7 +10284,7 @@ The work-number element specifies the number of a work, such as its opus number.
 
 class XMLWorkTitle(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work-title/>`_
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/work-title/>`__
 
 The work-title element specifies the title of a work, not including its opus or other work number.
 
