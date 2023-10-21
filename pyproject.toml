@@ -1,9 +1,18 @@
 [tool.poetry]
 name = "musicxml"
-version = "1.4"
+version = "1.4.2"
 description = "generating musicxml"
-authors = ["Alex Gorji"]
-readme = "README.rst"
+authors = ["Alex Gorji <aligorji@hotmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/alexgorji/musicxml.git"
+repository = "https://github.com/alexgorji/musicxml.git"
+keywords = ["music", "musicxml", "xml"] # Add relevant keywords
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
