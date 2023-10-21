@@ -6611,7 +6611,7 @@ class XMLPan(XMLElement):
 
 class XMLPart(XMLElement):
     """
-    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part/>`__
+    `external documentation <https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/part-partwise/>`__
 
 
 
