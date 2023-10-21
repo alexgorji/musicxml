@@ -4,7 +4,7 @@
 
 [https://github.com/alexgorji/musicxml](https://github.com/alexgorji/musicscore2)
 
-[https://musicscore2.readthedocs.io](https://musicscore2.readthedocs.io)
+[https://musicscore2.readthedocs.io](https://musicscore.readthedocs.io)
 
 INSTALLATION
 
