@@ -50,7 +50,7 @@ class TestChildContainer(TestCase):
 
     def test_children_container_reset_frozen(self):
         container = XMLChildContainer(self.element)
-        container.reset_frozen()
+        container._reset_iterators()
 
     def test_min_max_occurrences(self):
         container = XMLChildContainer(self.element)

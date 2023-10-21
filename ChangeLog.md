@@ -83,7 +83,7 @@ xml.etree.Element to often.
 # Version 1.3
 
 performance optimisation: tree.traverse(), iter_leaves(), reversed_path_to_root() are being cached. To reset call
-tree.reset_frozen()
+tree._reset_iterators()
 performance optimisation: tree.is_leaf is not checked each time. tree.add_chord() sets parten's is_leaf to False
 performance optimisation: xsdcomplextype _XSD_ATTRIBUTES added. This class attribute will be filled only once which
 improves XSDComplexType.get_xsd_attributes() method.
@@ -97,7 +97,7 @@ improves XSDComplexType.get_xsd_attributes() method.
 bug fix: if sequene has maxOccur==unbounded parent can be duplicated.
 
 ~~# Version 1.3.2
-bug fix: ``tree.Tree.reset_frozen()`` has not been added to PyPi package. Via pip installed 'musicscore2' couldn't
+bug fix: ``tree.Tree._reset_iterators()`` has not been added to PyPi package. Via pip installed 'musicscore2' couldn't
 work.~~
 
 # Version 1.3.3

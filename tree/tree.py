@@ -29,15 +29,43 @@ class Tree(ABC):
     def _check_child_to_be_added(self, child):
         pass
 
+    def _get_indentation(self) -> str:
+        """
+        :return: indentation according to ``level`` (layer number)
+        :rtype: str
+        """
+        indentation = ''
+        for i in range(self.level):
+            indentation += '    '
+        return indentation
+
     def _raw_traverse(self):
         yield self
         for child in self.get_children():
             for node in child._raw_traverse():
                 yield node
 
+    def _raw_reversed_path_to_root(self):
+        yield self
+        if self.get_parent():
+            for node in self.get_parent().reversed_path_to_root():
+                yield node
+
+    def _reset_iterators(self):
+        """
+        This method is used to reset both parent's and this class's iterators for 'traverse', 'iterate_leaves' and 'reversed_path_to_root'
+        """
+        if self.up:
+            self.up._reset_iterators()
+        self._traversed = None
+        self._iterated_leaves = None
+        self._reversed_path_to_root = None
+
     @property
     def compact_repr(self) -> str:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: as default the string representation. This property is used as default in the ``tree_representation`` method and can be
                  customized in subclasses to get the most appropriate representation.
         :rtype: str
@@ -47,6 +75,8 @@ class Tree(ABC):
     @property
     def is_leaf(self) -> bool:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: ``True`` if self has no children. ``False`` if self has one or more children.
         :rtype: bool
         """
@@ -55,6 +85,8 @@ class Tree(ABC):
     @property
     def is_root(self) -> bool:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: ``True`` if self has no parent, else ``False``.
         :rtype: bool
         """
@@ -63,6 +95,8 @@ class Tree(ABC):
     @property
     def level(self) -> int:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: ``0`` for ``root``, ``1, 2 etc.`` for each layer of children
         :rtype: nonnegative int
 
@@ -84,6 +118,8 @@ class Tree(ABC):
     @property
     def next(self) -> Optional['Tree']:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: next sibling. ``None`` if this is the last current child of the parent.
         :rtype: :obj:`~tree.tree.Tree`
         """
@@ -95,6 +131,8 @@ class Tree(ABC):
     @property
     def previous(self) -> Optional['Tree']:
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: previous sibling. ``None`` if this is the first child of the parent.
         :rtype: :obj:`~tree.tree.Tree`
         """
@@ -106,6 +144,8 @@ class Tree(ABC):
     @property
     def up(self) -> 'Tree':
         """
+        :obj:`~tree.tree.Tree` property
+
         :return: :obj:`get_parent()`
         :rtype: :obj:`~tree.tree.Tree`
         """
@@ -113,6 +153,8 @@ class Tree(ABC):
 
     def add_child(self, child: 'Tree') -> 'Tree':
         """
+        :obj:`~tree.tree.Tree` method
+
         Check and add child to list of children. Child's parent is set to self.
 
         :param child:
@@ -122,13 +164,15 @@ class Tree(ABC):
         self._check_child_to_be_added(child)
         child._parent = self
         self._children.append(child)
-        self.reset_frozen()
+        self._reset_iterators()
         if self._is_leaf is True:
             self._is_leaf = False
         return child
 
     def get_children(self) -> List['Tree']:
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: list of added children.
         :rtype: List[:obj:`~tree.tree.Tree`]
         """
@@ -136,6 +180,8 @@ class Tree(ABC):
 
     def get_children_of_type(self, type) -> List['Tree']:
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: list of added children of type.
         :rtype: List[:obj:`~tree.tree.Tree`]
         """
@@ -143,6 +189,8 @@ class Tree(ABC):
 
     def get_coordinates_in_tree(self) -> str:
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: 0 for ``root``. 1, 2, ... for layer 1. Other layers: x.y.z.... Example: 3.2.2 => third child of secod child of second child
                  of the root.
         :rtype: str
@@ -173,18 +221,10 @@ class Tree(ABC):
         else:
             return f"{self.get_parent().get_coordinates_in_tree()}.{self.get_parent().get_children().index(self) + 1}"
 
-    def get_indentation(self) -> str:
-        """
-        :return: indentation according to ``level`` (layer number)
-        :rtype: str
-        """
-        indentation = ''
-        for i in range(self.level):
-            indentation += '    '
-        return indentation
-
     def get_parent(self) -> 'Tree':
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: parent. ``None`` for ``root``.
         :rtype: :obj:`~tree.tree.Tree`
         """
@@ -192,6 +232,8 @@ class Tree(ABC):
 
     def get_leaves(self, key: Optional[Callable] = None) -> list:
         """
+        :obj:`~tree.tree.Tree` method
+
         :param key: An optional callable to be called on each leaf.
         :return: nested list of leaves or values of key(leaf) for each leaf
         :rtype: nested list of :obj:`~tree.tree.Tree`
@@ -210,6 +252,8 @@ class Tree(ABC):
 
     def get_root(self) -> 'Tree':
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: ``root`` (upmost node of a tree which has no parent)
         :rtype: :obj:`~tree.tree.Tree`
         """
@@ -222,6 +266,8 @@ class Tree(ABC):
 
     def get_layer(self, level: int, key: Optional[Callable] = None) -> list:
         """
+        :obj:`~tree.tree.Tree` method
+
         :param level: layer number where 0 is the ``root``.
         :param key: An optional callable for each node in the layer.
         :return: All nodes on this level. The leaves of branches which are shorter than the given level will be repeated on this and all
@@ -246,6 +292,8 @@ class Tree(ABC):
 
     def iterate_leaves(self) -> Iterator['Tree']:
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: A generator iterating over all leaves.
         """
         if self._iterated_leaves is None:
@@ -254,6 +302,8 @@ class Tree(ABC):
 
     def remove(self, child: 'Tree') -> None:
         """
+        :obj:`~tree.tree.Tree` method
+
         Child's parent will be set to ``None`` and child will be removed from list of children.
 
         :param child:
@@ -263,10 +313,12 @@ class Tree(ABC):
             raise ChildNotFoundError
         child._parent = None
         self.get_children().remove(child)
-        self.reset_frozen()
+        self._reset_iterators()
 
     def remove_children(self) -> None:
         """
+        :obj:`~tree.tree.Tree` method
+
         Calls :obj:`remove()` on all children.
 
         :return: None
@@ -276,6 +328,8 @@ class Tree(ABC):
 
     def replace_child(self, old, new, index: int = 0) -> None:
         """
+        :obj:`~tree.tree.Tree` method
+
         :param old: child or function
         :param new: child
         :param index: index of old in list of old appearances
@@ -293,32 +347,23 @@ class Tree(ABC):
         self.get_children().remove(old_child)
         self.get_children().insert(old_index, new)
         old_child._parent = None
-        self.reset_frozen()
+        self._reset_iterators()
         new._parent = self
-
-    def _raw_reversed_path_to_root(self):
-        yield self
-        if self.get_parent():
-            for node in self.get_parent().reversed_path_to_root():
-                yield node
 
     def reversed_path_to_root(self) -> Iterator['Tree']:
         """
+        :obj:`~tree.tree.Tree` method
+
         :return: path from self upwards through all ancestors up to the ``root``.
         """
         if self._reversed_path_to_root is None:
             self._reversed_path_to_root = list(self._raw_reversed_path_to_root())
         return self._reversed_path_to_root
 
-    def reset_frozen(self):
-        if self.up:
-            self.up.reset_frozen()
-        self._traversed = None
-        self._iterated_leaves = None
-        self._reversed_path_to_root = None
-
     def traverse(self) -> Iterator['Tree']:
         """
+        :obj:`~tree.tree.Tree` method
+
         Traverse all tree nodes.
 
         :return: generator
@@ -329,8 +374,10 @@ class Tree(ABC):
 
     def tree_representation(self, key: Optional[Callable] = None, tab: Optional[Callable] = None) -> str:
         """
+        :obj:`~tree.tree.Tree` method
+
         :param key: An optional callable if ``None`` ``compact_repr`` property of each node is called.
-        :param tab: An optional callable if ``None`` ``get_indentation()`` method of each node is called.
+        :param tab: An optional callable if ``None`` ``_get_indentation()`` method of each node is called.
         :return: a representation of all nodes as string in tree form.
         :rtype: str
         """
@@ -338,7 +385,7 @@ class Tree(ABC):
             key = lambda x: x.compact_repr
 
         if not tab:
-            tab = lambda x: x.get_indentation()
+            tab = lambda x: x._get_indentation()
 
         output = ''
         for node in self.traverse():
