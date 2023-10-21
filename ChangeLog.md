@@ -106,6 +106,10 @@ work.~~
 ``tree.Tree.get_children_of_type(type_)`` added
 Bug fix: `:obj:`~musicxml.xmlelement.xmlelement._final_checks()`` runs only if xsd_check is set to True.
 
-
+# Version 1.4
+get_children_of_type() type_ replaced with type to avoid conflict with rtd
+reset_frozen renamed to _reset_iterators
+get_indentation renamed to _get_indentation
+Tree documention link added to public properties and methods
 
 
