@@ -315,7 +315,7 @@ class XMLChildContainer(Tree):
             output = f"{type_}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
             if self.requirements_fulfilled is False:
                 output += '\n'
-                output += self._get_indentation() + '    '
+                output += self.get_indentation() + '    '
                 output += '!Required!'
             return output
 
@@ -328,11 +328,11 @@ class XMLChildContainer(Tree):
             output = f"{type_}@name={self.content.name}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
             for xml_element in self.content.xml_elements:
                 output += '\n'
-                output += self._get_indentation() + '    '
+                output += self.get_indentation() + '    '
                 output += xml_element.__class__.__name__
             if self.requirements_fulfilled is False:
                 output += '\n'
-                output += self._get_indentation() + '    '
+                output += self.get_indentation() + '    '
                 output += '!Required!'
             return output
 

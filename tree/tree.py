@@ -29,16 +29,6 @@ class Tree(ABC):
     def _check_child_to_be_added(self, child):
         pass
 
-    def _get_indentation(self) -> str:
-        """
-        :return: indentation according to ``level`` (layer number)
-        :rtype: str
-        """
-        indentation = ''
-        for i in range(self.level):
-            indentation += '    '
-        return indentation
-
     def _raw_traverse(self):
         yield self
         for child in self.get_children():
@@ -53,7 +43,7 @@ class Tree(ABC):
 
     def _reset_iterators(self):
         """
-        This method is used to reset both parent's and this class's iterators for 'traverse', 'iterate_leaves' and 'reversed_path_to_root'
+        This method is used to reset both parent's and this class's iterators for :obj:'~traverse', obj:'~iterate_leaves' and obj:'~reversed_path_to_root'
         """
         if self.up:
             self.up._reset_iterators()
@@ -66,7 +56,7 @@ class Tree(ABC):
         """
         :obj:`~tree.tree.Tree` property
 
-        :return: as default the string representation. This property is used as default in the ``tree_representation`` method and can be
+        :return: compact representation of a node. Default is the string representation. This property is used as default in the :obj:`tree_representation` method and can be
                  customized in subclasses to get the most appropriate representation.
         :rtype: str
         """
@@ -220,6 +210,18 @@ class Tree(ABC):
             return str(self.get_parent().get_children().index(self) + 1)
         else:
             return f"{self.get_parent().get_coordinates_in_tree()}.{self.get_parent().get_children().index(self) + 1}"
+
+    def get_indentation(self) -> str:
+        """
+        :obj:`~tree.tree.Tree` method
+
+        :return: indentation according to ``level`` (layer number). As default it is used as tag in :obj:`tree_representation`
+        :rtype: str
+        """
+        indentation = ''
+        for i in range(self.level):
+            indentation += '    '
+        return indentation
 
     def get_parent(self) -> 'Tree':
         """
@@ -376,8 +378,8 @@ class Tree(ABC):
         """
         :obj:`~tree.tree.Tree` method
 
-        :param key: An optional callable if ``None`` ``compact_repr`` property of each node is called.
-        :param tab: An optional callable if ``None`` ``_get_indentation()`` method of each node is called.
+        :param key: An optional callable if ``None`` :obj:`~compact_repr` property of each node is called.
+        :param tab: An optional callable if ``None`` :obj:`get_indentation()` method of each node is called.
         :return: a representation of all nodes as string in tree form.
         :rtype: str
         """
@@ -385,7 +387,7 @@ class Tree(ABC):
             key = lambda x: x.compact_repr
 
         if not tab:
-            tab = lambda x: x._get_indentation()
+            tab = lambda x: x.get_indentation()
 
         output = ''
         for node in self.traverse():
