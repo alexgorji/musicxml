@@ -174,20 +174,20 @@ class XMLElement(Tree):
     @property
     def child_container_tree(self):
         """
-        :return: A ChildContainerTree object which is used to manage and control XMLElements children. The nodes of a ChildContainerTree
-                 have a core content property of types XSDSequence, XSDChoice, XSDGroup or XSDElement. XSDElement are the content type of
-                 ChildContainerTree leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element)
+        :return: A :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` object which is used to manage and control XMLElements children. The nodes of a :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer`
+                 have a core content property of types :obj:`~musicxml.xsd.xsdindicator.XSDSequence`, :obj:`~musicxml.xsd.xsdindicator.XSDChoice`, :obj:`~musicxml.xsd.xsdindicator.XSDGroup` or :obj:`~musicxml.xsd.xsdelement.XSDElement`. :obj:`~musicxml.xsd.xsdelement.XSDElement` are the content type of
+                 :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element)
                  can be added to its xml_elements list. An interaction of xsd indicators (sequence, choice and group) with xsd elements
-                 makes it possible to add XMLElement's Children in the right order and control all xsd rules which apply to musicxml. A
+                 makes it possible to add :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement``'s Children in the right order and control all xsd rules which apply to musicxml. A
                  variety of exceptions help user to control the xml structure of the exported file which they are intending to use as a
-                 musicxml format file.
+                 MusicXML formatfile.
         """
         return self._child_container_tree
 
     @property
     def et_xml_element(self):
         """
-        :return:  A xml.etree.ElementTree.Element which is used to write the musicxml file.
+        :return:  A xml.etree.ElementTree.Element which is used to write the MusicXML file.
         """
         self._create_et_xml_element()
         return self._et_xml_element
@@ -206,14 +206,14 @@ class XMLElement(Tree):
     @property
     def value_(self):
         """
-        :return: A validated value of XMLElement which will be translated to its text in xml format.
+        :return: A validated value of :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`` which will be translated to its text in xml format.
         """
         return self._value
 
     @value_.setter
     def value_(self, val):
         """
-        :param val: Value to be validated and added to XMLElement. This value will be translated to xml element's text in xml format.
+        :param val: Value to be validated and added to :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement``. This value will be translated to xml element's text in xml format.
         """
         self.TYPE(val, parent=self)
         self._value = val
@@ -221,7 +221,7 @@ class XMLElement(Tree):
     @classmethod
     def get_xsd(cls):
         """
-        :return: Snippet of musicxml xsd file which is relevant for this XMLElement.
+        :return: Snippet of MusicXML xsd file which is relevant for this :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement``.
         """
         return cls.XSD_TREE.get_xsd()
 
@@ -239,9 +239,8 @@ class XMLElement(Tree):
 
     def add_child(self, child: 'XMLElement', forward: Optional[int] = None) -> 'XMLElement':
         """
-        :param XMLElement child: XMLElement child to be added to XMLElement's ChildContainerTree and _unordered_children.
-        :param int forward: If there are more than one XSDElement leaves in self.child_container_tree, forward can be used to determine
-                            manually which of these equivocal xsd elements is going to be used to attach the child.
+        :param child: chlild of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be added to :obj:`~musicxml.xmlelement.xmlelement.XMLElement`'s :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` and _unordered_children.
+        :param forward: If there are more than one :obj:`~musicxml.xsd.xsdelement.XSDElement` leaves in :obj:`~child_container_tree`, ``forward`` can be used to determine manually which of these equivocal ``xsd elements`` is going to be used to attach the child.
         :return: Added child.
         """
         if self.xsd_check:
@@ -255,8 +254,8 @@ class XMLElement(Tree):
     def get_children(self, ordered: bool = True) -> List['XMLElement']:
         """
         :param bool ordered: True or False.
-        :return: XMLElement added children. If ordered is False the _unordered_children is returned as a more light weighted way of
-                 getting children instead of using the leaves of ChildContainerTree.
+        :return: :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`` added children. If ordered is False the _unordered_children is returned as a more light weighted way of
+                 getting children instead of using the leaves of :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer`.
         """
         if ordered is False or self.xsd_check is False:
             return self._unordered_children
@@ -268,9 +267,9 @@ class XMLElement(Tree):
 
     def find_child(self, name: Union['XMLElement', str], ordered: bool = False) -> 'XMLElement':
         """
-        :param XMLElement/String name: Child or it's name as string.
-        :param bool ordered: get_children mode to be used to find first appearance of child.
-        :return: found child.
+        :param name: :obj:`~musicxml.xmlelement.xmlelement.XMLElement` child or it's name as string.
+        :param ordered: :obj:`~get_children` ordered mode to be used to find first appearance of child.
+        :return: found child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement`.
         """
         if isinstance(name, type):
             name = name.__name__
@@ -280,9 +279,9 @@ class XMLElement(Tree):
 
     def find_children(self, name: Union['XMLElement', str], ordered: bool = False) -> List['XMLElement']:
         """
-        :param XMLElement/String name: Child or it's name as string.
-        :param bool ordered: get_children mode to be used to find children.
-        :return: found children.
+        :param name: A child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` or it's name as string.
+        :param ordered: :obj:`~get_children` ordered mode to be used to find children.
+        :return: found children of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement`.
         """
         if isinstance(name, type):
             name = name.__name__
@@ -290,8 +289,7 @@ class XMLElement(Tree):
 
     def remove(self, child: 'XMLElement') -> None:
         """
-        :param XMLElement child: child to be removed. This method must be used to remove a child properly from ChildContainerTree and
-                                 reset its behaviour.
+        :param child: child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be removed. This method must be used to remove a child properly from :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` and reset its behaviour.
         :return: None
         """
 
@@ -323,11 +321,11 @@ class XMLElement(Tree):
 
     def replace_child(self, old: Union['XMLElement', Callable], new: 'XMLElement', index: int = 0) -> 'XMLElement':
         """
-        :param XMLElement or function old: A child or function which is used to find a child to be replaced.
-        :param XMLElement new: child to be replaced with.
+        :param old: A child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` or a function which is used to find a child to be replaced.
+        :param new: Child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be replaced with.
         :param int index: index of old in list of old appearances
         :return: new xml element
-        :rtype: XMLElement
+        :rtype: :obj:`~musicxml.xmlelement.xmlelement.XMLElement`
         """
         if hasattr(old, '__call__'):
             list_of_olds = [ch for ch in self.get_children(ordered=True) if old(ch)]
@@ -352,9 +350,7 @@ class XMLElement(Tree):
 
     def to_string(self, intelligent_choice: bool = False) -> str:
         """
-        :param bool intelligent_choice: Set to True if you wish to use intelligent choice in final checks to be able to change the
-                                         attachment order of XMLElement children in self.child_container_tree if an Exception was thrown
-                                         and other choices can still be checked. (No GUARANTEE!)
+        :param bool intelligent_choice: Set to ``True`` if you wish to use intelligent choice in final checks to be able to change the attachment order of :obj:`~musicxml.xmlelement.xmlelement.XMLElement` children in :obj:`~child_container_tree` if an ``Exception`` was raised and other choices can still be checked. (NO GUARANTEE!)
         :return: String in xml format.
         """
         if self.xsd_check:

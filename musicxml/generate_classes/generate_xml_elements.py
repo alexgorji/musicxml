@@ -40,7 +40,7 @@ typed_elements = sorted(typed_elements)
 
 def generate_child_parent_dict() -> dict:
     """
-    :return: a dictionary with name of a child XMLElement as key assiciated with a tuple of possible XMLElement parent names.
+    :return: a dictionary with name of a child :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`` as key assiciated with a tuple of possible :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`` parent names.
 
     >>> child_parent_dict = generate_child_parent_dict()
     >>> child_parent_dict['XMLStaccato']

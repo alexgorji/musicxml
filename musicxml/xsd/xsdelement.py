@@ -1,5 +1,3 @@
-import copy
-
 from musicxml.xsd.xsdtree import XSDTree
 
 

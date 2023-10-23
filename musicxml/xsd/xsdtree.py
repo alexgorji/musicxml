@@ -1,4 +1,4 @@
-import copy
+import io
 import io
 import re
 import xml.etree.ElementTree as ET
@@ -6,10 +6,11 @@ from contextlib import redirect_stdout
 from typing import Optional
 
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, xml_xsd_et_root
-from musicxml.util.helprervariables import xml_name_first_character_without_colon, name_character_without_colon, name_character, \
+from musicxml.util.core import cap_first, convert_to_xsd_class_name
+from musicxml.util.helprervariables import xml_name_first_character_without_colon, name_character_without_colon, \
+    name_character, \
     xml_name_first_character
 from tree.tree import Tree
-from musicxml.util.core import cap_first, convert_to_xsd_class_name
 
 """
 XSD = XML Schema Definition
@@ -19,7 +20,7 @@ XSD = XML Schema Definition
 class XSDTree(Tree):
     """
     XSDTree gets a xml.etree.ElementTree.Element by initiation as its xml_element_tree_element property and
-    prepares all needed information for generating a XSDTreeElement class (XSDTreeElement can be XSDSimpleType, XSDComplexType, XSDGroup,
+    prepares all needed information for generating a :obj:`~musicxml.xsd.xsdtree.XSDTreeElement` class (:obj:`~musicxml.xsd.xsdtree.XSDTreeElement` can be :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleType`, :obj:`~musicxml.xsd.xsdcomplextype.XSDComplexType`, :obj:`~musicxml.xsd.xsdindicator.XSDGroup`,
     XMLAttribute and XMLAttributeGroup)
     """
 
@@ -75,7 +76,8 @@ class XSDTree(Tree):
             elif self.get_union_member_types():
                 return []
             else:
-                raise AttributeError(f"Simple type {self} has no restriction with base attribute or union with memberTypes.")
+                raise AttributeError(
+                    f"Simple type {self} has no restriction with base attribute or union with memberTypes.")
         elif self.is_complex_type:
             # complex type
             if self.get_simple_content_extension():
@@ -217,7 +219,8 @@ class XSDTree(Tree):
             else:
                 if parent_xsd_tree:
                     parent_restriction = parent_xsd_tree.get_restriction()
-                    if parent_restriction and parent_restriction.get_children() and parent_restriction.get_children()[0].tag == 'pattern':
+                    if parent_restriction and parent_restriction.get_children() and parent_restriction.get_children()[
+                        0].tag == 'pattern':
                         return rf"{parent_restriction.get_children()[0].get_attributes()['value']}"
 
         def translate_pattern(pattern_):

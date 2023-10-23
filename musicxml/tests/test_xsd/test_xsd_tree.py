@@ -51,7 +51,7 @@ class TestXSDTree(MusicXmlTestCase):
 
     def test_xml_element_tag(self):
         """
-        Test that the tag attribute of an XSDTree element represents th tag name in musicxml xsd structure.
+        Test that the tag attribute of an XSDTree element represents th tag name in MusicXML xsd structure.
         """
         assert self.above_below_simple_type_xsd_element.tag == 'simpleType'
 
@@ -64,7 +64,7 @@ class TestXSDTree(MusicXmlTestCase):
 
     def test_name(self):
         """
-        Test that an XSDTree element has a name attribute representing the corresponding name attribute in musicxml xsd structure.
+        Test that an XSDTree element has a name attribute representing the corresponding name attribute in MusicXML xsd structure.
         Example:
         <xs:simpleType name="above-below">
     <xs:annotation>

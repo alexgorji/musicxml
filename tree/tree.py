@@ -12,7 +12,7 @@ class ChildNotFoundError(TreeException):
 
 class Tree(ABC):
     """
-    An abstract lightweight tree class for managing tree structures in musicxml and musicscore packages.
+    An abstract lightweight tree class for managing tree structures in MusicXML and musicscore packages.
     """
     _TREE_ATTRIBUTES = {'compact_repr', 'is_leaf', 'level', '_parent', '_children', 'up'}
 
@@ -56,7 +56,7 @@ class Tree(ABC):
         """
         :obj:`~tree.tree.Tree` property
 
-        :return: compact representation of a node. Default is the string representation. This property is used as default in the :obj:`tree_representation` method and can be
+        :return: compact representation of a node. Default is the string representation. This property is used as default in the :obj:`~tree_representation` method and can be
                  customized in subclasses to get the most appropriate representation.
         :rtype: str
         """

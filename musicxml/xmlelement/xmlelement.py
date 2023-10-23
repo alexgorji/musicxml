@@ -1,6 +1,3 @@
-# -----------------------------------------------------
-# AUTOMATICALLY GENERATED WITH generate_xml_elements.py
-# -----------------------------------------------------
 import copy
 import xml.etree.ElementTree as ET
 from typing import Optional, List, Callable, Union
@@ -21,6 +18,7 @@ class XMLElement(Tree):
     """
     Parent class of all xml elements.
     """
+
     _PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
                    'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check'}
     TYPE = None
@@ -52,7 +50,8 @@ class XMLElement(Tree):
         attributes = self.TYPE.get_xsd_attributes()
         allowed_attributes = [attribute.name for attribute in attributes]
         if name not in [attribute.name for attribute in self.TYPE.get_xsd_attributes()]:
-            raise XSDWrongAttribute(f"{self.__class__.__name__} has no attribute {name}. Allowed attributes are: {allowed_attributes}")
+            raise XSDWrongAttribute(
+                f"{self.__class__.__name__} has no attribute {name}. Allowed attributes are: {allowed_attributes}")
         for attribute in attributes:
             if attribute.name == name:
                 return attribute(value)
@@ -66,7 +65,8 @@ class XMLElement(Tree):
             required_attributes = [attribute for attribute in self.TYPE.get_xsd_attributes() if attribute.is_required]
             for required_attribute in required_attributes:
                 if required_attribute.name not in self.attributes:
-                    raise XSDAttributeRequiredException(f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
+                    raise XSDAttributeRequiredException(
+                        f"{self.__class__.__name__} requires attribute: {required_attribute.name}")
 
     def _check_required_value(self):
         if self.TYPE.get_xsd_tree().is_simple_type and self.value_ is None:
@@ -118,9 +118,11 @@ class XMLElement(Tree):
         if self.xsd_check:
             self._check_required_value()
             if self._child_container_tree:
-                required_children = self._child_container_tree.get_required_element_names(intelligent_choice=intelligent_choice)
+                required_children = self._child_container_tree.get_required_element_names(
+                    intelligent_choice=intelligent_choice)
                 if required_children:
-                    raise XMLElementChildrenRequired(f"{self.__class__.__name__} requires at least following children: {required_children}")
+                    raise XMLElementChildrenRequired(
+                        f"{self.__class__.__name__} requires at least following children: {required_children}")
 
             self._check_required_attributes()
 
@@ -174,30 +176,35 @@ class XMLElement(Tree):
     @property
     def child_container_tree(self):
         """
-        :return: A ChildContainerTree object which is used to manage and control XMLElements children. The nodes of a ChildContainerTree
-                 have a core content property of types XSDSequence, XSDChoice, XSDGroup or XSDElement. XSDElement are the content type of
-                 ChildContainerTree leaves where one or more XMLElements of a single type (depending on maxOccur attribute of element)
-                 can be added to its xml_elements list. An interaction of xsd indicators (sequence, choice and group) with xsd elements
-                 makes it possible to add XMLElement's Children in the right order and control all xsd rules which apply to musicxml. A
-                 variety of exceptions help user to control the xml structure of the exported file which they are intending to use as a
-                 musicxml format file.
+        :return: A :obj:`~~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` object which is used to manage and control :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement``'s children. The nodes of a :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer`
+                 have a core content property of types :obj:`~musicxml.xsd.xsdindicator.XSDSequence`, :obj:`~musicxml.xsd.xsdindicator.XSDChoice`, :obj:`~musicxml.xsd.xsdindicator.XSDGroup` or :obj:`~musicxml.xsd.xsdelement.XSDElement`. :obj:`~musicxml.xsd.xsdelement.XSDElement` is the content type of
+                 :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` leaves where one or more :obj:`~musicxml.xmlelement.xmlelement.XMLElement`\s of a single type (depending on ``maxOccur`` attribute of element)
+                 can be added to its :obj:`~musicxml.xsd.xsdelement.XSDElement.xml_elements` list. An interaction of ``xsd indicators`` (``sequence``, ``choice`` and ``group``) with ``xsd elements``
+                 makes it possible to add :obj:`~musicxml.xmlelement.xmlelement. :obj:`~musicxml.xmlelement.xmlelement.XMLElement`\'s Children in the right order and control all ``xsd rules`` which apply to MusicXML. A
+                 variety of exceptions help user to control the xml structure of the exported file which they are intending to use as a MusicXML format file.
         """
         return self._child_container_tree
 
     @property
     def et_xml_element(self):
         """
-        :return:  A xml.etree.ElementTree.Element which is used to write the musicxml file.
+        :return:  A xml.etree.ElementTree.Element which is used to write the MusicXML file.
         """
         self._create_et_xml_element()
         return self._et_xml_element
 
     @property
     def name(self):
+        """
+        :return: XSD_TREE.name
+        """
         return self.XSD_TREE.name
 
     @property
     def possible_children_names(self):
+        """
+        If :obj:`~child_container_tree` of type :obj:`~~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` exists ``content.name`` of each ``leave`` will be returned in a ``set``
+        """
         if not self.child_container_tree:
             return {}
         else:
@@ -206,14 +213,14 @@ class XMLElement(Tree):
     @property
     def value_(self):
         """
-        :return: A validated value of XMLElement which will be translated to its text in xml format.
+        :return: A validated value of :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`` which will be translated to its text in xml format.
         """
         return self._value
 
     @value_.setter
     def value_(self, val):
         """
-        :param val: Value to be validated and added to XMLElement. This value will be translated to xml element's text in xml format.
+        :param val: Value to be validated and added to :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`. This value will be translated to xml element's text in xml format.
         """
         self.TYPE(val, parent=self)
         self._value = val
@@ -221,14 +228,15 @@ class XMLElement(Tree):
     @classmethod
     def get_xsd(cls):
         """
-        :return: Snippet of musicxml xsd file which is relevant for this XMLElement.
+        :return: Snippet of MusicXML xsd file which is relevant for this :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement`.
         """
         return cls.XSD_TREE.get_xsd()
 
     @property
     def xsd_check(self) -> bool:
         """
-        Set and get xsd_check attribute. Default is ``True``. If set to false methods add_child() and to_string() run no xsd checking.
+        Set and get ``xsd_check`` property. Default is ``True``. If set to ``False`` method's :obj:`~add_child()` and :obj:`~to_string()` run no xsd checking.
+
         :return: bool
         """
         return self._xsd_check
@@ -239,9 +247,8 @@ class XMLElement(Tree):
 
     def add_child(self, child: 'XMLElement', forward: Optional[int] = None) -> 'XMLElement':
         """
-        :param XMLElement child: XMLElement child to be added to XMLElement's ChildContainerTree and _unordered_children.
-        :param int forward: If there are more than one XSDElement leaves in self.child_container_tree, forward can be used to determine
-                            manually which of these equivocal xsd elements is going to be used to attach the child.
+        :param child: chlild of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be added to :obj:`~musicxml.xmlelement.xmlelement.XMLElement`'s :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` and _unordered_children.
+        :param forward: If there are more than one :obj:`~musicxml.xsd.xsdelement.XSDElement` leaves in :obj:`~child_container_tree`, ``forward`` can be used to determine manually which of these equivocal ``xsd elements`` is going to be used to attach the child.
         :return: Added child.
         """
         if self.xsd_check:
@@ -252,25 +259,11 @@ class XMLElement(Tree):
         child._parent = self
         return child
 
-    def get_children(self, ordered: bool = True) -> List['XMLElement']:
-        """
-        :param bool ordered: True or False.
-        :return: XMLElement added children. If ordered is False the _unordered_children is returned as a more light weighted way of
-                 getting children instead of using the leaves of ChildContainerTree.
-        """
-        if ordered is False or self.xsd_check is False:
-            return self._unordered_children
-        if self._child_container_tree:
-            return [xml_element for leaf in self._child_container_tree.iterate_leaves() for xml_element in leaf.content.xml_elements if
-                    leaf.content.xml_elements]
-        else:
-            return []
-
     def find_child(self, name: Union['XMLElement', str], ordered: bool = False) -> 'XMLElement':
         """
-        :param XMLElement/String name: Child or it's name as string.
-        :param bool ordered: get_children mode to be used to find first appearance of child.
-        :return: found child.
+        :param name: :obj:`~musicxml.xmlelement.xmlelement.XMLElement` child or it's name as string.
+        :param ordered: :obj:`~get_children` ordered mode to be used to find first appearance of child.
+        :return: found child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement`.
         """
         if isinstance(name, type):
             name = name.__name__
@@ -280,18 +273,32 @@ class XMLElement(Tree):
 
     def find_children(self, name: Union['XMLElement', str], ordered: bool = False) -> List['XMLElement']:
         """
-        :param XMLElement/String name: Child or it's name as string.
-        :param bool ordered: get_children mode to be used to find children.
-        :return: found children.
+        :param name: A child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` or it's name as string.
+        :param ordered: :obj:`~get_children` ordered mode to be used to find children.
+        :return: found children of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement`.
         """
         if isinstance(name, type):
             name = name.__name__
         return [ch for ch in self.get_children(ordered=ordered) if ch.__class__.__name__ == name]
 
+    def get_children(self, ordered: bool = True) -> List['XMLElement']:
+        """
+        :param bool ordered: With (``True``) or without (``False``) using :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` .
+        :return: :obj:`~musicxml.xmlelement.xmlelement.XMLElement` added children. If ordered is False the _unordered_children is returned as a more light weighted way of
+                 getting children instead of using the leaves of :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer`.
+        """
+        if ordered is False or self.xsd_check is False:
+            return self._unordered_children
+        if self._child_container_tree:
+            return [xml_element for leaf in self._child_container_tree.iterate_leaves() for xml_element in
+                    leaf.content.xml_elements if
+                    leaf.content.xml_elements]
+        else:
+            return []
+
     def remove(self, child: 'XMLElement') -> None:
         """
-        :param XMLElement child: child to be removed. This method must be used to remove a child properly from ChildContainerTree and
-                                 reset its behaviour.
+        :param child: child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be removed. This method must be used to remove a child properly from :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` and reset its behaviour.
         :return: None
         """
 
@@ -323,11 +330,11 @@ class XMLElement(Tree):
 
     def replace_child(self, old: Union['XMLElement', Callable], new: 'XMLElement', index: int = 0) -> 'XMLElement':
         """
-        :param XMLElement or function old: A child or function which is used to find a child to be replaced.
-        :param XMLElement new: child to be replaced with.
+        :param old: A child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` or a function which is used to find a child to be replaced.
+        :param new: Child of type :obj:`~musicxml.xmlelement.xmlelement.XMLElement` to be replaced with.
         :param int index: index of old in list of old appearances
         :return: new xml element
-        :rtype: XMLElement
+        :rtype: :obj:`~musicxml.xmlelement.xmlelement.XMLElement`
         """
         if hasattr(old, '__call__'):
             list_of_olds = [ch for ch in self.get_children(ordered=True) if old(ch)]
@@ -345,16 +352,15 @@ class XMLElement(Tree):
         if self.xsd_check:
             parent_xsd_element = old_child.parent_xsd_element
             new.parent_xsd_element = parent_xsd_element
-            parent_xsd_element._xml_elements = [new if el == old_child else el for el in parent_xsd_element.xml_elements]
+            parent_xsd_element._xml_elements = [new if el == old_child else el for el in
+                                                parent_xsd_element.xml_elements]
         new._parent = self
         old._parent = None
         return new
 
     def to_string(self, intelligent_choice: bool = False) -> str:
         """
-        :param bool intelligent_choice: Set to True if you wish to use intelligent choice in final checks to be able to change the
-                                         attachment order of XMLElement children in self.child_container_tree if an Exception was thrown
-                                         and other choices can still be checked. (No GUARANTEE!)
+        :param bool intelligent_choice: Set to ``True`` if you wish to use intelligent choice in final checks to be able to change the attachment order of :obj:`~musicxml.xmlelement.xmlelement.XMLElement` children in :obj:`~child_container_tree` if an ``Exception`` was raised and other choices can still be checked. (NO GUARANTEE!)
         :return: String in xml format.
         """
         if self.xsd_check:
@@ -395,6 +401,7 @@ class XMLElement(Tree):
                         return None
                 raise AttributeError(self._get_attributes_error_message(item))
 
+
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_xml_elements.py
 # -----------------------------------------------------
@@ -414,7 +421,7 @@ class XMLAccent(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accent')
@@ -437,7 +444,7 @@ class XMLAccidental(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeAccidental
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accidental')
@@ -460,7 +467,7 @@ class XMLAccidentalMark(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`, :obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeAccidentalMark
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accidental-mark')
@@ -481,7 +488,7 @@ class XMLAccidentalText(XMLElement):
 
 ``Possible parents``::obj:`~XMLGroupAbbreviationDisplay`, :obj:`~XMLGroupNameDisplay`, :obj:`~XMLNoteheadText`, :obj:`~XMLPartAbbreviationDisplay`, :obj:`~XMLPartNameDisplay`
     """
-    
+
     TYPE = XSDComplexTypeAccidentalText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accidental-text')
@@ -511,7 +518,7 @@ class XMLAccord(XMLElement):
 
 ``Possible parents``::obj:`~XMLScordatura`
     """
-    
+
     TYPE = XSDComplexTypeAccord
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accord')
@@ -529,7 +536,7 @@ class XMLAccordionHigh(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccordionRegistration`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accordion-high')
@@ -547,7 +554,7 @@ class XMLAccordionLow(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccordionRegistration`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accordion-low')
@@ -565,7 +572,7 @@ class XMLAccordionMiddle(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccordionRegistration`
     """
-    
+
     TYPE = XSDSimpleTypeAccordionMiddle
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accordion-middle')
@@ -594,7 +601,7 @@ class XMLAccordionRegistration(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeAccordionRegistration
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('accordion-registration')
@@ -610,7 +617,7 @@ The actual-notes element describes how many notes are played in the time usually
 
 ``Possible parents``::obj:`~XMLMetronomeTuplet`, :obj:`~XMLTimeModification`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('actual-notes')
@@ -626,7 +633,7 @@ class XMLAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLPitch`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('alter')
@@ -655,7 +662,7 @@ class XMLAppearance(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeAppearance
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('appearance')
@@ -673,7 +680,7 @@ class XMLArpeggiate(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeArpeggiate
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('arpeggiate')
@@ -704,7 +711,7 @@ class XMLArrow(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeArrow
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('arrow')
@@ -723,7 +730,7 @@ class XMLArrowDirection(XMLElement):
 
 ``Possible parents``::obj:`~XMLArrow`
     """
-    
+
     TYPE = XSDSimpleTypeArrowDirection
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('arrow-direction')
@@ -742,7 +749,7 @@ class XMLArrowStyle(XMLElement):
 
 ``Possible parents``::obj:`~XMLArrow`
     """
-    
+
     TYPE = XSDSimpleTypeArrowStyle
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('arrow-style')
@@ -758,7 +765,7 @@ class XMLArrowhead(XMLElement):
 
 ``Possible parents``::obj:`~XMLArrow`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('arrowhead')
@@ -801,7 +808,7 @@ class XMLArticulations(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeArticulations
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('articulations')
@@ -819,7 +826,7 @@ class XMLArtificial(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonic`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('artificial')
@@ -837,7 +844,7 @@ class XMLAssess(XMLElement):
 
 ``Possible parents``::obj:`~XMLListen`
     """
-    
+
     TYPE = XSDComplexTypeAssess
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('assess')
@@ -882,7 +889,7 @@ class XMLAttributes(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeAttributes
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('attributes')
@@ -917,7 +924,7 @@ class XMLBackup(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeBackup
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('backup')
@@ -940,7 +947,7 @@ class XMLBarStyle(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`
     """
-    
+
     TYPE = XSDComplexTypeBarStyleColor
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bar-style')
@@ -983,7 +990,7 @@ class XMLBarline(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeBarline
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('barline')
@@ -1001,7 +1008,7 @@ class XMLBarre(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrameNote`
     """
-    
+
     TYPE = XSDComplexTypeBarre
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('barre')
@@ -1019,7 +1026,7 @@ class XMLBasePitch(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonic`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('base-pitch')
@@ -1048,7 +1055,7 @@ class XMLBass(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeBass
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bass')
@@ -1070,7 +1077,7 @@ class XMLBassAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLBass`
     """
-    
+
     TYPE = XSDComplexTypeHarmonyAlter
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bass-alter')
@@ -1090,7 +1097,7 @@ class XMLBassSeparator(XMLElement):
 
 ``Possible parents``::obj:`~XMLBass`
     """
-    
+
     TYPE = XSDComplexTypeStyleText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bass-separator')
@@ -1113,7 +1120,7 @@ class XMLBassStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLBass`
     """
-    
+
     TYPE = XSDComplexTypeBassStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bass-step')
@@ -1142,7 +1149,7 @@ class XMLBeam(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeBeam
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beam')
@@ -1177,7 +1184,7 @@ class XMLBeatRepeat(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
-    
+
     TYPE = XSDComplexTypeBeatRepeat
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beat-repeat')
@@ -1193,7 +1200,7 @@ The beat-type element indicates the beat unit, as found in the denominator of a 
 
 ``Possible parents``::obj:`~XMLInterchangeable`, :obj:`~XMLTime`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beat-type')
@@ -1214,7 +1221,7 @@ class XMLBeatUnit(XMLElement):
 
 ``Possible parents``::obj:`~XMLBeatUnitTied`, :obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDSimpleTypeNoteTypeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beat-unit')
@@ -1232,7 +1239,7 @@ class XMLBeatUnitDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLBeatUnitTied`, :obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beat-unit-dot')
@@ -1259,7 +1266,7 @@ class XMLBeatUnitTied(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDComplexTypeBeatUnitTied
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beat-unit-tied')
@@ -1282,7 +1289,7 @@ class XMLBeater(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeBeater
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beater')
@@ -1298,7 +1305,7 @@ The beats element indicates the number of beats, as found in the numerator of a 
 
 ``Possible parents``::obj:`~XMLInterchangeable`, :obj:`~XMLTime`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('beats')
@@ -1329,7 +1336,7 @@ class XMLBend(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeBend
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bend')
@@ -1347,7 +1354,7 @@ class XMLBendAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLBend`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bend-alter')
@@ -1365,7 +1372,7 @@ class XMLBookmark(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`, :obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeBookmark
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bookmark')
@@ -1383,7 +1390,7 @@ class XMLBottomMargin(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageMargins`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bottom-margin')
@@ -1401,7 +1408,7 @@ class XMLBracket(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeBracket
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('bracket')
@@ -1421,7 +1428,7 @@ class XMLBrassBend(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('brass-bend')
@@ -1444,7 +1451,7 @@ class XMLBreathMark(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeBreathMark
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('breath-mark')
@@ -1467,7 +1474,7 @@ class XMLCaesura(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeCaesura
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('caesura')
@@ -1487,7 +1494,7 @@ class XMLCancel(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDComplexTypeCancel
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('cancel')
@@ -1503,7 +1510,7 @@ The capo element indicates at which fret a capo should be placed on a fretted in
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('capo')
@@ -1525,7 +1532,7 @@ class XMLChord(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('chord')
@@ -1543,7 +1550,7 @@ class XMLChromatic(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartTranspose`, :obj:`~XMLTranspose`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('chromatic')
@@ -1562,7 +1569,7 @@ class XMLCircularArrow(XMLElement):
 
 ``Possible parents``::obj:`~XMLArrow`
     """
-    
+
     TYPE = XSDSimpleTypeCircularArrow
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('circular-arrow')
@@ -1600,7 +1607,7 @@ class XMLClef(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeClef
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('clef')
@@ -1616,7 +1623,7 @@ The clef-octave-change element is used for transposing clefs. A treble clef for 
 
 ``Possible parents``::obj:`~XMLClef`, :obj:`~XMLPartClef`
     """
-    
+
     TYPE = XSDSimpleTypeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('clef-octave-change')
@@ -1634,7 +1641,7 @@ class XMLCoda(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeCoda
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('coda')
@@ -1654,7 +1661,7 @@ class XMLConcertScore(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('concert-score')
@@ -1674,7 +1681,7 @@ class XMLCreator(XMLElement):
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDComplexTypeTypedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('creator')
@@ -1721,7 +1728,7 @@ class XMLCredit(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypeCredit
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('credit')
@@ -1737,7 +1744,7 @@ class XMLCreditImage(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`
     """
-    
+
     TYPE = XSDComplexTypeImage
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('credit-image')
@@ -1757,7 +1764,7 @@ class XMLCreditSymbol(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`
     """
-    
+
     TYPE = XSDComplexTypeFormattedSymbolId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('credit-symbol')
@@ -1771,7 +1778,7 @@ class XMLCreditType(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('credit-type')
@@ -1787,7 +1794,7 @@ class XMLCreditWords(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`
     """
-    
+
     TYPE = XSDComplexTypeFormattedTextId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('credit-words')
@@ -1805,7 +1812,7 @@ class XMLCue(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('cue')
@@ -1825,7 +1832,7 @@ class XMLDamp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('damp')
@@ -1845,7 +1852,7 @@ class XMLDampAll(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('damp-all')
@@ -1863,7 +1870,7 @@ class XMLDashes(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeDashes
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('dashes')
@@ -1899,7 +1906,7 @@ class XMLDefaults(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypeDefaults
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('defaults')
@@ -1930,7 +1937,7 @@ class XMLDegree(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeDegree
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('degree')
@@ -1950,7 +1957,7 @@ class XMLDegreeAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLDegree`
     """
-    
+
     TYPE = XSDComplexTypeDegreeAlter
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('degree-alter')
@@ -1973,7 +1980,7 @@ class XMLDegreeType(XMLElement):
 
 ``Possible parents``::obj:`~XMLDegree`
     """
-    
+
     TYPE = XSDComplexTypeDegreeType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('degree-type')
@@ -1991,7 +1998,7 @@ class XMLDegreeValue(XMLElement):
 
 ``Possible parents``::obj:`~XMLDegree`
     """
-    
+
     TYPE = XSDComplexTypeDegreeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('degree-value')
@@ -2011,7 +2018,7 @@ class XMLDelayedInvertedTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeHorizontalTurn
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('delayed-inverted-turn')
@@ -2031,7 +2038,7 @@ class XMLDelayedTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeHorizontalTurn
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('delayed-turn')
@@ -2051,7 +2058,7 @@ class XMLDetachedLegato(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('detached-legato')
@@ -2067,7 +2074,7 @@ The diatonic element specifies the number of pitch steps needed to go from writt
 
 ``Possible parents``::obj:`~XMLPartTranspose`, :obj:`~XMLTranspose`
     """
-    
+
     TYPE = XSDSimpleTypeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('diatonic')
@@ -2113,7 +2120,7 @@ class XMLDirection(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeDirection
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('direction')
@@ -2164,7 +2171,7 @@ class XMLDirectionType(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirection`
     """
-    
+
     TYPE = XSDComplexTypeDirectionType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('direction-type')
@@ -2182,7 +2189,7 @@ Directives are like directions, but can be grouped together with attributes for 
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeDirective
     _SEARCH_FOR_ELEMENT = ".//{*}complexType[@name='attributes']//{*}element[@name='directive']"
     XSD_TREE = XSD_TREE_DICT['element'].get('directive')
@@ -2198,7 +2205,7 @@ class XMLDisplayOctave(XMLElement):
 
 ``Possible parents``::obj:`~XMLRest`, :obj:`~XMLUnpitched`
     """
-    
+
     TYPE = XSDSimpleTypeOctave
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('display-octave')
@@ -2217,7 +2224,7 @@ class XMLDisplayStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLRest`, :obj:`~XMLUnpitched`
     """
-    
+
     TYPE = XSDSimpleTypeStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('display-step')
@@ -2233,7 +2240,7 @@ class XMLDisplayText(XMLElement):
 
 ``Possible parents``::obj:`~XMLGroupAbbreviationDisplay`, :obj:`~XMLGroupNameDisplay`, :obj:`~XMLNoteheadText`, :obj:`~XMLPartAbbreviationDisplay`, :obj:`~XMLPartNameDisplay`
     """
-    
+
     TYPE = XSDComplexTypeFormattedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('display-text')
@@ -2255,7 +2262,7 @@ class XMLDistance(XMLElement):
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
-    
+
     TYPE = XSDComplexTypeDistance
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('distance')
@@ -2273,7 +2280,7 @@ class XMLDivisions(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDSimpleTypePositiveDivisions
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('divisions')
@@ -2293,7 +2300,7 @@ class XMLDoit(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyLine
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('doit')
@@ -2313,7 +2320,7 @@ class XMLDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('dot')
@@ -2333,7 +2340,7 @@ class XMLDouble(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartTranspose`, :obj:`~XMLTranspose`
     """
-    
+
     TYPE = XSDComplexTypeDouble
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('double')
@@ -2353,7 +2360,7 @@ class XMLDoubleTongue(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('double-tongue')
@@ -2373,7 +2380,7 @@ class XMLDownBow(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('down-bow')
@@ -2393,7 +2400,7 @@ class XMLDuration(XMLElement):
 
 ``Possible parents``::obj:`~XMLBackup`, :obj:`~XMLFiguredBass`, :obj:`~XMLForward`, :obj:`~XMLNote`
     """
-    
+
     TYPE = XSDSimpleTypePositiveDivisions
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('duration')
@@ -2450,7 +2457,7 @@ class XMLDynamics(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`, :obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeDynamics
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('dynamics')
@@ -2473,7 +2480,7 @@ class XMLEffect(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeEffect
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('effect')
@@ -2491,7 +2498,7 @@ class XMLElevation(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeRotationDegrees
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('elevation')
@@ -2509,7 +2516,7 @@ class XMLElision(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeElision
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('elision')
@@ -2527,7 +2534,7 @@ class XMLEncoder(XMLElement):
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
-    
+
     TYPE = XSDComplexTypeTypedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('encoder')
@@ -2556,7 +2563,7 @@ class XMLEncoding(XMLElement):
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDComplexTypeEncoding
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('encoding')
@@ -2576,7 +2583,7 @@ class XMLEncodingDate(XMLElement):
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
-    
+
     TYPE = XSDSimpleTypeYyyyMmDd
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('encoding-date')
@@ -2590,7 +2597,7 @@ class XMLEncodingDescription(XMLElement):
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('encoding-description')
@@ -2608,7 +2615,7 @@ class XMLEndLine(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('end-line')
@@ -2626,7 +2633,7 @@ class XMLEndParagraph(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('end-paragraph')
@@ -2646,7 +2653,7 @@ class XMLEnding(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`
     """
-    
+
     TYPE = XSDComplexTypeEnding
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ending')
@@ -2668,7 +2675,7 @@ class XMLEnsemble(XMLElement):
 
 ``Possible parents``::obj:`~XMLInstrumentChange`, :obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDSimpleTypePositiveIntegerOrEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ensemble')
@@ -2684,7 +2691,7 @@ The except-voice element is used to specify a combination of slash notation and 
 
 ``Possible parents``::obj:`~XMLBeatRepeat`, :obj:`~XMLSlash`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('except-voice')
@@ -2702,7 +2709,7 @@ class XMLExtend(XMLElement):
 
 ``Possible parents``::obj:`~XMLFigure`, :obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeExtend
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('extend')
@@ -2722,7 +2729,7 @@ class XMLEyeglasses(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPrintStyleAlignId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('eyeglasses')
@@ -2738,7 +2745,7 @@ class XMLF(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('f')
@@ -2758,7 +2765,7 @@ class XMLFalloff(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyLine
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('falloff')
@@ -2776,7 +2783,7 @@ class XMLFeature(XMLElement):
 
 ``Possible parents``::obj:`~XMLGrouping`
     """
-    
+
     TYPE = XSDComplexTypeFeature
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('feature')
@@ -2799,7 +2806,7 @@ class XMLFermata(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeFermata
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fermata')
@@ -2815,7 +2822,7 @@ class XMLFf(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ff')
@@ -2831,7 +2838,7 @@ class XMLFff(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fff')
@@ -2847,7 +2854,7 @@ class XMLFfff(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ffff')
@@ -2863,7 +2870,7 @@ class XMLFffff(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fffff')
@@ -2879,7 +2886,7 @@ class XMLFfffff(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ffffff')
@@ -2895,7 +2902,7 @@ class XMLFifths(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDSimpleTypeFifths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fifths')
@@ -2931,7 +2938,7 @@ class XMLFigure(XMLElement):
 
 ``Possible parents``::obj:`~XMLFiguredBass`
     """
-    
+
     TYPE = XSDComplexTypeFigure
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('figure')
@@ -2951,7 +2958,7 @@ class XMLFigureNumber(XMLElement):
 
 ``Possible parents``::obj:`~XMLFigure`
     """
-    
+
     TYPE = XSDComplexTypeStyleText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('figure-number')
@@ -2991,7 +2998,7 @@ class XMLFiguredBass(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeFiguredBass
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('figured-bass')
@@ -3009,7 +3016,7 @@ class XMLFingering(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeFingering
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fingering')
@@ -3029,7 +3036,7 @@ class XMLFingernails(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fingernails')
@@ -3043,7 +3050,7 @@ class XMLFirst(XMLElement):
 
 ``Possible parents``::obj:`~XMLSwing`
     """
-    
+
     TYPE = XSDSimpleTypePositiveInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('first')
@@ -3061,7 +3068,7 @@ class XMLFirstFret(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrame`
     """
-    
+
     TYPE = XSDComplexTypeFirstFret
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('first-fret')
@@ -3081,7 +3088,7 @@ class XMLFlip(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('flip')
@@ -3097,7 +3104,7 @@ class XMLFootnote(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`, :obj:`~XMLBackup`, :obj:`~XMLBarline`, :obj:`~XMLDirection`, :obj:`~XMLFigure`, :obj:`~XMLFiguredBass`, :obj:`~XMLForward`, :obj:`~XMLHarmony`, :obj:`~XMLLyric`, :obj:`~XMLNotations`, :obj:`~XMLNote`, :obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeFormattedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('footnote')
@@ -3129,7 +3136,7 @@ class XMLForPart(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeForPart
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('for-part')
@@ -3170,7 +3177,7 @@ class XMLForward(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeForward
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('forward')
@@ -3186,7 +3193,7 @@ class XMLFp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fp')
@@ -3216,7 +3223,7 @@ class XMLFrame(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeFrame
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('frame')
@@ -3232,7 +3239,7 @@ The frame-frets element gives the overall size of the frame in horizontal spaces
 
 ``Possible parents``::obj:`~XMLFrame`
     """
-    
+
     TYPE = XSDSimpleTypePositiveInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('frame-frets')
@@ -3260,7 +3267,7 @@ class XMLFrameNote(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrame`
     """
-    
+
     TYPE = XSDComplexTypeFrameNote
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('frame-note')
@@ -3276,7 +3283,7 @@ The frame-strings element gives the overall size of the frame in vertical lines 
 
 ``Possible parents``::obj:`~XMLFrame`
     """
-    
+
     TYPE = XSDSimpleTypePositiveInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('frame-strings')
@@ -3294,7 +3301,7 @@ class XMLFret(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeFret
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fret')
@@ -3314,7 +3321,7 @@ class XMLFunction(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeStyleText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('function')
@@ -3330,7 +3337,7 @@ class XMLFz(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('fz')
@@ -3353,7 +3360,7 @@ class XMLGlass(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeGlass
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('glass')
@@ -3371,7 +3378,7 @@ class XMLGlissando(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeGlissando
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('glissando')
@@ -3391,7 +3398,7 @@ class XMLGlyph(XMLElement):
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
-    
+
     TYPE = XSDComplexTypeGlyph
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('glyph')
@@ -3411,7 +3418,7 @@ class XMLGolpe(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('golpe')
@@ -3429,7 +3436,7 @@ class XMLGrace(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeGrace
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('grace')
@@ -3445,7 +3452,7 @@ The group element allows the use of different versions of the part for different
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group')
@@ -3463,7 +3470,7 @@ class XMLGroupAbbreviation(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeGroupName
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-abbreviation')
@@ -3494,7 +3501,7 @@ class XMLGroupAbbreviationDisplay(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeNameDisplay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-abbreviation-display')
@@ -3517,7 +3524,7 @@ class XMLGroupBarline(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeGroupBarline
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-barline')
@@ -3533,7 +3540,7 @@ Multiple part-link elements can reference different types of linked documents, s
 
 ``Possible parents``::obj:`~XMLPartLink`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-link')
@@ -3551,7 +3558,7 @@ class XMLGroupName(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeGroupName
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-name')
@@ -3582,7 +3589,7 @@ class XMLGroupNameDisplay(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeNameDisplay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-name-display')
@@ -3605,7 +3612,7 @@ class XMLGroupSymbol(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeGroupSymbol
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-symbol')
@@ -3623,7 +3630,7 @@ class XMLGroupTime(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('group-time')
@@ -3652,7 +3659,7 @@ class XMLGrouping(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeGrouping
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('grouping')
@@ -3672,7 +3679,7 @@ class XMLHalfMuted(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacementSmufl
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('half-muted')
@@ -3690,7 +3697,7 @@ class XMLHammerOn(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHammerOnPullOff
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('hammer-on')
@@ -3713,7 +3720,7 @@ class XMLHandbell(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHandbell
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('handbell')
@@ -3736,7 +3743,7 @@ class XMLHarmonClosed(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonMute`
     """
-    
+
     TYPE = XSDComplexTypeHarmonClosed
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('harmon-closed')
@@ -3763,7 +3770,7 @@ class XMLHarmonMute(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHarmonMute
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('harmon-mute')
@@ -3796,7 +3803,7 @@ class XMLHarmonic(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHarmonic
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('harmonic')
@@ -3849,7 +3856,7 @@ class XMLHarmony(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeHarmony
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('harmony')
@@ -3876,7 +3883,7 @@ class XMLHarpPedals(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeHarpPedals
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('harp-pedals')
@@ -3896,7 +3903,7 @@ class XMLHaydn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyTrillSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('haydn')
@@ -3914,7 +3921,7 @@ class XMLHeel(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHeelToe
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('heel')
@@ -3943,7 +3950,7 @@ class XMLHole(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHole
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('hole')
@@ -3966,7 +3973,7 @@ class XMLHoleClosed(XMLElement):
 
 ``Possible parents``::obj:`~XMLHole`
     """
-    
+
     TYPE = XSDComplexTypeHoleClosed
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('hole-closed')
@@ -3982,7 +3989,7 @@ The optional hole-shape element indicates the shape of the hole symbol; the defa
 
 ``Possible parents``::obj:`~XMLHole`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('hole-shape')
@@ -3998,7 +4005,7 @@ The content of the optional hole-type element indicates what the hole symbol rep
 
 ``Possible parents``::obj:`~XMLHole`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('hole-type')
@@ -4016,7 +4023,7 @@ class XMLHumming(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('humming')
@@ -4046,7 +4053,7 @@ class XMLIdentification(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`, :obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypeIdentification
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('identification')
@@ -4062,7 +4069,7 @@ class XMLImage(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeImage
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('image')
@@ -4080,7 +4087,7 @@ class XMLInstrument(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeInstrument
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument')
@@ -4096,7 +4103,7 @@ The optional instrument-abbreviation element is typically used within a software
 
 ``Possible parents``::obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument-abbreviation')
@@ -4128,7 +4135,7 @@ class XMLInstrumentChange(XMLElement):
 
 ``Possible parents``::obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypeInstrumentChange
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument-change')
@@ -4146,7 +4153,7 @@ class XMLInstrumentLink(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartLink`
     """
-    
+
     TYPE = XSDComplexTypeInstrumentLink
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument-link')
@@ -4162,7 +4169,7 @@ The instrument-name element is typically used within a software application, rat
 
 ``Possible parents``::obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument-name')
@@ -4178,7 +4185,7 @@ The instrument-sound element describes the default timbre of the score-instrumen
 
 ``Possible parents``::obj:`~XMLInstrumentChange`, :obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instrument-sound')
@@ -4194,7 +4201,7 @@ The instruments element is only used if more than one instrument is represented 
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('instruments')
@@ -4225,7 +4232,7 @@ class XMLInterchangeable(XMLElement):
 
 ``Possible parents``::obj:`~XMLTime`
     """
-    
+
     TYPE = XSDComplexTypeInterchangeable
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('interchangeable')
@@ -4243,7 +4250,7 @@ class XMLInversion(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeInversion
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('inversion')
@@ -4263,7 +4270,7 @@ class XMLInvertedMordent(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeMordent
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('inverted-mordent')
@@ -4283,7 +4290,7 @@ class XMLInvertedTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeHorizontalTurn
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('inverted-turn')
@@ -4303,7 +4310,7 @@ class XMLInvertedVerticalTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyTrillSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('inverted-vertical-turn')
@@ -4319,7 +4326,7 @@ The ipa element represents International Phonetic Alphabet (IPA) sounds for voca
 
 ``Possible parents``::obj:`~XMLPlay`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ipa')
@@ -4359,7 +4366,7 @@ class XMLKey(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeKey
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('key')
@@ -4384,7 +4391,7 @@ class XMLKeyAccidental(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDComplexTypeKeyAccidental
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('key-accidental')
@@ -4402,7 +4409,7 @@ class XMLKeyAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('key-alter')
@@ -4424,7 +4431,7 @@ class XMLKeyOctave(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDComplexTypeKeyOctave
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('key-octave')
@@ -4445,7 +4452,7 @@ class XMLKeyStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDSimpleTypeStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('key-step')
@@ -4529,7 +4536,7 @@ class XMLKind(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeKind
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('kind')
@@ -4547,7 +4554,7 @@ class XMLLaughing(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('laughing')
@@ -4565,7 +4572,7 @@ class XMLLeftDivider(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemDividers`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPrintObjectStyleAlign
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('left-divider')
@@ -4583,7 +4590,7 @@ class XMLLeftMargin(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageMargins`, :obj:`~XMLSystemMargins`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('left-margin')
@@ -4605,7 +4612,7 @@ class XMLLevel(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`, :obj:`~XMLBackup`, :obj:`~XMLBarline`, :obj:`~XMLDirection`, :obj:`~XMLFigure`, :obj:`~XMLFiguredBass`, :obj:`~XMLForward`, :obj:`~XMLHarmony`, :obj:`~XMLLyric`, :obj:`~XMLNotations`, :obj:`~XMLNote`, :obj:`~XMLPartGroup`
     """
-    
+
     TYPE = XSDComplexTypeLevel
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('level')
@@ -4623,7 +4630,7 @@ class XMLLine(XMLElement):
 
 ``Possible parents``::obj:`~XMLClef`, :obj:`~XMLPartClef`
     """
-    
+
     TYPE = XSDSimpleTypeStaffLinePosition
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('line')
@@ -4641,7 +4648,7 @@ class XMLLineDetail(XMLElement):
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDComplexTypeLineDetail
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('line-detail')
@@ -4663,7 +4670,7 @@ class XMLLineWidth(XMLElement):
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
-    
+
     TYPE = XSDComplexTypeLineWidth
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('line-width')
@@ -4679,7 +4686,7 @@ class XMLLink(XMLElement):
 
 ``Possible parents``::obj:`~XMLCredit`, :obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeLink
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('link')
@@ -4706,7 +4713,7 @@ class XMLListen(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeListen
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('listen')
@@ -4736,7 +4743,7 @@ class XMLListening(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeListening
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('listening')
@@ -4787,7 +4794,7 @@ class XMLLyric(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeLyric
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('lyric')
@@ -4805,7 +4812,7 @@ class XMLLyricFont(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeLyricFont
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('lyric-font')
@@ -4823,7 +4830,7 @@ class XMLLyricLanguage(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeLyricLanguage
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('lyric-language')
@@ -4863,7 +4870,7 @@ class XMLMeasure(XMLElement):
 
 ``Possible parents``::obj:`~XMLPart`
     """
-    
+
     TYPE = XSDComplexTypeMeasure
     _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']//{*}element[@name='measure']"
     XSD_TREE = XSD_TREE_DICT['element'].get('measure')
@@ -4883,7 +4890,7 @@ class XMLMeasureDistance(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasureLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('measure-distance')
@@ -4908,7 +4915,7 @@ class XMLMeasureLayout(XMLElement):
 
 ``Possible parents``::obj:`~XMLPrint`
     """
-    
+
     TYPE = XSDComplexTypeMeasureLayout
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('measure-layout')
@@ -4935,7 +4942,7 @@ class XMLMeasureNumbering(XMLElement):
 
 ``Possible parents``::obj:`~XMLPrint`
     """
-    
+
     TYPE = XSDComplexTypeMeasureNumbering
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('measure-numbering')
@@ -4957,7 +4964,7 @@ class XMLMeasureRepeat(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
-    
+
     TYPE = XSDComplexTypeMeasureRepeat
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('measure-repeat')
@@ -4991,7 +4998,7 @@ class XMLMeasureStyle(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeMeasureStyle
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('measure-style')
@@ -5014,7 +5021,7 @@ class XMLMembrane(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeMembrane
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('membrane')
@@ -5037,7 +5044,7 @@ class XMLMetal(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeMetal
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metal')
@@ -5083,7 +5090,7 @@ class XMLMetronome(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeMetronome
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome')
@@ -5101,7 +5108,7 @@ class XMLMetronomeArrows(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-arrows')
@@ -5124,7 +5131,7 @@ class XMLMetronomeBeam(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
-    
+
     TYPE = XSDComplexTypeMetronomeBeam
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-beam')
@@ -5142,7 +5149,7 @@ class XMLMetronomeDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-dot')
@@ -5171,7 +5178,7 @@ class XMLMetronomeNote(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDComplexTypeMetronomeNote
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-note')
@@ -5187,7 +5194,7 @@ The metronome-relation element describes the relationship symbol that goes betwe
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-relation')
@@ -5205,7 +5212,7 @@ class XMLMetronomeTied(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
-    
+
     TYPE = XSDComplexTypeMetronomeTied
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-tied')
@@ -5236,7 +5243,7 @@ class XMLMetronomeTuplet(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
-    
+
     TYPE = XSDComplexTypeMetronomeTuplet
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-tuplet')
@@ -5257,7 +5264,7 @@ class XMLMetronomeType(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
-    
+
     TYPE = XSDSimpleTypeNoteTypeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('metronome-type')
@@ -5273,7 +5280,7 @@ class XMLMf(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('mf')
@@ -5291,7 +5298,7 @@ class XMLMidiBank(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeMidi16384
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-bank')
@@ -5309,7 +5316,7 @@ class XMLMidiChannel(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeMidi16
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-channel')
@@ -5327,7 +5334,7 @@ class XMLMidiDevice(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`, :obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypeMidiDevice
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-device')
@@ -5361,7 +5368,7 @@ class XMLMidiInstrument(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`, :obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypeMidiInstrument
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-instrument')
@@ -5377,7 +5384,7 @@ The midi-name element corresponds to a ProgramName meta-event within a Standard 
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-name')
@@ -5395,7 +5402,7 @@ class XMLMidiProgram(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeMidi128
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-program')
@@ -5413,7 +5420,7 @@ class XMLMidiUnpitched(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeMidi128
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('midi-unpitched')
@@ -5429,7 +5436,7 @@ class XMLMillimeters(XMLElement):
 
 ``Possible parents``::obj:`~XMLScaling`
     """
-    
+
     TYPE = XSDSimpleTypeMillimeters
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('millimeters')
@@ -5454,7 +5461,7 @@ class XMLMiscellaneous(XMLElement):
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDComplexTypeMiscellaneous
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('miscellaneous')
@@ -5472,7 +5479,7 @@ class XMLMiscellaneousField(XMLElement):
 
 ``Possible parents``::obj:`~XMLMiscellaneous`
     """
-    
+
     TYPE = XSDComplexTypeMiscellaneousField
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('miscellaneous-field')
@@ -5488,7 +5495,7 @@ class XMLMode(XMLElement):
 
 ``Possible parents``::obj:`~XMLKey`
     """
-    
+
     TYPE = XSDSimpleTypeMode
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('mode')
@@ -5508,7 +5515,7 @@ class XMLMordent(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeMordent
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('mordent')
@@ -5524,7 +5531,7 @@ The movement-number element specifies the number of a movement.
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('movement-number')
@@ -5540,7 +5547,7 @@ The movement-title element specifies the title of a movement, not including its 
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('movement-title')
@@ -5556,7 +5563,7 @@ class XMLMp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('mp')
@@ -5574,7 +5581,7 @@ class XMLMultipleRest(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
-    
+
     TYPE = XSDComplexTypeMultipleRest
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('multiple-rest')
@@ -5592,7 +5599,7 @@ class XMLMusicFont(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeEmptyFont
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('music-font')
@@ -5611,7 +5618,7 @@ class XMLMute(XMLElement):
 
 ``Possible parents``::obj:`~XMLPlay`
     """
-    
+
     TYPE = XSDSimpleTypeMute
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('mute')
@@ -5627,7 +5634,7 @@ class XMLN(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('n')
@@ -5645,7 +5652,7 @@ class XMLNatural(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonic`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('natural')
@@ -5663,7 +5670,7 @@ class XMLNonArpeggiate(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeNonArpeggiate
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('non-arpeggiate')
@@ -5681,7 +5688,7 @@ class XMLNormalDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeTuplet`, :obj:`~XMLTimeModification`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('normal-dot')
@@ -5697,7 +5704,7 @@ The normal-notes element describes how many notes are usually played in the time
 
 ``Possible parents``::obj:`~XMLMetronomeTuplet`, :obj:`~XMLTimeModification`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('normal-notes')
@@ -5718,7 +5725,7 @@ class XMLNormalType(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronomeTuplet`, :obj:`~XMLTimeModification`
     """
-    
+
     TYPE = XSDSimpleTypeNoteTypeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('normal-type')
@@ -5767,7 +5774,7 @@ class XMLNotations(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeNotations
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('notations')
@@ -5877,7 +5884,7 @@ class XMLNote(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeNote
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('note')
@@ -5897,7 +5904,7 @@ class XMLNoteSize(XMLElement):
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
-    
+
     TYPE = XSDComplexTypeNoteSize
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('note-size')
@@ -5932,7 +5939,7 @@ class XMLNotehead(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeNotehead
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('notehead')
@@ -5959,7 +5966,7 @@ class XMLNoteheadText(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeNoteheadText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('notehead-text')
@@ -5986,7 +5993,7 @@ class XMLNumeral(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeNumeral
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral')
@@ -6008,7 +6015,7 @@ class XMLNumeralAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLNumeral`
     """
-    
+
     TYPE = XSDComplexTypeHarmonyAlter
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral-alter')
@@ -6024,7 +6031,7 @@ class XMLNumeralFifths(XMLElement):
 
 ``Possible parents``::obj:`~XMLNumeralKey`
     """
-    
+
     TYPE = XSDSimpleTypeFifths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral-fifths')
@@ -6052,7 +6059,7 @@ class XMLNumeralKey(XMLElement):
 
 ``Possible parents``::obj:`~XMLNumeral`
     """
-    
+
     TYPE = XSDComplexTypeNumeralKey
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral-key')
@@ -6071,7 +6078,7 @@ class XMLNumeralMode(XMLElement):
 
 ``Possible parents``::obj:`~XMLNumeralKey`
     """
-    
+
     TYPE = XSDSimpleTypeNumeralMode
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral-mode')
@@ -6091,7 +6098,7 @@ class XMLNumeralRoot(XMLElement):
 
 ``Possible parents``::obj:`~XMLNumeral`
     """
-    
+
     TYPE = XSDComplexTypeNumeralRoot
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('numeral-root')
@@ -6107,7 +6114,7 @@ class XMLOctave(XMLElement):
 
 ``Possible parents``::obj:`~XMLPitch`
     """
-    
+
     TYPE = XSDSimpleTypeOctave
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('octave')
@@ -6123,7 +6130,7 @@ The octave-change element indicates how many octaves to add to get from written 
 
 ``Possible parents``::obj:`~XMLPartTranspose`, :obj:`~XMLTranspose`
     """
-    
+
     TYPE = XSDSimpleTypeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('octave-change')
@@ -6141,7 +6148,7 @@ class XMLOctaveShift(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeOctaveShift
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('octave-shift')
@@ -6163,7 +6170,7 @@ class XMLOffset(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLHarmony`, :obj:`~XMLListening`, :obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypeOffset
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('offset')
@@ -6183,7 +6190,7 @@ class XMLOpen(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacementSmufl
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('open')
@@ -6203,7 +6210,7 @@ class XMLOpenString(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('open-string')
@@ -6219,7 +6226,7 @@ class XMLOpus(XMLElement):
 
 ``Possible parents``::obj:`~XMLWork`
     """
-    
+
     TYPE = XSDComplexTypeOpus
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('opus')
@@ -6262,7 +6269,7 @@ class XMLOrnaments(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeOrnaments
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ornaments')
@@ -6280,7 +6287,7 @@ class XMLOtherAppearance(XMLElement):
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
-    
+
     TYPE = XSDComplexTypeOtherAppearance
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-appearance')
@@ -6300,7 +6307,7 @@ class XMLOtherArticulation(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeOtherPlacementText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-articulation')
@@ -6318,7 +6325,7 @@ class XMLOtherDirection(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeOtherDirection
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-direction')
@@ -6336,7 +6343,7 @@ class XMLOtherDynamics(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeOtherText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-dynamics')
@@ -6354,7 +6361,7 @@ class XMLOtherListen(XMLElement):
 
 ``Possible parents``::obj:`~XMLListen`
     """
-    
+
     TYPE = XSDComplexTypeOtherListening
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-listen')
@@ -6372,7 +6379,7 @@ class XMLOtherListening(XMLElement):
 
 ``Possible parents``::obj:`~XMLListening`
     """
-    
+
     TYPE = XSDComplexTypeOtherListening
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-listening')
@@ -6390,7 +6397,7 @@ class XMLOtherNotation(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeOtherNotation
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-notation')
@@ -6410,7 +6417,7 @@ class XMLOtherOrnament(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeOtherPlacementText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-ornament')
@@ -6430,7 +6437,7 @@ class XMLOtherPercussion(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeOtherText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-percussion')
@@ -6448,7 +6455,7 @@ class XMLOtherPlay(XMLElement):
 
 ``Possible parents``::obj:`~XMLPlay`
     """
-    
+
     TYPE = XSDComplexTypeOtherPlay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-play')
@@ -6468,7 +6475,7 @@ class XMLOtherTechnical(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeOtherPlacementText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('other-technical')
@@ -6484,7 +6491,7 @@ class XMLP(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('p')
@@ -6502,7 +6509,7 @@ class XMLPageHeight(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('page-height')
@@ -6534,7 +6541,7 @@ class XMLPageLayout(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`, :obj:`~XMLPrint`
     """
-    
+
     TYPE = XSDComplexTypePageLayout
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('page-layout')
@@ -6567,7 +6574,7 @@ class XMLPageMargins(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageLayout`
     """
-    
+
     TYPE = XSDComplexTypePageMargins
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('page-margins')
@@ -6585,7 +6592,7 @@ class XMLPageWidth(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('page-width')
@@ -6603,7 +6610,7 @@ class XMLPan(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeRotationDegrees
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pan')
@@ -6628,7 +6635,7 @@ class XMLPart(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypePart
     _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']//{*}element[@name='part']"
     XSD_TREE = XSD_TREE_DICT['element'].get('part')
@@ -6646,7 +6653,7 @@ class XMLPartAbbreviation(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypePartName
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-abbreviation')
@@ -6675,7 +6682,7 @@ class XMLPartAbbreviationDisplay(XMLElement):
 
 ``Possible parents``::obj:`~XMLPrint`, :obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypeNameDisplay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-abbreviation-display')
@@ -6705,7 +6712,7 @@ class XMLPartClef(XMLElement):
 
 ``Possible parents``::obj:`~XMLForPart`
     """
-    
+
     TYPE = XSDComplexTypePartClef
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-clef')
@@ -6750,7 +6757,7 @@ class XMLPartGroup(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartList`
     """
-    
+
     TYPE = XSDComplexTypePartGroup
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-group')
@@ -6776,7 +6783,7 @@ class XMLPartLink(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypePartLink
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-link')
@@ -6813,7 +6820,7 @@ class XMLPartList(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypePartList
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-list')
@@ -6831,7 +6838,7 @@ class XMLPartName(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypePartName
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-name')
@@ -6860,7 +6867,7 @@ class XMLPartNameDisplay(XMLElement):
 
 ``Possible parents``::obj:`~XMLPrint`, :obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypeNameDisplay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-name-display')
@@ -6885,7 +6892,7 @@ class XMLPartSymbol(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypePartSymbol
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-symbol')
@@ -6916,7 +6923,7 @@ class XMLPartTranspose(XMLElement):
 
 ``Possible parents``::obj:`~XMLForPart`
     """
-    
+
     TYPE = XSDComplexTypePartTranspose
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('part-transpose')
@@ -6934,7 +6941,7 @@ class XMLPedal(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypePedal
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pedal')
@@ -6952,7 +6959,7 @@ class XMLPedalAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLPedalTuning`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pedal-alter')
@@ -6973,7 +6980,7 @@ class XMLPedalStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLPedalTuning`
     """
-    
+
     TYPE = XSDSimpleTypeStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pedal-step')
@@ -6999,7 +7006,7 @@ class XMLPedalTuning(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarpPedals`
     """
-    
+
     TYPE = XSDComplexTypePedalTuning
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pedal-tuning')
@@ -7017,7 +7024,7 @@ class XMLPerMinute(XMLElement):
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
-    
+
     TYPE = XSDComplexTypePerMinute
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('per-minute')
@@ -7054,7 +7061,7 @@ class XMLPercussion(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypePercussion
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('percussion')
@@ -7070,7 +7077,7 @@ class XMLPf(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pf')
@@ -7097,7 +7104,7 @@ class XMLPitch(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypePitch
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pitch')
@@ -7120,7 +7127,7 @@ class XMLPitched(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypePitched
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pitched')
@@ -7151,7 +7158,7 @@ class XMLPlay(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`, :obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypePlay
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('play')
@@ -7178,7 +7185,7 @@ class XMLPlayer(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypePlayer
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('player')
@@ -7194,7 +7201,7 @@ The player-name element is typically used within a software application, rather 
 
 ``Possible parents``::obj:`~XMLPlayer`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('player-name')
@@ -7214,7 +7221,7 @@ class XMLPlop(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyLine
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('plop')
@@ -7234,7 +7241,7 @@ class XMLPluck(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypePlacementText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pluck')
@@ -7250,7 +7257,7 @@ class XMLPp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pp')
@@ -7266,7 +7273,7 @@ class XMLPpp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ppp')
@@ -7282,7 +7289,7 @@ class XMLPppp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pppp')
@@ -7298,7 +7305,7 @@ class XMLPpppp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('ppppp')
@@ -7314,7 +7321,7 @@ class XMLPppppp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pppppp')
@@ -7332,7 +7339,7 @@ class XMLPreBend(XMLElement):
 
 ``Possible parents``::obj:`~XMLBend`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pre-bend')
@@ -7352,7 +7359,7 @@ class XMLPrefix(XMLElement):
 
 ``Possible parents``::obj:`~XMLFigure`
     """
-    
+
     TYPE = XSDComplexTypeStyleText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('prefix')
@@ -7370,7 +7377,7 @@ class XMLPrincipalVoice(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypePrincipalVoice
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('principal-voice')
@@ -7407,7 +7414,7 @@ class XMLPrint(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypePrint
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('print')
@@ -7425,7 +7432,7 @@ class XMLPullOff(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHammerOnPullOff
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('pull-off')
@@ -7443,7 +7450,7 @@ class XMLRehearsal(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeFormattedTextId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('rehearsal')
@@ -7463,7 +7470,7 @@ class XMLRelation(XMLElement):
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDComplexTypeTypedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('relation')
@@ -7481,7 +7488,7 @@ class XMLRelease(XMLElement):
 
 ``Possible parents``::obj:`~XMLBend`
     """
-    
+
     TYPE = XSDComplexTypeRelease
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('release')
@@ -7499,7 +7506,7 @@ class XMLRepeat(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`
     """
-    
+
     TYPE = XSDComplexTypeRepeat
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('repeat')
@@ -7529,7 +7536,7 @@ class XMLRest(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeRest
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('rest')
@@ -7545,7 +7552,7 @@ class XMLRf(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('rf')
@@ -7561,7 +7568,7 @@ class XMLRfz(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('rfz')
@@ -7579,7 +7586,7 @@ class XMLRightDivider(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemDividers`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPrintObjectStyleAlign
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('right-divider')
@@ -7597,7 +7604,7 @@ class XMLRightMargin(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageMargins`, :obj:`~XMLSystemMargins`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('right-margin')
@@ -7617,7 +7624,7 @@ class XMLRights(XMLElement):
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDComplexTypeTypedText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('rights')
@@ -7643,7 +7650,7 @@ class XMLRoot(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
-    
+
     TYPE = XSDComplexTypeRoot
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('root')
@@ -7665,7 +7672,7 @@ class XMLRootAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLRoot`
     """
-    
+
     TYPE = XSDComplexTypeHarmonyAlter
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('root-alter')
@@ -7688,7 +7695,7 @@ class XMLRootStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLRoot`
     """
-    
+
     TYPE = XSDComplexTypeRootStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('root-step')
@@ -7714,7 +7721,7 @@ class XMLScaling(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeScaling
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('scaling')
@@ -7734,7 +7741,7 @@ class XMLSchleifer(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('schleifer')
@@ -7754,7 +7761,7 @@ class XMLScoop(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyLine
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('scoop')
@@ -7781,7 +7788,7 @@ class XMLScordatura(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeScordatura
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('scordatura')
@@ -7820,7 +7827,7 @@ class XMLScoreInstrument(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
-    
+
     TYPE = XSDComplexTypeScoreInstrument
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('score-instrument')
@@ -7860,7 +7867,7 @@ class XMLScorePart(XMLElement):
 
 ``Possible parents``::obj:`~XMLPartList`
     """
-    
+
     TYPE = XSDComplexTypeScorePart
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('score-part')
@@ -7894,16 +7901,16 @@ The score-partwise element is the root element for a partwise MusicXML score. It
                    Element@name=part-list@minOccurs=1@maxOccurs=1
            Element@name=part@minOccurs=1@maxOccurs=unbounded
     """
-    
+
     TYPE = XSDComplexTypeScorePartwise
     _SEARCH_FOR_ELEMENT = ".//{*}element[@name='score-partwise']"
     XSD_TREE = XSD_TREE_DICT['element'].get('score-partwise')
 
-    def write(self, path: 'pathlib.Path', intelligent_choice: bool=False) -> None:
+    def write(self, path: 'pathlib.Path', intelligent_choice: bool = False) -> None:
         """
         :param path: Output xml file path, required.
         :param intelligent_choice: Set to True if you wish to use intelligent choice in final checks to be able to change the attachment 
-                                   order of XMLElement children in self.child_container_tree if an Exception was thrown and other choices 
+                                   order of :obj:`~musicxml.xmlelement.xmlelement.XMLElement` children in self.child_container_tree if an Exception was thrown and other choices 
                                    can still be checked. (No GUARANTEE!)
         :return: None
         """
@@ -7920,7 +7927,7 @@ class XMLSecond(XMLElement):
 
 ``Possible parents``::obj:`~XMLSwing`
     """
-    
+
     TYPE = XSDSimpleTypePositiveInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('second')
@@ -7938,7 +7945,7 @@ class XMLSegno(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeSegno
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('segno')
@@ -7957,7 +7964,7 @@ class XMLSemiPitched(XMLElement):
 
 ``Possible parents``::obj:`~XMLPlay`
     """
-    
+
     TYPE = XSDSimpleTypeSemiPitched
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('semi-pitched')
@@ -7973,7 +7980,7 @@ A senza-misura element explicitly indicates that no time signature is present. T
 
 ``Possible parents``::obj:`~XMLTime`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('senza-misura')
@@ -7989,7 +7996,7 @@ class XMLSf(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sf')
@@ -8005,7 +8012,7 @@ class XMLSffz(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sffz')
@@ -8021,7 +8028,7 @@ class XMLSfp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sfp')
@@ -8037,7 +8044,7 @@ class XMLSfpp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sfpp')
@@ -8053,7 +8060,7 @@ class XMLSfz(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sfz')
@@ -8069,7 +8076,7 @@ class XMLSfzp(XMLElement):
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sfzp')
@@ -8089,7 +8096,7 @@ class XMLShake(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyTrillSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('shake')
@@ -8112,7 +8119,7 @@ class XMLSign(XMLElement):
 
 ``Possible parents``::obj:`~XMLClef`, :obj:`~XMLPartClef`
     """
-    
+
     TYPE = XSDSimpleTypeClefSign
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sign')
@@ -8143,7 +8150,7 @@ class XMLSlash(XMLElement):
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
-    
+
     TYPE = XSDComplexTypeSlash
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('slash')
@@ -8161,7 +8168,7 @@ class XMLSlashDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLBeatRepeat`, :obj:`~XMLSlash`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('slash-dot')
@@ -8182,7 +8189,7 @@ class XMLSlashType(XMLElement):
 
 ``Possible parents``::obj:`~XMLBeatRepeat`, :obj:`~XMLSlash`
     """
-    
+
     TYPE = XSDSimpleTypeNoteTypeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('slash-type')
@@ -8200,7 +8207,7 @@ class XMLSlide(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeSlide
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('slide')
@@ -8218,7 +8225,7 @@ class XMLSlur(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeSlur
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('slur')
@@ -8238,7 +8245,7 @@ class XMLSmear(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('smear')
@@ -8258,7 +8265,7 @@ class XMLSnapPizzicato(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('snap-pizzicato')
@@ -8278,7 +8285,7 @@ class XMLSoftAccent(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('soft-accent')
@@ -8292,7 +8299,7 @@ class XMLSoftware(XMLElement):
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('software')
@@ -8310,7 +8317,7 @@ class XMLSolo(XMLElement):
 
 ``Possible parents``::obj:`~XMLInstrumentChange`, :obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('solo')
@@ -8369,7 +8376,7 @@ class XMLSound(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLMeasure`
     """
-    
+
     TYPE = XSDComplexTypeSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sound')
@@ -8387,7 +8394,7 @@ class XMLSoundingPitch(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonic`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sounding-pitch')
@@ -8403,7 +8410,7 @@ The source for the music that is encoded. This is similar to the Dublin Core sou
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('source')
@@ -8423,7 +8430,7 @@ class XMLSpiccato(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('spiccato')
@@ -8443,7 +8450,7 @@ class XMLStaccatissimo(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staccatissimo')
@@ -8463,7 +8470,7 @@ class XMLStaccato(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staccato')
@@ -8479,7 +8486,7 @@ Staff assignment is only needed for music notated on multiple staves. Used by bo
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLForward`, :obj:`~XMLHarmony`, :obj:`~XMLNote`
     """
-    
+
     TYPE = XSDSimpleTypePositiveInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff')
@@ -8514,7 +8521,7 @@ class XMLStaffDetails(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeStaffDetails
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-details')
@@ -8532,7 +8539,7 @@ class XMLStaffDistance(XMLElement):
 
 ``Possible parents``::obj:`~XMLStaffLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-distance')
@@ -8550,7 +8557,7 @@ class XMLStaffDivide(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeStaffDivide
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-divide')
@@ -8579,7 +8586,7 @@ class XMLStaffLayout(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`, :obj:`~XMLPrint`
     """
-    
+
     TYPE = XSDComplexTypeStaffLayout
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-layout')
@@ -8595,7 +8602,7 @@ The staff-lines element specifies the number of lines and is usually used for a 
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-lines')
@@ -8617,7 +8624,7 @@ class XMLStaffSize(XMLElement):
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDComplexTypeStaffSize
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-size')
@@ -8647,7 +8654,7 @@ class XMLStaffTuning(XMLElement):
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDComplexTypeStaffTuning
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-tuning')
@@ -8666,7 +8673,7 @@ class XMLStaffType(XMLElement):
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
-    
+
     TYPE = XSDSimpleTypeStaffType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staff-type')
@@ -8682,7 +8689,7 @@ The staves element is used if there is more than one staff represented in the gi
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDSimpleTypeNonNegativeInteger
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('staves')
@@ -8705,7 +8712,7 @@ class XMLStem(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeStem
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stem')
@@ -8724,7 +8731,7 @@ class XMLStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLPitch`
     """
-    
+
     TYPE = XSDSimpleTypeStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('step')
@@ -8752,7 +8759,7 @@ class XMLStick(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeStick
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stick')
@@ -8771,7 +8778,7 @@ class XMLStickLocation(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDSimpleTypeStickLocation
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stick-location')
@@ -8790,7 +8797,7 @@ class XMLStickMaterial(XMLElement):
 
 ``Possible parents``::obj:`~XMLStick`
     """
-    
+
     TYPE = XSDSimpleTypeStickMaterial
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stick-material')
@@ -8809,7 +8816,7 @@ class XMLStickType(XMLElement):
 
 ``Possible parents``::obj:`~XMLStick`
     """
-    
+
     TYPE = XSDSimpleTypeStickType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stick-type')
@@ -8829,7 +8836,7 @@ class XMLStopped(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacementSmufl
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stopped')
@@ -8845,7 +8852,7 @@ class XMLStraight(XMLElement):
 
 ``Possible parents``::obj:`~XMLSwing`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('straight')
@@ -8865,7 +8872,7 @@ class XMLStress(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('stress')
@@ -8885,7 +8892,7 @@ class XMLString(XMLElement):
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('string')
@@ -8903,7 +8910,7 @@ class XMLStringMute(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeStringMute
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('string-mute')
@@ -8923,7 +8930,7 @@ class XMLStrongAccent(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeStrongAccent
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('strong-accent')
@@ -8943,7 +8950,7 @@ class XMLSuffix(XMLElement):
 
 ``Possible parents``::obj:`~XMLFigure`
     """
-    
+
     TYPE = XSDComplexTypeStyleText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('suffix')
@@ -8961,7 +8968,7 @@ class XMLSupports(XMLElement):
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
-    
+
     TYPE = XSDComplexTypeSupports
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('supports')
@@ -9002,7 +9009,7 @@ class XMLSwing(XMLElement):
 
 ``Possible parents``::obj:`~XMLSound`
     """
-    
+
     TYPE = XSDComplexTypeSwing
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('swing')
@@ -9016,7 +9023,7 @@ class XMLSwingStyle(XMLElement):
 
 ``Possible parents``::obj:`~XMLSwing`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('swing-style')
@@ -9035,7 +9042,7 @@ class XMLSwingType(XMLElement):
 
 ``Possible parents``::obj:`~XMLSwing`
     """
-    
+
     TYPE = XSDSimpleTypeSwingTypeValue
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('swing-type')
@@ -9054,7 +9061,7 @@ class XMLSyllabic(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDSimpleTypeSyllabic
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('syllabic')
@@ -9076,7 +9083,7 @@ class XMLSymbol(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeFormattedSymbolId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('symbol')
@@ -9096,7 +9103,7 @@ class XMLSync(XMLElement):
 
 ``Possible parents``::obj:`~XMLListening`
     """
-    
+
     TYPE = XSDComplexTypeSync
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('sync')
@@ -9114,7 +9121,7 @@ class XMLSystemDistance(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('system-distance')
@@ -9142,7 +9149,7 @@ class XMLSystemDividers(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemLayout`
     """
-    
+
     TYPE = XSDComplexTypeSystemDividers
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('system-dividers')
@@ -9176,7 +9183,7 @@ class XMLSystemLayout(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`, :obj:`~XMLPrint`
     """
-    
+
     TYPE = XSDComplexTypeSystemLayout
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('system-layout')
@@ -9203,7 +9210,7 @@ class XMLSystemMargins(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemLayout`
     """
-    
+
     TYPE = XSDComplexTypeSystemMargins
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('system-margins')
@@ -9221,7 +9228,7 @@ class XMLTap(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeTap
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tap')
@@ -9278,7 +9285,7 @@ class XMLTechnical(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeTechnical
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('technical')
@@ -9296,7 +9303,7 @@ class XMLTenths(XMLElement):
 
 ``Possible parents``::obj:`~XMLScaling`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tenths')
@@ -9316,7 +9323,7 @@ class XMLTenuto(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tenuto')
@@ -9334,7 +9341,7 @@ class XMLText(XMLElement):
 
 ``Possible parents``::obj:`~XMLLyric`
     """
-    
+
     TYPE = XSDComplexTypeTextElementData
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('text')
@@ -9354,7 +9361,7 @@ class XMLThumbPosition(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('thumb-position')
@@ -9372,7 +9379,7 @@ class XMLTie(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeTie
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tie')
@@ -9398,7 +9405,7 @@ class XMLTied(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeTied
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tied')
@@ -9435,7 +9442,7 @@ class XMLTime(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeTime
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('time')
@@ -9464,7 +9471,7 @@ class XMLTimeModification(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeTimeModification
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('time-modification')
@@ -9483,7 +9490,7 @@ class XMLTimeRelation(XMLElement):
 
 ``Possible parents``::obj:`~XMLInterchangeable`
     """
-    
+
     TYPE = XSDSimpleTypeTimeRelation
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('time-relation')
@@ -9501,7 +9508,7 @@ class XMLTimpani(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeTimpani
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('timpani')
@@ -9519,7 +9526,7 @@ class XMLToe(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeHeelToe
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('toe')
@@ -9537,7 +9544,7 @@ class XMLTopMargin(XMLElement):
 
 ``Possible parents``::obj:`~XMLPageMargins`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('top-margin')
@@ -9555,7 +9562,7 @@ class XMLTopSystemDistance(XMLElement):
 
 ``Possible parents``::obj:`~XMLSystemLayout`
     """
-    
+
     TYPE = XSDSimpleTypeTenths
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('top-system-distance')
@@ -9573,7 +9580,7 @@ class XMLTouchingPitch(XMLElement):
 
 ``Possible parents``::obj:`~XMLHarmonic`
     """
-    
+
     TYPE = XSDComplexTypeEmpty
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('touching-pitch')
@@ -9606,7 +9613,7 @@ class XMLTranspose(XMLElement):
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
-    
+
     TYPE = XSDComplexTypeTranspose
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('transpose')
@@ -9632,7 +9639,7 @@ class XMLTremolo(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeTremolo
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tremolo')
@@ -9652,7 +9659,7 @@ class XMLTrillMark(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyTrillSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('trill-mark')
@@ -9672,7 +9679,7 @@ class XMLTripleTongue(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('triple-tongue')
@@ -9690,7 +9697,7 @@ class XMLTuningAlter(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccord`, :obj:`~XMLStaffTuning`
     """
-    
+
     TYPE = XSDSimpleTypeSemitones
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuning-alter')
@@ -9708,7 +9715,7 @@ class XMLTuningOctave(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccord`, :obj:`~XMLStaffTuning`
     """
-    
+
     TYPE = XSDSimpleTypeOctave
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuning-octave')
@@ -9729,7 +9736,7 @@ class XMLTuningStep(XMLElement):
 
 ``Possible parents``::obj:`~XMLAccord`, :obj:`~XMLStaffTuning`
     """
-    
+
     TYPE = XSDSimpleTypeStep
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuning-step')
@@ -9761,7 +9768,7 @@ class XMLTuplet(XMLElement):
 
 ``Possible parents``::obj:`~XMLNotations`
     """
-    
+
     TYPE = XSDComplexTypeTuplet
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet')
@@ -9790,7 +9797,7 @@ class XMLTupletActual(XMLElement):
 
 ``Possible parents``::obj:`~XMLTuplet`
     """
-    
+
     TYPE = XSDComplexTypeTupletPortion
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet-actual')
@@ -9808,7 +9815,7 @@ class XMLTupletDot(XMLElement):
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
-    
+
     TYPE = XSDComplexTypeTupletDot
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet-dot')
@@ -9837,7 +9844,7 @@ class XMLTupletNormal(XMLElement):
 
 ``Possible parents``::obj:`~XMLTuplet`
     """
-    
+
     TYPE = XSDComplexTypeTupletPortion
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet-normal')
@@ -9855,7 +9862,7 @@ class XMLTupletNumber(XMLElement):
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
-    
+
     TYPE = XSDComplexTypeTupletNumber
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet-number')
@@ -9878,7 +9885,7 @@ class XMLTupletType(XMLElement):
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
-    
+
     TYPE = XSDComplexTypeTupletType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('tuplet-type')
@@ -9898,7 +9905,7 @@ class XMLTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeHorizontalTurn
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('turn')
@@ -9921,7 +9928,7 @@ class XMLType(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeNoteType
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('type')
@@ -9949,7 +9956,7 @@ class XMLUnpitched(XMLElement):
 
 ``Possible parents``::obj:`~XMLNote`
     """
-    
+
     TYPE = XSDComplexTypeUnpitched
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('unpitched')
@@ -9969,7 +9976,7 @@ class XMLUnstress(XMLElement):
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('unstress')
@@ -9989,7 +9996,7 @@ class XMLUpBow(XMLElement):
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
-    
+
     TYPE = XSDComplexTypeEmptyPlacement
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('up-bow')
@@ -10009,7 +10016,7 @@ class XMLVerticalTurn(XMLElement):
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeEmptyTrillSound
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('vertical-turn')
@@ -10035,7 +10042,7 @@ class XMLVirtualInstrument(XMLElement):
 
 ``Possible parents``::obj:`~XMLInstrumentChange`, :obj:`~XMLScoreInstrument`
     """
-    
+
     TYPE = XSDComplexTypeVirtualInstrument
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('virtual-instrument')
@@ -10051,7 +10058,7 @@ The virtual-library element indicates the virtual instrument library name.
 
 ``Possible parents``::obj:`~XMLVirtualInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('virtual-library')
@@ -10067,7 +10074,7 @@ The virtual-name element indicates the library-specific name for the virtual ins
 
 ``Possible parents``::obj:`~XMLVirtualInstrument`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('virtual-name')
@@ -10081,7 +10088,7 @@ class XMLVoice(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLForward`, :obj:`~XMLNote`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('voice')
@@ -10099,7 +10106,7 @@ class XMLVolume(XMLElement):
 
 ``Possible parents``::obj:`~XMLMidiInstrument`
     """
-    
+
     TYPE = XSDSimpleTypePercent
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('volume')
@@ -10117,7 +10124,7 @@ class XMLWait(XMLElement):
 
 ``Possible parents``::obj:`~XMLListen`
     """
-    
+
     TYPE = XSDComplexTypeWait
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('wait')
@@ -10135,7 +10142,7 @@ class XMLWavyLine(XMLElement):
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLOrnaments`
     """
-    
+
     TYPE = XSDComplexTypeWavyLine
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('wavy-line')
@@ -10153,7 +10160,7 @@ class XMLWedge(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeWedge
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('wedge')
@@ -10173,7 +10180,7 @@ class XMLWithBar(XMLElement):
 
 ``Possible parents``::obj:`~XMLBend`
     """
-    
+
     TYPE = XSDComplexTypePlacementText
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('with-bar')
@@ -10196,7 +10203,7 @@ class XMLWood(XMLElement):
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
-    
+
     TYPE = XSDComplexTypeWood
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('wood')
@@ -10214,7 +10221,7 @@ class XMLWordFont(XMLElement):
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
-    
+
     TYPE = XSDComplexTypeEmptyFont
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('word-font')
@@ -10232,7 +10239,7 @@ class XMLWords(XMLElement):
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
-    
+
     TYPE = XSDComplexTypeFormattedTextId
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('words')
@@ -10259,7 +10266,7 @@ class XMLWork(XMLElement):
 
 ``Possible parents``::obj:`~XMLScorePartwise`
     """
-    
+
     TYPE = XSDComplexTypeWork
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('work')
@@ -10275,7 +10282,7 @@ The work-number element specifies the number of a work, such as its opus number.
 
 ``Possible parents``::obj:`~XMLWork`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('work-number')
@@ -10291,9 +10298,77 @@ The work-title element specifies the title of a work, not including its opus or 
 
 ``Possible parents``::obj:`~XMLWork`
     """
-    
+
     TYPE = XSDSimpleTypeString
     _SEARCH_FOR_ELEMENT = None
     XSD_TREE = XSD_TREE_DICT['element'].get('work-title')
 
-__all__=['XMLAccent', 'XMLAccidental', 'XMLAccidentalMark', 'XMLAccidentalText', 'XMLAccord', 'XMLAccordionHigh', 'XMLAccordionLow', 'XMLAccordionMiddle', 'XMLAccordionRegistration', 'XMLActualNotes', 'XMLAlter', 'XMLAppearance', 'XMLArpeggiate', 'XMLArrow', 'XMLArrowDirection', 'XMLArrowStyle', 'XMLArrowhead', 'XMLArticulations', 'XMLArtificial', 'XMLAssess', 'XMLAttributes', 'XMLBackup', 'XMLBarStyle', 'XMLBarline', 'XMLBarre', 'XMLBasePitch', 'XMLBass', 'XMLBassAlter', 'XMLBassSeparator', 'XMLBassStep', 'XMLBeam', 'XMLBeatRepeat', 'XMLBeatType', 'XMLBeatUnit', 'XMLBeatUnitDot', 'XMLBeatUnitTied', 'XMLBeater', 'XMLBeats', 'XMLBend', 'XMLBendAlter', 'XMLBookmark', 'XMLBottomMargin', 'XMLBracket', 'XMLBrassBend', 'XMLBreathMark', 'XMLCaesura', 'XMLCancel', 'XMLCapo', 'XMLChord', 'XMLChromatic', 'XMLCircularArrow', 'XMLClef', 'XMLClefOctaveChange', 'XMLCoda', 'XMLConcertScore', 'XMLCreator', 'XMLCredit', 'XMLCreditImage', 'XMLCreditSymbol', 'XMLCreditType', 'XMLCreditWords', 'XMLCue', 'XMLDamp', 'XMLDampAll', 'XMLDashes', 'XMLDefaults', 'XMLDegree', 'XMLDegreeAlter', 'XMLDegreeType', 'XMLDegreeValue', 'XMLDelayedInvertedTurn', 'XMLDelayedTurn', 'XMLDetachedLegato', 'XMLDiatonic', 'XMLDirection', 'XMLDirectionType', 'XMLDirective', 'XMLDisplayOctave', 'XMLDisplayStep', 'XMLDisplayText', 'XMLDistance', 'XMLDivisions', 'XMLDoit', 'XMLDot', 'XMLDouble', 'XMLDoubleTongue', 'XMLDownBow', 'XMLDuration', 'XMLDynamics', 'XMLEffect', 'XMLElevation', 'XMLElision', 'XMLEncoder', 'XMLEncoding', 'XMLEncodingDate', 'XMLEncodingDescription', 'XMLEndLine', 'XMLEndParagraph', 'XMLEnding', 'XMLEnsemble', 'XMLExceptVoice', 'XMLExtend', 'XMLEyeglasses', 'XMLF', 'XMLFalloff', 'XMLFeature', 'XMLFermata', 'XMLFf', 'XMLFff', 'XMLFfff', 'XMLFffff', 'XMLFfffff', 'XMLFifths', 'XMLFigure', 'XMLFigureNumber', 'XMLFiguredBass', 'XMLFingering', 'XMLFingernails', 'XMLFirst', 'XMLFirstFret', 'XMLFlip', 'XMLFootnote', 'XMLForPart', 'XMLForward', 'XMLFp', 'XMLFrame', 'XMLFrameFrets', 'XMLFrameNote', 'XMLFrameStrings', 'XMLFret', 'XMLFunction', 'XMLFz', 'XMLGlass', 'XMLGlissando', 'XMLGlyph', 'XMLGolpe', 'XMLGrace', 'XMLGroup', 'XMLGroupAbbreviation', 'XMLGroupAbbreviationDisplay', 'XMLGroupBarline', 'XMLGroupLink', 'XMLGroupName', 'XMLGroupNameDisplay', 'XMLGroupSymbol', 'XMLGroupTime', 'XMLGrouping', 'XMLHalfMuted', 'XMLHammerOn', 'XMLHandbell', 'XMLHarmonClosed', 'XMLHarmonMute', 'XMLHarmonic', 'XMLHarmony', 'XMLHarpPedals', 'XMLHaydn', 'XMLHeel', 'XMLHole', 'XMLHoleClosed', 'XMLHoleShape', 'XMLHoleType', 'XMLHumming', 'XMLIdentification', 'XMLImage', 'XMLInstrument', 'XMLInstrumentAbbreviation', 'XMLInstrumentChange', 'XMLInstrumentLink', 'XMLInstrumentName', 'XMLInstrumentSound', 'XMLInstruments', 'XMLInterchangeable', 'XMLInversion', 'XMLInvertedMordent', 'XMLInvertedTurn', 'XMLInvertedVerticalTurn', 'XMLIpa', 'XMLKey', 'XMLKeyAccidental', 'XMLKeyAlter', 'XMLKeyOctave', 'XMLKeyStep', 'XMLKind', 'XMLLaughing', 'XMLLeftDivider', 'XMLLeftMargin', 'XMLLevel', 'XMLLine', 'XMLLineDetail', 'XMLLineWidth', 'XMLLink', 'XMLListen', 'XMLListening', 'XMLLyric', 'XMLLyricFont', 'XMLLyricLanguage', 'XMLMeasure', 'XMLMeasureDistance', 'XMLMeasureLayout', 'XMLMeasureNumbering', 'XMLMeasureRepeat', 'XMLMeasureStyle', 'XMLMembrane', 'XMLMetal', 'XMLMetronome', 'XMLMetronomeArrows', 'XMLMetronomeBeam', 'XMLMetronomeDot', 'XMLMetronomeNote', 'XMLMetronomeRelation', 'XMLMetronomeTied', 'XMLMetronomeTuplet', 'XMLMetronomeType', 'XMLMf', 'XMLMidiBank', 'XMLMidiChannel', 'XMLMidiDevice', 'XMLMidiInstrument', 'XMLMidiName', 'XMLMidiProgram', 'XMLMidiUnpitched', 'XMLMillimeters', 'XMLMiscellaneous', 'XMLMiscellaneousField', 'XMLMode', 'XMLMordent', 'XMLMovementNumber', 'XMLMovementTitle', 'XMLMp', 'XMLMultipleRest', 'XMLMusicFont', 'XMLMute', 'XMLN', 'XMLNatural', 'XMLNonArpeggiate', 'XMLNormalDot', 'XMLNormalNotes', 'XMLNormalType', 'XMLNotations', 'XMLNote', 'XMLNoteSize', 'XMLNotehead', 'XMLNoteheadText', 'XMLNumeral', 'XMLNumeralAlter', 'XMLNumeralFifths', 'XMLNumeralKey', 'XMLNumeralMode', 'XMLNumeralRoot', 'XMLOctave', 'XMLOctaveChange', 'XMLOctaveShift', 'XMLOffset', 'XMLOpen', 'XMLOpenString', 'XMLOpus', 'XMLOrnaments', 'XMLOtherAppearance', 'XMLOtherArticulation', 'XMLOtherDirection', 'XMLOtherDynamics', 'XMLOtherListen', 'XMLOtherListening', 'XMLOtherNotation', 'XMLOtherOrnament', 'XMLOtherPercussion', 'XMLOtherPlay', 'XMLOtherTechnical', 'XMLP', 'XMLPageHeight', 'XMLPageLayout', 'XMLPageMargins', 'XMLPageWidth', 'XMLPan', 'XMLPart', 'XMLPartAbbreviation', 'XMLPartAbbreviationDisplay', 'XMLPartClef', 'XMLPartGroup', 'XMLPartLink', 'XMLPartList', 'XMLPartName', 'XMLPartNameDisplay', 'XMLPartSymbol', 'XMLPartTranspose', 'XMLPedal', 'XMLPedalAlter', 'XMLPedalStep', 'XMLPedalTuning', 'XMLPerMinute', 'XMLPercussion', 'XMLPf', 'XMLPitch', 'XMLPitched', 'XMLPlay', 'XMLPlayer', 'XMLPlayerName', 'XMLPlop', 'XMLPluck', 'XMLPp', 'XMLPpp', 'XMLPppp', 'XMLPpppp', 'XMLPppppp', 'XMLPreBend', 'XMLPrefix', 'XMLPrincipalVoice', 'XMLPrint', 'XMLPullOff', 'XMLRehearsal', 'XMLRelation', 'XMLRelease', 'XMLRepeat', 'XMLRest', 'XMLRf', 'XMLRfz', 'XMLRightDivider', 'XMLRightMargin', 'XMLRights', 'XMLRoot', 'XMLRootAlter', 'XMLRootStep', 'XMLScaling', 'XMLSchleifer', 'XMLScoop', 'XMLScordatura', 'XMLScoreInstrument', 'XMLScorePart', 'XMLScorePartwise', 'XMLSecond', 'XMLSegno', 'XMLSemiPitched', 'XMLSenzaMisura', 'XMLSf', 'XMLSffz', 'XMLSfp', 'XMLSfpp', 'XMLSfz', 'XMLSfzp', 'XMLShake', 'XMLSign', 'XMLSlash', 'XMLSlashDot', 'XMLSlashType', 'XMLSlide', 'XMLSlur', 'XMLSmear', 'XMLSnapPizzicato', 'XMLSoftAccent', 'XMLSoftware', 'XMLSolo', 'XMLSound', 'XMLSoundingPitch', 'XMLSource', 'XMLSpiccato', 'XMLStaccatissimo', 'XMLStaccato', 'XMLStaff', 'XMLStaffDetails', 'XMLStaffDistance', 'XMLStaffDivide', 'XMLStaffLayout', 'XMLStaffLines', 'XMLStaffSize', 'XMLStaffTuning', 'XMLStaffType', 'XMLStaves', 'XMLStem', 'XMLStep', 'XMLStick', 'XMLStickLocation', 'XMLStickMaterial', 'XMLStickType', 'XMLStopped', 'XMLStraight', 'XMLStress', 'XMLString', 'XMLStringMute', 'XMLStrongAccent', 'XMLSuffix', 'XMLSupports', 'XMLSwing', 'XMLSwingStyle', 'XMLSwingType', 'XMLSyllabic', 'XMLSymbol', 'XMLSync', 'XMLSystemDistance', 'XMLSystemDividers', 'XMLSystemLayout', 'XMLSystemMargins', 'XMLTap', 'XMLTechnical', 'XMLTenths', 'XMLTenuto', 'XMLText', 'XMLThumbPosition', 'XMLTie', 'XMLTied', 'XMLTime', 'XMLTimeModification', 'XMLTimeRelation', 'XMLTimpani', 'XMLToe', 'XMLTopMargin', 'XMLTopSystemDistance', 'XMLTouchingPitch', 'XMLTranspose', 'XMLTremolo', 'XMLTrillMark', 'XMLTripleTongue', 'XMLTuningAlter', 'XMLTuningOctave', 'XMLTuningStep', 'XMLTuplet', 'XMLTupletActual', 'XMLTupletDot', 'XMLTupletNormal', 'XMLTupletNumber', 'XMLTupletType', 'XMLTurn', 'XMLType', 'XMLUnpitched', 'XMLUnstress', 'XMLUpBow', 'XMLVerticalTurn', 'XMLVirtualInstrument', 'XMLVirtualLibrary', 'XMLVirtualName', 'XMLVoice', 'XMLVolume', 'XMLWait', 'XMLWavyLine', 'XMLWedge', 'XMLWithBar', 'XMLWood', 'XMLWordFont', 'XMLWords', 'XMLWork', 'XMLWorkNumber', 'XMLWorkTitle']
+
+__all__ = ['XMLAccent', 'XMLAccidental', 'XMLAccidentalMark', 'XMLAccidentalText', 'XMLAccord', 'XMLAccordionHigh',
+           'XMLAccordionLow', 'XMLAccordionMiddle', 'XMLAccordionRegistration', 'XMLActualNotes', 'XMLAlter',
+           'XMLAppearance', 'XMLArpeggiate', 'XMLArrow', 'XMLArrowDirection', 'XMLArrowStyle', 'XMLArrowhead',
+           'XMLArticulations', 'XMLArtificial', 'XMLAssess', 'XMLAttributes', 'XMLBackup', 'XMLBarStyle', 'XMLBarline',
+           'XMLBarre', 'XMLBasePitch', 'XMLBass', 'XMLBassAlter', 'XMLBassSeparator', 'XMLBassStep', 'XMLBeam',
+           'XMLBeatRepeat', 'XMLBeatType', 'XMLBeatUnit', 'XMLBeatUnitDot', 'XMLBeatUnitTied', 'XMLBeater', 'XMLBeats',
+           'XMLBend', 'XMLBendAlter', 'XMLBookmark', 'XMLBottomMargin', 'XMLBracket', 'XMLBrassBend', 'XMLBreathMark',
+           'XMLCaesura', 'XMLCancel', 'XMLCapo', 'XMLChord', 'XMLChromatic', 'XMLCircularArrow', 'XMLClef',
+           'XMLClefOctaveChange', 'XMLCoda', 'XMLConcertScore', 'XMLCreator', 'XMLCredit', 'XMLCreditImage',
+           'XMLCreditSymbol', 'XMLCreditType', 'XMLCreditWords', 'XMLCue', 'XMLDamp', 'XMLDampAll', 'XMLDashes',
+           'XMLDefaults', 'XMLDegree', 'XMLDegreeAlter', 'XMLDegreeType', 'XMLDegreeValue', 'XMLDelayedInvertedTurn',
+           'XMLDelayedTurn', 'XMLDetachedLegato', 'XMLDiatonic', 'XMLDirection', 'XMLDirectionType', 'XMLDirective',
+           'XMLDisplayOctave', 'XMLDisplayStep', 'XMLDisplayText', 'XMLDistance', 'XMLDivisions', 'XMLDoit', 'XMLDot',
+           'XMLDouble', 'XMLDoubleTongue', 'XMLDownBow', 'XMLDuration', 'XMLDynamics', 'XMLEffect', 'XMLElevation',
+           'XMLElision', 'XMLEncoder', 'XMLEncoding', 'XMLEncodingDate', 'XMLEncodingDescription', 'XMLEndLine',
+           'XMLEndParagraph', 'XMLEnding', 'XMLEnsemble', 'XMLExceptVoice', 'XMLExtend', 'XMLEyeglasses', 'XMLF',
+           'XMLFalloff', 'XMLFeature', 'XMLFermata', 'XMLFf', 'XMLFff', 'XMLFfff', 'XMLFffff', 'XMLFfffff', 'XMLFifths',
+           'XMLFigure', 'XMLFigureNumber', 'XMLFiguredBass', 'XMLFingering', 'XMLFingernails', 'XMLFirst',
+           'XMLFirstFret', 'XMLFlip', 'XMLFootnote', 'XMLForPart', 'XMLForward', 'XMLFp', 'XMLFrame', 'XMLFrameFrets',
+           'XMLFrameNote', 'XMLFrameStrings', 'XMLFret', 'XMLFunction', 'XMLFz', 'XMLGlass', 'XMLGlissando', 'XMLGlyph',
+           'XMLGolpe', 'XMLGrace', 'XMLGroup', 'XMLGroupAbbreviation', 'XMLGroupAbbreviationDisplay', 'XMLGroupBarline',
+           'XMLGroupLink', 'XMLGroupName', 'XMLGroupNameDisplay', 'XMLGroupSymbol', 'XMLGroupTime', 'XMLGrouping',
+           'XMLHalfMuted', 'XMLHammerOn', 'XMLHandbell', 'XMLHarmonClosed', 'XMLHarmonMute', 'XMLHarmonic',
+           'XMLHarmony', 'XMLHarpPedals', 'XMLHaydn', 'XMLHeel', 'XMLHole', 'XMLHoleClosed', 'XMLHoleShape',
+           'XMLHoleType', 'XMLHumming', 'XMLIdentification', 'XMLImage', 'XMLInstrument', 'XMLInstrumentAbbreviation',
+           'XMLInstrumentChange', 'XMLInstrumentLink', 'XMLInstrumentName', 'XMLInstrumentSound', 'XMLInstruments',
+           'XMLInterchangeable', 'XMLInversion', 'XMLInvertedMordent', 'XMLInvertedTurn', 'XMLInvertedVerticalTurn',
+           'XMLIpa', 'XMLKey', 'XMLKeyAccidental', 'XMLKeyAlter', 'XMLKeyOctave', 'XMLKeyStep', 'XMLKind',
+           'XMLLaughing', 'XMLLeftDivider', 'XMLLeftMargin', 'XMLLevel', 'XMLLine', 'XMLLineDetail', 'XMLLineWidth',
+           'XMLLink', 'XMLListen', 'XMLListening', 'XMLLyric', 'XMLLyricFont', 'XMLLyricLanguage', 'XMLMeasure',
+           'XMLMeasureDistance', 'XMLMeasureLayout', 'XMLMeasureNumbering', 'XMLMeasureRepeat', 'XMLMeasureStyle',
+           'XMLMembrane', 'XMLMetal', 'XMLMetronome', 'XMLMetronomeArrows', 'XMLMetronomeBeam', 'XMLMetronomeDot',
+           'XMLMetronomeNote', 'XMLMetronomeRelation', 'XMLMetronomeTied', 'XMLMetronomeTuplet', 'XMLMetronomeType',
+           'XMLMf', 'XMLMidiBank', 'XMLMidiChannel', 'XMLMidiDevice', 'XMLMidiInstrument', 'XMLMidiName',
+           'XMLMidiProgram', 'XMLMidiUnpitched', 'XMLMillimeters', 'XMLMiscellaneous', 'XMLMiscellaneousField',
+           'XMLMode', 'XMLMordent', 'XMLMovementNumber', 'XMLMovementTitle', 'XMLMp', 'XMLMultipleRest', 'XMLMusicFont',
+           'XMLMute', 'XMLN', 'XMLNatural', 'XMLNonArpeggiate', 'XMLNormalDot', 'XMLNormalNotes', 'XMLNormalType',
+           'XMLNotations', 'XMLNote', 'XMLNoteSize', 'XMLNotehead', 'XMLNoteheadText', 'XMLNumeral', 'XMLNumeralAlter',
+           'XMLNumeralFifths', 'XMLNumeralKey', 'XMLNumeralMode', 'XMLNumeralRoot', 'XMLOctave', 'XMLOctaveChange',
+           'XMLOctaveShift', 'XMLOffset', 'XMLOpen', 'XMLOpenString', 'XMLOpus', 'XMLOrnaments', 'XMLOtherAppearance',
+           'XMLOtherArticulation', 'XMLOtherDirection', 'XMLOtherDynamics', 'XMLOtherListen', 'XMLOtherListening',
+           'XMLOtherNotation', 'XMLOtherOrnament', 'XMLOtherPercussion', 'XMLOtherPlay', 'XMLOtherTechnical', 'XMLP',
+           'XMLPageHeight', 'XMLPageLayout', 'XMLPageMargins', 'XMLPageWidth', 'XMLPan', 'XMLPart',
+           'XMLPartAbbreviation', 'XMLPartAbbreviationDisplay', 'XMLPartClef', 'XMLPartGroup', 'XMLPartLink',
+           'XMLPartList', 'XMLPartName', 'XMLPartNameDisplay', 'XMLPartSymbol', 'XMLPartTranspose', 'XMLPedal',
+           'XMLPedalAlter', 'XMLPedalStep', 'XMLPedalTuning', 'XMLPerMinute', 'XMLPercussion', 'XMLPf', 'XMLPitch',
+           'XMLPitched', 'XMLPlay', 'XMLPlayer', 'XMLPlayerName', 'XMLPlop', 'XMLPluck', 'XMLPp', 'XMLPpp', 'XMLPppp',
+           'XMLPpppp', 'XMLPppppp', 'XMLPreBend', 'XMLPrefix', 'XMLPrincipalVoice', 'XMLPrint', 'XMLPullOff',
+           'XMLRehearsal', 'XMLRelation', 'XMLRelease', 'XMLRepeat', 'XMLRest', 'XMLRf', 'XMLRfz', 'XMLRightDivider',
+           'XMLRightMargin', 'XMLRights', 'XMLRoot', 'XMLRootAlter', 'XMLRootStep', 'XMLScaling', 'XMLSchleifer',
+           'XMLScoop', 'XMLScordatura', 'XMLScoreInstrument', 'XMLScorePart', 'XMLScorePartwise', 'XMLSecond',
+           'XMLSegno', 'XMLSemiPitched', 'XMLSenzaMisura', 'XMLSf', 'XMLSffz', 'XMLSfp', 'XMLSfpp', 'XMLSfz', 'XMLSfzp',
+           'XMLShake', 'XMLSign', 'XMLSlash', 'XMLSlashDot', 'XMLSlashType', 'XMLSlide', 'XMLSlur', 'XMLSmear',
+           'XMLSnapPizzicato', 'XMLSoftAccent', 'XMLSoftware', 'XMLSolo', 'XMLSound', 'XMLSoundingPitch', 'XMLSource',
+           'XMLSpiccato', 'XMLStaccatissimo', 'XMLStaccato', 'XMLStaff', 'XMLStaffDetails', 'XMLStaffDistance',
+           'XMLStaffDivide', 'XMLStaffLayout', 'XMLStaffLines', 'XMLStaffSize', 'XMLStaffTuning', 'XMLStaffType',
+           'XMLStaves', 'XMLStem', 'XMLStep', 'XMLStick', 'XMLStickLocation', 'XMLStickMaterial', 'XMLStickType',
+           'XMLStopped', 'XMLStraight', 'XMLStress', 'XMLString', 'XMLStringMute', 'XMLStrongAccent', 'XMLSuffix',
+           'XMLSupports', 'XMLSwing', 'XMLSwingStyle', 'XMLSwingType', 'XMLSyllabic', 'XMLSymbol', 'XMLSync',
+           'XMLSystemDistance', 'XMLSystemDividers', 'XMLSystemLayout', 'XMLSystemMargins', 'XMLTap', 'XMLTechnical',
+           'XMLTenths', 'XMLTenuto', 'XMLText', 'XMLThumbPosition', 'XMLTie', 'XMLTied', 'XMLTime',
+           'XMLTimeModification', 'XMLTimeRelation', 'XMLTimpani', 'XMLToe', 'XMLTopMargin', 'XMLTopSystemDistance',
+           'XMLTouchingPitch', 'XMLTranspose', 'XMLTremolo', 'XMLTrillMark', 'XMLTripleTongue', 'XMLTuningAlter',
+           'XMLTuningOctave', 'XMLTuningStep', 'XMLTuplet', 'XMLTupletActual', 'XMLTupletDot', 'XMLTupletNormal',
+           'XMLTupletNumber', 'XMLTupletType', 'XMLTurn', 'XMLType', 'XMLUnpitched', 'XMLUnstress', 'XMLUpBow',
+           'XMLVerticalTurn', 'XMLVirtualInstrument', 'XMLVirtualLibrary', 'XMLVirtualName', 'XMLVoice', 'XMLVolume',
+           'XMLWait', 'XMLWavyLine', 'XMLWedge', 'XMLWithBar', 'XMLWood', 'XMLWordFont', 'XMLWords', 'XMLWork',
+           'XMLWorkNumber', 'XMLWorkTitle']
