@@ -215,7 +215,7 @@ class Tree(ABC):
         """
         :obj:`~tree.tree.Tree` method
 
-        :return: indentation according to ``level`` (layer number). As default it is used as tag in :obj:`tree_representation`
+        :return: indentation according to ``level`` (layer number). As default it is used for creating tabs in :obj:`tree_representation`
         :rtype: str
         """
         indentation = ''
