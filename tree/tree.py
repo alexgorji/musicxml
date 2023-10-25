@@ -334,7 +334,7 @@ class Tree(ABC):
 
         :param old: child or function
         :param new: child
-        :param index: index of old in list of old appearances
+        :param index: index of old child in the list of its appearances
         :return: None
         """
         if hasattr(old, '__call__'):
