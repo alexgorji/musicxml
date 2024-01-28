@@ -1,8 +1,6 @@
 musicxml is a python library for creating musicxml files. It is largely based on xsd definitions of MusicXML 4.0.
 
-musicxml is also a part of library: musicscore2. Feel free to check out:
-[https://github.com/alexgorji/musicscore2](https://github.com/alexgorji/musicscore2)
-[https://musicscore2.readthedocs.io](https://musicscore2.readthedocs.io)
+musicxml is also a part of library: musicscore. Feel free to check out under: [https://github.com/alexgorji/musicscore](https://github.com/alexgorji/musicscore) & [https://musicscore.readthedocs.io](https://musicscore.readthedocs.io)
 
 INSTALLATION
 
