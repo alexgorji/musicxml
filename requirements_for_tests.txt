@@ -1,0 +1,4 @@
+tox==4.15.0
+mypy==1.10
+pytest-xdist
+pytest-cov
