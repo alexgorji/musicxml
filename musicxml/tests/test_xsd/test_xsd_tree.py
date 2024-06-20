@@ -3,7 +3,6 @@ from contextlib import redirect_stdout
 from pathlib import Path
 
 from musicxml.tests.util import MusicXmlTestCase
-from musicxml.xmlelement.xmlelement import XMLType, XMLNote
 from musicxml.xsd.xsdtree import XSDTree
 
 
@@ -123,15 +122,16 @@ class TestXSDTree(MusicXmlTestCase):
         """
         Test the compact representation of an XSDTree Element. It consists of node name and its attribute if exists.
         """
-        assert [node.compact_repr for node in self.complex_type_xsd_element.traverse()] == ['complexType@name=fingering',
-                                                                                            'annotation',
-                                                                                            'documentation',
-                                                                                            'simpleContent',
-                                                                                            'extension@base=xs:string',
-                                                                                            'attribute@name=substitution@type=yes-no',
-                                                                                            'attribute@name=alternate@type=yes-no',
-                                                                                            'attributeGroup@ref=print-style',
-                                                                                            'attributeGroup@ref=placement']
+        assert [node.compact_repr for node in self.complex_type_xsd_element.traverse()] == [
+            'complexType@name=fingering',
+            'annotation',
+            'documentation',
+            'simpleContent',
+            'extension@base=xs:string',
+            'attribute@name=substitution@type=yes-no',
+            'attribute@name=alternate@type=yes-no',
+            'attributeGroup@ref=print-style',
+            'attributeGroup@ref=placement']
 
     def test_str(self):
         """

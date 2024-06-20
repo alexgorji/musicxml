@@ -1,10 +1,8 @@
-from unittest import TestCase
 import xml.etree.ElementTree as ET
+from unittest import TestCase
 
-from musicxml.xmlelement.xmlelement import *
-
+from musicxml.xsd.xsdindicator import XSDSequence
 from musicxml.xsd.xsdtree import XSDTree
-from musicxml.xsd.xsdindicator import XSDSequence, XSDChoice
 
 
 class TestSequence(TestCase):

@@ -1,10 +1,5 @@
-import importlib
 from musicxml.tests.util import MusicXmlTestCase
-# from musicxml.xsd.xsdsimpletype import XSDSimpleType, xml_simple_type_class_names
-#
-# from musicxml.xsd.xsdsimpletype import *
 from musicxml.xsd.xsdsimpletype import *
-from musicxml.xsd.xsdcomplextype import *
 
 
 class TestSimpleTypes(MusicXmlTestCase):

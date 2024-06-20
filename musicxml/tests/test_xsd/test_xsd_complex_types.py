@@ -1,13 +1,11 @@
 import importlib
 
 from musicxml.tests.util import MusicXmlTestCase
-from musicxml.xsd.xsdindicator import XSDSequence, XSDChoice
-
-from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdattribute import *
+from musicxml.xsd.xsdcomplextype import *
 from musicxml.xsd.xsdcomplextype import XSDComplexType
+from musicxml.xsd.xsdindicator import XSDSequence, XSDChoice
 from musicxml.xsd.xsdsimpletype import *
-from musicxml.xsd.xsdtree import XSDTree
 
 
 class TestComplexTypes(MusicXmlTestCase):
