@@ -1,10 +1,9 @@
 from contextlib import redirect_stdout
 from pathlib import Path
 from string import Template
-import xml.etree.ElementTree as ET
 
-from musicxml.generate_classes.utils import xml_xsd_et_root, musicxml_xsd_et_root, get_simple_type_all_base_classes
-from musicxml.xsd.xsdtree import XSDTree, XSD_TREE_DICT
+from musicxml.generate_classes.utils import get_simple_type_all_base_classes
+from musicxml.xsd.xsdtree import XSD_TREE_DICT
 
 default_path_1 = Path(__file__).parent / 'defaults' / 'xsdsimpletype1.py'
 default_path_2 = Path(__file__).parent / 'defaults' / 'xsdsimpletype2.py'

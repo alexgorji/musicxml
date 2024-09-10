@@ -4,7 +4,7 @@ from pathlib import Path
 long_description = (Path(__file__).parent / "README.rst").read_text()
 setuptools.setup(
     name="musicxml",
-    version="1.4",
+    version="1.5.0b",
     author="Alex Gorji",
     author_email="aligorji@hotmail.com",
     description="generating musicxml",
