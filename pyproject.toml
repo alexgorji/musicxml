@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "musicxml"
+version = "1.4"
+description = "generating musicxml"
+authors = ["Alex Gorji"]
+readme = "README.rst"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+
+[tool.poetry.group.test.dependencies]
+mypy = "^1.13.0"
+pytest-xdist = "^3.6.1"
+pytest-cov = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
