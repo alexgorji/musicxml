@@ -224,10 +224,10 @@ class XSDTree(Tree):
                         return rf"{parent_restriction.get_children()[0].get_attributes()['value']}"
 
         def translate_pattern(pattern_):
-            if pattern_ == "[\i-[:]][\c-[:]]*":
+            if pattern_ == "[\\i-[:]][\\c-[:]]*":
                 return rf"{xml_name_first_character_without_colon}{name_character_without_colon}*"
-            pattern_ = pattern_.replace('\c', name_character)
-            pattern_ = pattern_.replace('\i', xml_name_first_character)
+            pattern_ = pattern_.replace('\\c', name_character)
+            pattern_ = pattern_.replace('\\i', xml_name_first_character)
             return pattern_
 
         restriction = self.get_restriction()
@@ -318,7 +318,7 @@ class XSDTreeElement:
             return cls._XSD_TREE
 
         found_xsd_element = musicxml_xsd_et_root.find(cls._SEARCH_FOR_ELEMENT)
-        if not found_xsd_element:
+        if found_xsd_element is None:
             return cls.XSD_TREE
         else:
             cls._XSD_TREE = XSDTree(found_xsd_element)
