@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "musicxml"
-version = "1.4.2"
+version = "1.5"
 description = "generating musicxml"
 authors = ["Alex Gorji <aligorji@hotmail.com>"]
 license = "MIT"

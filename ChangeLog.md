@@ -114,3 +114,7 @@ Tree documention link added to public properties and methods
 
 # Verision 1.4.1
 avoid warnings
+
+# Version 1.5
+Using verysimpletree library
+!!generating classes still not tested!!
