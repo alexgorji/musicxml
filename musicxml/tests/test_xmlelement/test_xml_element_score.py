@@ -27,23 +27,23 @@ class TestScore(TestCase):
     def test_xsd_tree(self):
         score = XMLScorePartwise()
 
-        expected = """element@name=score-partwise@block=extension substitution@final=#all
-    annotation
-        documentation
-    complexType
-        sequence
-            group@ref=score-header
-            element@name=part@maxOccurs=unbounded
-                complexType
-                    sequence
-                        element@name=measure@maxOccurs=unbounded
-                            complexType
-                                group@ref=music-data
-                                attributeGroup@ref=measure-attributes
-                    attributeGroup@ref=part-attributes
-        attributeGroup@ref=document-attributes
+        expected = """└── XSDTree element@name=score-partwise@block=extension substitution@final=#all
+    ├── XSDTree annotation
+    │   └── XSDTree documentation
+    └── XSDTree complexType
+        ├── XSDTree sequence
+        │   ├── XSDTree group@ref=score-header
+        │   └── XSDTree element@name=part@maxOccurs=unbounded
+        │       └── XSDTree complexType
+        │           ├── XSDTree sequence
+        │           │   └── XSDTree element@name=measure@maxOccurs=unbounded
+        │           │       └── XSDTree complexType
+        │           │           ├── XSDTree group@ref=music-data
+        │           │           └── XSDTree attributeGroup@ref=measure-attributes
+        │           └── XSDTree attributeGroup@ref=part-attributes
+        └── XSDTree attributeGroup@ref=document-attributes
 """
-        assert score.XSD_TREE.tree_representation() == expected
+        assert score.XSD_TREE.get_tree_representation() == expected
 
     def test_minimum_score(self):
         score = XMLScorePartwise()

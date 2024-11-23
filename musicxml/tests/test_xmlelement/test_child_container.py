@@ -179,14 +179,14 @@ class TestChildContainer(TestCase):
                     attribute@name=show-number@type=show-tuplet
         """
         container = XMLChildContainerFactory(XSDComplexTypeMetronomeTuplet).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=actual-notes@minOccurs=1@maxOccurs=1
-    Element@name=normal-notes@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=0@maxOccurs=1
-        Element@name=normal-type@minOccurs=1@maxOccurs=1
-        Element@name=normal-dot@minOccurs=0@maxOccurs=unbounded
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=actual-notes@minOccurs=1@maxOccurs=1
+    ├── Element@name=normal-notes@minOccurs=1@maxOccurs=1
+    └── Sequence@minOccurs=0@maxOccurs=1
+        ├── Element@name=normal-type@minOccurs=1@maxOccurs=1
+        └── Element@name=normal-dot@minOccurs=0@maxOccurs=unbounded
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_complex_type_with_group_child_container(self):
         """
@@ -194,12 +194,12 @@ class TestChildContainer(TestCase):
             group@ref=left-right-margins
         """
         container = XMLChildContainerFactory(XSDComplexTypeSystemMargins).get_child_container()
-        expected = """Group@name=left-right-margins@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=1@maxOccurs=1
-        Element@name=left-margin@minOccurs=1@maxOccurs=1
-        Element@name=right-margin@minOccurs=1@maxOccurs=1
+        expected = """└── Group@name=left-right-margins@minOccurs=1@maxOccurs=1
+    └── Sequence@minOccurs=1@maxOccurs=1
+        ├── Element@name=left-margin@minOccurs=1@maxOccurs=1
+        └── Element@name=right-margin@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_complex_type_measure_child_container(self):
         """
@@ -209,25 +209,25 @@ class TestChildContainer(TestCase):
                 attributeGroup@ref=measure-attributes
         """
         container = XMLChildContainerFactory(XSDComplexTypeMeasure).get_child_container()
-        expected = """Group@name=music-data@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=1@maxOccurs=1
-        Choice@minOccurs=0@maxOccurs=unbounded
-            Element@name=note@minOccurs=1@maxOccurs=1
-            Element@name=backup@minOccurs=1@maxOccurs=1
-            Element@name=forward@minOccurs=1@maxOccurs=1
-            Element@name=direction@minOccurs=1@maxOccurs=1
-            Element@name=attributes@minOccurs=1@maxOccurs=1
-            Element@name=harmony@minOccurs=1@maxOccurs=1
-            Element@name=figured-bass@minOccurs=1@maxOccurs=1
-            Element@name=print@minOccurs=1@maxOccurs=1
-            Element@name=sound@minOccurs=1@maxOccurs=1
-            Element@name=listening@minOccurs=1@maxOccurs=1
-            Element@name=barline@minOccurs=1@maxOccurs=1
-            Element@name=grouping@minOccurs=1@maxOccurs=1
-            Element@name=link@minOccurs=1@maxOccurs=1
-            Element@name=bookmark@minOccurs=1@maxOccurs=1
+        expected = """└── Group@name=music-data@minOccurs=1@maxOccurs=1
+    └── Sequence@minOccurs=1@maxOccurs=1
+        └── Choice@minOccurs=0@maxOccurs=unbounded
+            ├── Element@name=note@minOccurs=1@maxOccurs=1
+            ├── Element@name=backup@minOccurs=1@maxOccurs=1
+            ├── Element@name=forward@minOccurs=1@maxOccurs=1
+            ├── Element@name=direction@minOccurs=1@maxOccurs=1
+            ├── Element@name=attributes@minOccurs=1@maxOccurs=1
+            ├── Element@name=harmony@minOccurs=1@maxOccurs=1
+            ├── Element@name=figured-bass@minOccurs=1@maxOccurs=1
+            ├── Element@name=print@minOccurs=1@maxOccurs=1
+            ├── Element@name=sound@minOccurs=1@maxOccurs=1
+            ├── Element@name=listening@minOccurs=1@maxOccurs=1
+            ├── Element@name=barline@minOccurs=1@maxOccurs=1
+            ├── Element@name=grouping@minOccurs=1@maxOccurs=1
+            ├── Element@name=link@minOccurs=1@maxOccurs=1
+            └── Element@name=bookmark@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_children_container_compact_repr(self):
         """
@@ -247,24 +247,24 @@ class TestChildContainer(TestCase):
         Test a complex type with a simple sequence of elements
         """
         container = XMLChildContainerFactory(complex_type=XSDComplexTypePitch).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=step@minOccurs=1@maxOccurs=1
-    Element@name=alter@minOccurs=0@maxOccurs=1
-    Element@name=octave@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=step@minOccurs=1@maxOccurs=1
+    ├── Element@name=alter@minOccurs=0@maxOccurs=1
+    └── Element@name=octave@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
         container.add_element(XMLStep('A'))
         container.add_element(XMLOctave(2))
 
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=step@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=step@minOccurs=1@maxOccurs=1
         XMLStep
-    Element@name=alter@minOccurs=0@maxOccurs=1
-    Element@name=octave@minOccurs=1@maxOccurs=1
+    ├── Element@name=alter@minOccurs=0@maxOccurs=1
+    └── Element@name=octave@minOccurs=1@maxOccurs=1
         XMLOctave
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
         with self.assertRaises(XMLChildContainerWrongElementError):
             container.add_element(XMLAccent())
         with self.assertRaises(XMLChildContainerMaxOccursError):
@@ -275,16 +275,16 @@ class TestChildContainer(TestCase):
         Test a complex type with a sequence which has elements and sequences
         """
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeStaffDetails).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=staff-type@minOccurs=0@maxOccurs=1
-    Sequence@minOccurs=0@maxOccurs=1
-        Element@name=staff-lines@minOccurs=1@maxOccurs=1
-        Element@name=line-detail@minOccurs=0@maxOccurs=unbounded
-    Element@name=staff-tuning@minOccurs=0@maxOccurs=unbounded
-    Element@name=capo@minOccurs=0@maxOccurs=1
-    Element@name=staff-size@minOccurs=0@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=staff-type@minOccurs=0@maxOccurs=1
+    ├── Sequence@minOccurs=0@maxOccurs=1
+    │   ├── Element@name=staff-lines@minOccurs=1@maxOccurs=1
+    │   └── Element@name=line-detail@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=staff-tuning@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=capo@minOccurs=0@maxOccurs=1
+    └── Element@name=staff-size@minOccurs=0@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_child_container_sequence_with_group(self):
         """
@@ -292,69 +292,69 @@ class TestChildContainer(TestCase):
         """
 
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeInterchangeable).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=time-relation@minOccurs=0@maxOccurs=1
-    Group@name=time-signature@minOccurs=1@maxOccurs=unbounded
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=beats@minOccurs=1@maxOccurs=1
-            Element@name=beat-type@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=time-relation@minOccurs=0@maxOccurs=1
+    └── Group@name=time-signature@minOccurs=1@maxOccurs=unbounded
+        └── Sequence@minOccurs=1@maxOccurs=1
+            ├── Element@name=beats@minOccurs=1@maxOccurs=1
+            └── Element@name=beat-type@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_child_container_sequence_with_choice(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeKey).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Choice@minOccurs=1@maxOccurs=1
-        Group@name=traditional-key@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=cancel@minOccurs=0@maxOccurs=1
-                Element@name=fifths@minOccurs=1@maxOccurs=1
-                Element@name=mode@minOccurs=0@maxOccurs=1
-        Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=key-step@minOccurs=1@maxOccurs=1
-                Element@name=key-alter@minOccurs=1@maxOccurs=1
-                Element@name=key-accidental@minOccurs=0@maxOccurs=1
-    Element@name=key-octave@minOccurs=0@maxOccurs=unbounded
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Choice@minOccurs=1@maxOccurs=1
+    │   ├── Group@name=traditional-key@minOccurs=1@maxOccurs=1
+    │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │       ├── Element@name=cancel@minOccurs=0@maxOccurs=1
+    │   │       ├── Element@name=fifths@minOccurs=1@maxOccurs=1
+    │   │       └── Element@name=mode@minOccurs=0@maxOccurs=1
+    │   └── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+    │       └── Sequence@minOccurs=1@maxOccurs=1
+    │           ├── Element@name=key-step@minOccurs=1@maxOccurs=1
+    │           ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
+    │           └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
+    └── Element@name=key-octave@minOccurs=0@maxOccurs=unbounded
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_child_container_complex_sequence_with_group_and_choice(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeAttributes).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Group@name=editorial@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Group@name=footnote@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=footnote@minOccurs=1@maxOccurs=1
-            Group@name=level@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=level@minOccurs=1@maxOccurs=1
-    Element@name=divisions@minOccurs=0@maxOccurs=1
-    Element@name=key@minOccurs=0@maxOccurs=unbounded
-    Element@name=time@minOccurs=0@maxOccurs=unbounded
-    Element@name=staves@minOccurs=0@maxOccurs=1
-    Element@name=part-symbol@minOccurs=0@maxOccurs=1
-    Element@name=instruments@minOccurs=0@maxOccurs=1
-    Element@name=clef@minOccurs=0@maxOccurs=unbounded
-    Element@name=staff-details@minOccurs=0@maxOccurs=unbounded
-    Choice@minOccurs=1@maxOccurs=1
-        Element@name=transpose@minOccurs=0@maxOccurs=unbounded
-        Element@name=for-part@minOccurs=0@maxOccurs=unbounded
-    Element@name=directive@minOccurs=0@maxOccurs=unbounded
-    Element@name=measure-style@minOccurs=0@maxOccurs=unbounded
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Group@name=editorial@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=footnote@minOccurs=0@maxOccurs=1
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       │       └── Element@name=footnote@minOccurs=1@maxOccurs=1
+    │       └── Group@name=level@minOccurs=0@maxOccurs=1
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               └── Element@name=level@minOccurs=1@maxOccurs=1
+    ├── Element@name=divisions@minOccurs=0@maxOccurs=1
+    ├── Element@name=key@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=time@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=staves@minOccurs=0@maxOccurs=1
+    ├── Element@name=part-symbol@minOccurs=0@maxOccurs=1
+    ├── Element@name=instruments@minOccurs=0@maxOccurs=1
+    ├── Element@name=clef@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=staff-details@minOccurs=0@maxOccurs=unbounded
+    ├── Choice@minOccurs=1@maxOccurs=1
+    │   ├── Element@name=transpose@minOccurs=0@maxOccurs=unbounded
+    │   └── Element@name=for-part@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=directive@minOccurs=0@maxOccurs=unbounded
+    └── Element@name=measure-style@minOccurs=0@maxOccurs=unbounded
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_child_container_simple_choice(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
-        expected = """Choice@minOccurs=1@maxOccurs=1
-    Element@name=multiple-rest@minOccurs=1@maxOccurs=1
-    Element@name=measure-repeat@minOccurs=1@maxOccurs=1
-    Element@name=beat-repeat@minOccurs=1@maxOccurs=1
-    Element@name=slash@minOccurs=1@maxOccurs=1
+        expected = """└── Choice@minOccurs=1@maxOccurs=1
+    ├── Element@name=multiple-rest@minOccurs=1@maxOccurs=1
+    ├── Element@name=measure-repeat@minOccurs=1@maxOccurs=1
+    ├── Element@name=beat-repeat@minOccurs=1@maxOccurs=1
+    └── Element@name=slash@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_child_container_simple_choice_adding_child(self):
         """
@@ -363,14 +363,14 @@ class TestChildContainer(TestCase):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
         container.add_element(XMLMultipleRest(1))
 
-        expected = """Choice@minOccurs=1@maxOccurs=1
-    Element@name=multiple-rest@minOccurs=1@maxOccurs=1
+        expected = """└── Choice@minOccurs=1@maxOccurs=1
+    ├── Element@name=multiple-rest@minOccurs=1@maxOccurs=1
         XMLMultipleRest
-    Element@name=measure-repeat@minOccurs=1@maxOccurs=1
-    Element@name=beat-repeat@minOccurs=1@maxOccurs=1
-    Element@name=slash@minOccurs=1@maxOccurs=1
+    ├── Element@name=measure-repeat@minOccurs=1@maxOccurs=1
+    ├── Element@name=beat-repeat@minOccurs=1@maxOccurs=1
+    └── Element@name=slash@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
         with self.assertRaises(XMLChildContainerWrongElementError):
             container.add_element(XMLAccent())
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
@@ -378,19 +378,19 @@ class TestChildContainer(TestCase):
 
     def test_score_partwise_child_container(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeScorePartwise).get_child_container()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Group@name=score-header@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=work@minOccurs=0@maxOccurs=1
-            Element@name=movement-number@minOccurs=0@maxOccurs=1
-            Element@name=movement-title@minOccurs=0@maxOccurs=1
-            Element@name=identification@minOccurs=0@maxOccurs=1
-            Element@name=defaults@minOccurs=0@maxOccurs=1
-            Element@name=credit@minOccurs=0@maxOccurs=unbounded
-            Element@name=part-list@minOccurs=1@maxOccurs=1
-    Element@name=part@minOccurs=1@maxOccurs=unbounded
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Group@name=score-header@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=work@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=movement-number@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=movement-title@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=identification@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=defaults@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=credit@minOccurs=0@maxOccurs=unbounded
+    │       └── Element@name=part-list@minOccurs=1@maxOccurs=1
+    └── Element@name=part@minOccurs=1@maxOccurs=unbounded
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
         container.add_element(XMLPartList())
 
         with self.assertRaises(XMLChildContainerMaxOccursError):
@@ -398,75 +398,75 @@ class TestChildContainer(TestCase):
         container.add_element(XMLPart())
         container.add_element(XMLPart())
         container.check_required_elements()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Group@name=score-header@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=work@minOccurs=0@maxOccurs=1
-            Element@name=movement-number@minOccurs=0@maxOccurs=1
-            Element@name=movement-title@minOccurs=0@maxOccurs=1
-            Element@name=identification@minOccurs=0@maxOccurs=1
-            Element@name=defaults@minOccurs=0@maxOccurs=1
-            Element@name=credit@minOccurs=0@maxOccurs=unbounded
-            Element@name=part-list@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Group@name=score-header@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=work@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=movement-number@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=movement-title@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=identification@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=defaults@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=credit@minOccurs=0@maxOccurs=unbounded
+    │       └── Element@name=part-list@minOccurs=1@maxOccurs=1
                 XMLPartList
-    Element@name=part@minOccurs=1@maxOccurs=unbounded
+    └── Element@name=part@minOccurs=1@maxOccurs=unbounded
         XMLPart
         XMLPart
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_part_and_measure_child_container(self):
-        part_expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=measure@minOccurs=1@maxOccurs=unbounded
+        part_expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    └── Element@name=measure@minOccurs=1@maxOccurs=unbounded
 """
-        measure_expected = """Group@name=music-data@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=1@maxOccurs=1
-        Choice@minOccurs=0@maxOccurs=unbounded
-            Element@name=note@minOccurs=1@maxOccurs=1
-            Element@name=backup@minOccurs=1@maxOccurs=1
-            Element@name=forward@minOccurs=1@maxOccurs=1
-            Element@name=direction@minOccurs=1@maxOccurs=1
-            Element@name=attributes@minOccurs=1@maxOccurs=1
-            Element@name=harmony@minOccurs=1@maxOccurs=1
-            Element@name=figured-bass@minOccurs=1@maxOccurs=1
-            Element@name=print@minOccurs=1@maxOccurs=1
-            Element@name=sound@minOccurs=1@maxOccurs=1
-            Element@name=listening@minOccurs=1@maxOccurs=1
-            Element@name=barline@minOccurs=1@maxOccurs=1
-            Element@name=grouping@minOccurs=1@maxOccurs=1
-            Element@name=link@minOccurs=1@maxOccurs=1
-            Element@name=bookmark@minOccurs=1@maxOccurs=1
+        measure_expected = """└── Group@name=music-data@minOccurs=1@maxOccurs=1
+    └── Sequence@minOccurs=1@maxOccurs=1
+        └── Choice@minOccurs=0@maxOccurs=unbounded
+            ├── Element@name=note@minOccurs=1@maxOccurs=1
+            ├── Element@name=backup@minOccurs=1@maxOccurs=1
+            ├── Element@name=forward@minOccurs=1@maxOccurs=1
+            ├── Element@name=direction@minOccurs=1@maxOccurs=1
+            ├── Element@name=attributes@minOccurs=1@maxOccurs=1
+            ├── Element@name=harmony@minOccurs=1@maxOccurs=1
+            ├── Element@name=figured-bass@minOccurs=1@maxOccurs=1
+            ├── Element@name=print@minOccurs=1@maxOccurs=1
+            ├── Element@name=sound@minOccurs=1@maxOccurs=1
+            ├── Element@name=listening@minOccurs=1@maxOccurs=1
+            ├── Element@name=barline@minOccurs=1@maxOccurs=1
+            ├── Element@name=grouping@minOccurs=1@maxOccurs=1
+            ├── Element@name=link@minOccurs=1@maxOccurs=1
+            └── Element@name=bookmark@minOccurs=1@maxOccurs=1
 """
         part_container = XMLChildContainerFactory(complex_type=XSDComplexTypePart).get_child_container()
         measure_container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasure).get_child_container()
-        assert part_container.tree_representation() == part_expected
-        assert measure_container.tree_representation() == measure_expected
+        assert part_container.get_tree_representation() == part_expected
+        assert measure_container.get_tree_representation() == measure_expected
 
     def test_metronome_child_container(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMetronome).get_child_container()
-        expected = """Choice@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=1@maxOccurs=1
-        Group@name=beat-unit@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=beat-unit@minOccurs=1@maxOccurs=1
-                Element@name=beat-unit-dot@minOccurs=0@maxOccurs=unbounded
-        Element@name=beat-unit-tied@minOccurs=0@maxOccurs=unbounded
-        Choice@minOccurs=1@maxOccurs=1
-            Element@name=per-minute@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Group@name=beat-unit@minOccurs=1@maxOccurs=1
-                    Sequence@minOccurs=1@maxOccurs=1
-                        Element@name=beat-unit@minOccurs=1@maxOccurs=1
-                        Element@name=beat-unit-dot@minOccurs=0@maxOccurs=unbounded
-                Element@name=beat-unit-tied@minOccurs=0@maxOccurs=unbounded
-    Sequence@minOccurs=1@maxOccurs=1
-        Element@name=metronome-arrows@minOccurs=0@maxOccurs=1
-        Element@name=metronome-note@minOccurs=1@maxOccurs=unbounded
-        Sequence@minOccurs=0@maxOccurs=1
-            Element@name=metronome-relation@minOccurs=1@maxOccurs=1
-            Element@name=metronome-note@minOccurs=1@maxOccurs=unbounded
+        expected = """└── Choice@minOccurs=1@maxOccurs=1
+    ├── Sequence@minOccurs=1@maxOccurs=1
+    │   ├── Group@name=beat-unit@minOccurs=1@maxOccurs=1
+    │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │       ├── Element@name=beat-unit@minOccurs=1@maxOccurs=1
+    │   │       └── Element@name=beat-unit-dot@minOccurs=0@maxOccurs=unbounded
+    │   ├── Element@name=beat-unit-tied@minOccurs=0@maxOccurs=unbounded
+    │   └── Choice@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=per-minute@minOccurs=1@maxOccurs=1
+    │       └── Sequence@minOccurs=1@maxOccurs=1
+    │           ├── Group@name=beat-unit@minOccurs=1@maxOccurs=1
+    │           │   └── Sequence@minOccurs=1@maxOccurs=1
+    │           │       ├── Element@name=beat-unit@minOccurs=1@maxOccurs=1
+    │           │       └── Element@name=beat-unit-dot@minOccurs=0@maxOccurs=unbounded
+    │           └── Element@name=beat-unit-tied@minOccurs=0@maxOccurs=unbounded
+    └── Sequence@minOccurs=1@maxOccurs=1
+        ├── Element@name=metronome-arrows@minOccurs=0@maxOccurs=1
+        ├── Element@name=metronome-note@minOccurs=1@maxOccurs=unbounded
+        └── Sequence@minOccurs=0@maxOccurs=1
+            ├── Element@name=metronome-relation@minOccurs=1@maxOccurs=1
+            └── Element@name=metronome-note@minOccurs=1@maxOccurs=unbounded
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_add_child_lyric(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeLyric).get_child_container()
@@ -497,28 +497,28 @@ class TestChildContainer(TestCase):
 
         container.add_element(XMLText('something'))
         container.add_element(XMLSyllabic('end'), forward=1)
-        expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Element@name=syllabic@minOccurs=0@maxOccurs=1
-            Element@name=text@minOccurs=1@maxOccurs=1
+        expected = """    │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   ├── Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   ├── Element@name=text@minOccurs=1@maxOccurs=1
                 XMLText
-            Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
-                    Sequence@minOccurs=0@maxOccurs=1: !!!FORCED!!!
-                        Element@name=elision@minOccurs=1@maxOccurs=1
+    │   │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   ├── Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
+    │   │   │   ├── Sequence@minOccurs=0@maxOccurs=1: !!!FORCED!!!
+    │   │   │   │   ├── Element@name=elision@minOccurs=1@maxOccurs=1
                             XMLElision
-                        Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   │   │   └── Element@name=syllabic@minOccurs=0@maxOccurs=1
                             XMLSyllabic
-                    Element@name=text@minOccurs=1@maxOccurs=1
+    │   │   │   └── Element@name=text@minOccurs=1@maxOccurs=1
                         XMLText
-                Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
-                    Sequence@minOccurs=0@maxOccurs=1
-                        Element@name=elision@minOccurs=1@maxOccurs=1
-                        Element@name=syllabic@minOccurs=0@maxOccurs=1
-                    Element@name=text@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
+    │   │   │       ├── Sequence@minOccurs=0@maxOccurs=1
+    │   │   │       │   ├── Element@name=elision@minOccurs=1@maxOccurs=1
+    │   │   │       │   └── Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   │       └── Element@name=text@minOccurs=1@maxOccurs=1
                         XMLText
-            Element@name=extend@minOccurs=0@maxOccurs=1
+    │   │   └── Element@name=extend@minOccurs=0@maxOccurs=1
 """
-        assert choice.chosen_child.tree_representation(show_force_valid) == expected
+        assert choice.chosen_child.get_tree_representation(show_force_valid) == expected
 
     def test_add_child_note(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
@@ -526,127 +526,127 @@ class TestChildContainer(TestCase):
         choice = container.get_children()[0]
         selected = container.add_element(XMLPitch())
         assert selected.get_parent().chosen_child == selected
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
-        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=chord@minOccurs=0@maxOccurs=1
-                    Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
+    │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
                             XMLPitch
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       └── Element@name=duration@minOccurs=1@maxOccurs=1
                         !Required!
-            Element@name=tie@minOccurs=0@maxOccurs=2
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=cue@minOccurs=1@maxOccurs=1
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=chord@minOccurs=0@maxOccurs=1
-                    Choice@minOccurs=1@maxOccurs=1
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=duration@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=grace@minOccurs=1@maxOccurs=1
-            Choice@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
-                    Element@name=tie@minOccurs=0@maxOccurs=2
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=cue@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
-    Element@name=instrument@minOccurs=0@maxOccurs=unbounded
-    Group@name=editorial-voice@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Group@name=footnote@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=footnote@minOccurs=1@maxOccurs=1
-            Group@name=level@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=level@minOccurs=1@maxOccurs=1
-            Group@name=voice@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=voice@minOccurs=1@maxOccurs=1
-    Element@name=type@minOccurs=0@maxOccurs=1
-    Element@name=dot@minOccurs=0@maxOccurs=unbounded
-    Element@name=accidental@minOccurs=0@maxOccurs=1
-    Element@name=time-modification@minOccurs=0@maxOccurs=1
-    Element@name=stem@minOccurs=0@maxOccurs=1
-    Element@name=notehead@minOccurs=0@maxOccurs=1
-    Element@name=notehead-text@minOccurs=0@maxOccurs=1
-    Group@name=staff@minOccurs=0@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=staff@minOccurs=1@maxOccurs=1
-    Element@name=beam@minOccurs=0@maxOccurs=8
-    Element@name=notations@minOccurs=0@maxOccurs=unbounded
-    Element@name=lyric@minOccurs=0@maxOccurs=unbounded
-    Element@name=play@minOccurs=0@maxOccurs=1
-    Element@name=listen@minOccurs=0@maxOccurs=1
+    │   │   └── Element@name=tie@minOccurs=0@maxOccurs=2
+    │   ├── Sequence@minOccurs=1@maxOccurs=1
+    │   │   ├── Element@name=cue@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   └── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │       └── Sequence@minOccurs=1@maxOccurs=1
+    │   │           └── Element@name=duration@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=grace@minOccurs=1@maxOccurs=1
+    │       └── Choice@minOccurs=1@maxOccurs=1
+    │           ├── Sequence@minOccurs=1@maxOccurs=1
+    │           │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │           │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │           │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │           │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │           │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │           │   └── Element@name=tie@minOccurs=0@maxOccurs=2
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               ├── Element@name=cue@minOccurs=1@maxOccurs=1
+    │               └── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │                   └── Sequence@minOccurs=1@maxOccurs=1
+    │                       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │                       └── Choice@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │                           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    ├── Element@name=instrument@minOccurs=0@maxOccurs=unbounded
+    ├── Group@name=editorial-voice@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=footnote@minOccurs=0@maxOccurs=1
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       │       └── Element@name=footnote@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=level@minOccurs=0@maxOccurs=1
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       │       └── Element@name=level@minOccurs=1@maxOccurs=1
+    │       └── Group@name=voice@minOccurs=0@maxOccurs=1
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               └── Element@name=voice@minOccurs=1@maxOccurs=1
+    ├── Element@name=type@minOccurs=0@maxOccurs=1
+    ├── Element@name=dot@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=accidental@minOccurs=0@maxOccurs=1
+    ├── Element@name=time-modification@minOccurs=0@maxOccurs=1
+    ├── Element@name=stem@minOccurs=0@maxOccurs=1
+    ├── Element@name=notehead@minOccurs=0@maxOccurs=1
+    ├── Element@name=notehead-text@minOccurs=0@maxOccurs=1
+    ├── Group@name=staff@minOccurs=0@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       └── Element@name=staff@minOccurs=1@maxOccurs=1
+    ├── Element@name=beam@minOccurs=0@maxOccurs=8
+    ├── Element@name=notations@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=lyric@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=play@minOccurs=0@maxOccurs=1
+    └── Element@name=listen@minOccurs=0@maxOccurs=1
 """
         container.check_required_elements()
-        assert container.tree_representation(key=show_force_valid) == expected
+        assert container.get_tree_representation(key=show_force_valid) == expected
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLUnpitched())
         container.add_element(XMLChord())
         container.check_required_elements()
-        expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=chord@minOccurs=0@maxOccurs=1
+        expected = """    │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
                         XMLChord
-                    Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
                             XMLPitch
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       └── Element@name=duration@minOccurs=1@maxOccurs=1
                         !Required!
-            Element@name=tie@minOccurs=0@maxOccurs=2
+    │   │   └── Element@name=tie@minOccurs=0@maxOccurs=2
 """
-        assert choice.chosen_child.tree_representation(key=show_force_valid) == expected
+        assert choice.chosen_child.get_tree_representation(key=show_force_valid) == expected
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLRest())
         container.add_element(XMLDuration(2))
         container.check_required_elements()
-        expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=chord@minOccurs=0@maxOccurs=1
+        expected = """    │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
                         XMLChord
-                    Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
                             XMLPitch
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │   │       └── Element@name=duration@minOccurs=1@maxOccurs=1
                         XMLDuration
-            Element@name=tie@minOccurs=0@maxOccurs=2
+    │   │   └── Element@name=tie@minOccurs=0@maxOccurs=2
 """
-        assert choice.chosen_child.tree_representation(key=show_force_valid) == expected
+        assert choice.chosen_child.get_tree_representation(key=show_force_valid) == expected
         assert container.get_children()[0].requirements_fulfilled is True
         container.add_element(XMLVoice('1'))
         assert container.get_children()[0].requirements_fulfilled is True
@@ -659,44 +659,44 @@ class TestChildContainer(TestCase):
     def test_container_part_list(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypePartList).get_child_container()
         container.check_required_elements()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Group@name=part-group@minOccurs=0@maxOccurs=unbounded
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=part-group@minOccurs=1@maxOccurs=1
-    Group@name=score-part@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=score-part@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Group@name=part-group@minOccurs=0@maxOccurs=unbounded
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       └── Element@name=part-group@minOccurs=1@maxOccurs=1
+    ├── Group@name=score-part@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       └── Element@name=score-part@minOccurs=1@maxOccurs=1
                 !Required!
-    Choice@minOccurs=0@maxOccurs=unbounded
-        Group@name=part-group@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=part-group@minOccurs=1@maxOccurs=1
-        Group@name=score-part@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=score-part@minOccurs=1@maxOccurs=1
+    └── Choice@minOccurs=0@maxOccurs=unbounded
+        ├── Group@name=part-group@minOccurs=1@maxOccurs=1
+        │   └── Sequence@minOccurs=1@maxOccurs=1
+        │       └── Element@name=part-group@minOccurs=1@maxOccurs=1
+        └── Group@name=score-part@minOccurs=1@maxOccurs=1
+            └── Sequence@minOccurs=1@maxOccurs=1
+                └── Element@name=score-part@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation(show_force_valid) == expected
+        assert container.get_tree_representation(show_force_valid) == expected
         container.check_required_elements()
         element = XMLScorePart()
         container.add_element(element)
 
-        expected = """Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-    Group@name=part-group@minOccurs=0@maxOccurs=unbounded
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=part-group@minOccurs=1@maxOccurs=1
-    Group@name=score-part@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Element@name=score-part@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    ├── Group@name=part-group@minOccurs=0@maxOccurs=unbounded
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       └── Element@name=part-group@minOccurs=1@maxOccurs=1
+    ├── Group@name=score-part@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │       └── Element@name=score-part@minOccurs=1@maxOccurs=1
                 XMLScorePart
-    Choice@minOccurs=0@maxOccurs=unbounded
-        Group@name=part-group@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=part-group@minOccurs=1@maxOccurs=1
-        Group@name=score-part@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=score-part@minOccurs=1@maxOccurs=1
+    └── Choice@minOccurs=0@maxOccurs=unbounded
+        ├── Group@name=part-group@minOccurs=1@maxOccurs=1
+        │   └── Sequence@minOccurs=1@maxOccurs=1
+        │       └── Element@name=part-group@minOccurs=1@maxOccurs=1
+        └── Group@name=score-part@minOccurs=1@maxOccurs=1
+            └── Sequence@minOccurs=1@maxOccurs=1
+                └── Element@name=score-part@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation(show_force_valid) == expected
+        assert container.get_tree_representation(show_force_valid) == expected
 
     def test_xsd_element_parent_content(self):
         """
@@ -730,37 +730,37 @@ class TestDuplication(TestCase):
         first_group = container.get_children()[0].get_children()[0]
         first_group.add_element(XMLCancel(0))
         copied_group = first_group._create_empty_copy()
-        expected = """Group@name=traditional-key@minOccurs=1@maxOccurs=1
-    Sequence@minOccurs=1@maxOccurs=1
-        Element@name=cancel@minOccurs=0@maxOccurs=1
-        Element@name=fifths@minOccurs=1@maxOccurs=1
-        Element@name=mode@minOccurs=0@maxOccurs=1
+        expected = """└── Group@name=traditional-key@minOccurs=1@maxOccurs=1
+    └── Sequence@minOccurs=1@maxOccurs=1
+        ├── Element@name=cancel@minOccurs=0@maxOccurs=1
+        ├── Element@name=fifths@minOccurs=1@maxOccurs=1
+        └── Element@name=mode@minOccurs=0@maxOccurs=1
 """
-        assert copied_group.tree_representation() == expected
+        assert copied_group.get_tree_representation() == expected
         first_sequence = container.get_children()[0].get_children()[0].get_children()[0]
         copied_sequence = first_sequence._create_empty_copy()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=cancel@minOccurs=0@maxOccurs=1
-    Element@name=fifths@minOccurs=1@maxOccurs=1
-    Element@name=mode@minOccurs=0@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=cancel@minOccurs=0@maxOccurs=1
+    ├── Element@name=fifths@minOccurs=1@maxOccurs=1
+    └── Element@name=mode@minOccurs=0@maxOccurs=1
 """
-        assert copied_sequence.tree_representation() == expected
+        assert copied_sequence.get_tree_representation() == expected
 
         choice = container.get_children()[0]
         copied_choice = choice._create_empty_copy()
-        expected = """Choice@minOccurs=1@maxOccurs=1
-    Group@name=traditional-key@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=cancel@minOccurs=0@maxOccurs=1
-            Element@name=fifths@minOccurs=1@maxOccurs=1
-            Element@name=mode@minOccurs=0@maxOccurs=1
-    Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=key-step@minOccurs=1@maxOccurs=1
-            Element@name=key-alter@minOccurs=1@maxOccurs=1
-            Element@name=key-accidental@minOccurs=0@maxOccurs=1
+        expected = """└── Choice@minOccurs=1@maxOccurs=1
+    ├── Group@name=traditional-key@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=cancel@minOccurs=0@maxOccurs=1
+    │       ├── Element@name=fifths@minOccurs=1@maxOccurs=1
+    │       └── Element@name=mode@minOccurs=0@maxOccurs=1
+    └── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+        └── Sequence@minOccurs=1@maxOccurs=1
+            ├── Element@name=key-step@minOccurs=1@maxOccurs=1
+            ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
+            └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
 """
-        assert copied_choice.tree_representation() == expected
+        assert copied_choice.get_tree_representation() == expected
 
     def test_add_duplication_parent(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeKey).get_child_container()
@@ -799,41 +799,42 @@ class TestDuplication(TestCase):
             'key-octave']
         container.check_required_elements()
         container.add_element(XMLKeyAlter(1), 2)
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
-        Group@name=traditional-key@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=1@maxOccurs=1
-                Element@name=cancel@minOccurs=0@maxOccurs=1
-                Element@name=fifths@minOccurs=1@maxOccurs=1
-                Element@name=mode@minOccurs=0@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=key-step@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Choice@minOccurs=1@maxOccurs=1: !!Chosen Child!!
+    │   ├── Group@name=traditional-key@minOccurs=1@maxOccurs=1
+    │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │       ├── Element@name=cancel@minOccurs=0@maxOccurs=1
+    │   │       ├── Element@name=fifths@minOccurs=1@maxOccurs=1
+    │   │       └── Element@name=mode@minOccurs=0@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   ├── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+    │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │   │       ├── Element@name=key-step@minOccurs=1@maxOccurs=1
                         !Required!
-                    Element@name=key-alter@minOccurs=1@maxOccurs=1
+    │   │       ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
                         !Required!
-                    Element@name=key-accidental@minOccurs=0@maxOccurs=1
+    │   │       └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
                         XMLKeyAccidental
-            Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=key-step@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │       │       ├── Element@name=key-step@minOccurs=1@maxOccurs=1
                         !Required!
-                    Element@name=key-alter@minOccurs=1@maxOccurs=1
+    │       │       ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
                         !Required!
-                    Element@name=key-accidental@minOccurs=0@maxOccurs=1
+    │       │       └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
                         XMLKeyAccidental
-            Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-                Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-                    Element@name=key-step@minOccurs=1@maxOccurs=1
+    │       └── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+    │           └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │               ├── Element@name=key-step@minOccurs=1@maxOccurs=1
                         !Required!
-                    Element@name=key-alter@minOccurs=1@maxOccurs=1
+    │               ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
                         XMLKeyAlter
-                    Element@name=key-accidental@minOccurs=0@maxOccurs=1
-    Element@name=key-octave@minOccurs=0@maxOccurs=unbounded
+    │               └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
+    └── Element@name=key-octave@minOccurs=0@maxOccurs=unbounded
 """
+
         container.check_required_elements()
-        assert container.tree_representation(show_force_valid) == expected
+        assert container.get_tree_representation(show_force_valid) == expected
 
     def test_duplicate_parent(self):
         """
@@ -969,31 +970,31 @@ class TestChildContainerCheckRequired(TestCase):
 
         container.add_element(XMLGrace())
         container.check_required_elements()
-        expected = """        Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-            Element@name=grace@minOccurs=1@maxOccurs=1
+        expected = """    │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │       ├── Element@name=grace@minOccurs=1@maxOccurs=1
                 XMLGrace
-            Choice@minOccurs=1@maxOccurs=1
+    │       └── Choice@minOccurs=1@maxOccurs=1
                 !Required!
-                Sequence@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
-                    Element@name=tie@minOccurs=0@maxOccurs=2
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=cue@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
+    │           ├── Sequence@minOccurs=1@maxOccurs=1
+    │           │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │           │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │           │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │           │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │           │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │           │   └── Element@name=tie@minOccurs=0@maxOccurs=2
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               ├── Element@name=cue@minOccurs=1@maxOccurs=1
+    │               └── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │                   └── Sequence@minOccurs=1@maxOccurs=1
+    │                       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │                       └── Choice@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │                           └── Element@name=rest@minOccurs=1@maxOccurs=1
 """
-        assert choice.chosen_child.tree_representation(show_force_valid) == expected
+        assert choice.chosen_child.get_tree_representation(show_force_valid) == expected
         container.add_element(XMLPitch())
         with self.assertRaises(XMLChildContainerChoiceHasAnotherChosenChild):
             container.add_element(XMLRest())
@@ -1008,14 +1009,14 @@ class TestChildContainerCheckRequired(TestCase):
         """
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
         container.requirements_fulfilled = False
-        expected = """Choice@minOccurs=1@maxOccurs=1
+        expected = """└── Choice@minOccurs=1@maxOccurs=1
     !Required!
-    Element@name=multiple-rest@minOccurs=1@maxOccurs=1
-    Element@name=measure-repeat@minOccurs=1@maxOccurs=1
-    Element@name=beat-repeat@minOccurs=1@maxOccurs=1
-    Element@name=slash@minOccurs=1@maxOccurs=1
+    ├── Element@name=multiple-rest@minOccurs=1@maxOccurs=1
+    ├── Element@name=measure-repeat@minOccurs=1@maxOccurs=1
+    ├── Element@name=beat-repeat@minOccurs=1@maxOccurs=1
+    └── Element@name=slash@minOccurs=1@maxOccurs=1
 """
-        assert container.tree_representation() == expected
+        assert container.get_tree_representation() == expected
 
     def test_required_element_not_fulfilled(self):
         """
@@ -1024,14 +1025,14 @@ class TestChildContainerCheckRequired(TestCase):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypePitch).get_child_container()
         container.get_children()[0].requirements_fulfilled = False
         container.get_children()[2].requirements_fulfilled = False
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Element@name=step@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Element@name=step@minOccurs=1@maxOccurs=1
         !Required!
-    Element@name=alter@minOccurs=0@maxOccurs=1
-    Element@name=octave@minOccurs=1@maxOccurs=1
+    ├── Element@name=alter@minOccurs=0@maxOccurs=1
+    └── Element@name=octave@minOccurs=1@maxOccurs=1
         !Required!
-"""
-        assert container.tree_representation() == expected
+"""     
+        assert container.get_tree_representation() == expected
 
     def test_check_choice(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeMeasureStyle).get_child_container()
@@ -1153,8 +1154,8 @@ class TestChildContainerCheckRequired(TestCase):
     #     Element@name=listen@minOccurs=0@maxOccurs=1
     # """
     #
-    #         print(container.tree_representation())
-    #         assert container.tree_representation() == expected
+    #         print(container.get_tree_representation())
+    #         assert container.get_tree_representation() == expected
 
     def test_note_with_voice_and_type(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
@@ -1162,93 +1163,94 @@ class TestChildContainerCheckRequired(TestCase):
         container.add_element(XMLDuration(1))
         container.add_element(XMLVoice('1'))
         container.add_element(XMLType('eighth'))
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Choice@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=chord@minOccurs=0@maxOccurs=1
-                    Choice@minOccurs=1@maxOccurs=1
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
+        expected = """└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Choice@minOccurs=1@maxOccurs=1
+    │   ├── Sequence@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
                             XMLPitch
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │   │       └── Element@name=duration@minOccurs=1@maxOccurs=1
                         XMLDuration
-            Element@name=tie@minOccurs=0@maxOccurs=2
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=cue@minOccurs=1@maxOccurs=1
-            Group@name=full-note@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=chord@minOccurs=0@maxOccurs=1
-                    Choice@minOccurs=1@maxOccurs=1
-                        Element@name=pitch@minOccurs=1@maxOccurs=1
-                        Element@name=unpitched@minOccurs=1@maxOccurs=1
-                        Element@name=rest@minOccurs=1@maxOccurs=1
-            Group@name=duration@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=duration@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=grace@minOccurs=1@maxOccurs=1
-            Choice@minOccurs=1@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
-                    Element@name=tie@minOccurs=0@maxOccurs=2
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=cue@minOccurs=1@maxOccurs=1
-                    Group@name=full-note@minOccurs=1@maxOccurs=1
-                        Sequence@minOccurs=1@maxOccurs=1
-                            Element@name=chord@minOccurs=0@maxOccurs=1
-                            Choice@minOccurs=1@maxOccurs=1
-                                Element@name=pitch@minOccurs=1@maxOccurs=1
-                                Element@name=unpitched@minOccurs=1@maxOccurs=1
-                                Element@name=rest@minOccurs=1@maxOccurs=1
-    Element@name=instrument@minOccurs=0@maxOccurs=unbounded
-    Group@name=editorial-voice@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Group@name=footnote@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=footnote@minOccurs=1@maxOccurs=1
-            Group@name=level@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=level@minOccurs=1@maxOccurs=1
-            Group@name=voice@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=voice@minOccurs=1@maxOccurs=1
+    │   │   └── Element@name=tie@minOccurs=0@maxOccurs=2
+    │   ├── Sequence@minOccurs=1@maxOccurs=1
+    │   │   ├── Element@name=cue@minOccurs=1@maxOccurs=1
+    │   │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │   │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │   │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │   │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │   │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │   │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │   │   └── Group@name=duration@minOccurs=1@maxOccurs=1
+    │   │       └── Sequence@minOccurs=1@maxOccurs=1
+    │   │           └── Element@name=duration@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Element@name=grace@minOccurs=1@maxOccurs=1
+    │       └── Choice@minOccurs=1@maxOccurs=1
+    │           ├── Sequence@minOccurs=1@maxOccurs=1
+    │           │   ├── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │           │   │   └── Sequence@minOccurs=1@maxOccurs=1
+    │           │   │       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │           │   │       └── Choice@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │           │   │           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │           │   │           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    │           │   └── Element@name=tie@minOccurs=0@maxOccurs=2
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               ├── Element@name=cue@minOccurs=1@maxOccurs=1
+    │               └── Group@name=full-note@minOccurs=1@maxOccurs=1
+    │                   └── Sequence@minOccurs=1@maxOccurs=1
+    │                       ├── Element@name=chord@minOccurs=0@maxOccurs=1
+    │                       └── Choice@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=pitch@minOccurs=1@maxOccurs=1
+    │                           ├── Element@name=unpitched@minOccurs=1@maxOccurs=1
+    │                           └── Element@name=rest@minOccurs=1@maxOccurs=1
+    ├── Element@name=instrument@minOccurs=0@maxOccurs=unbounded
+    ├── Group@name=editorial-voice@minOccurs=1@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=footnote@minOccurs=0@maxOccurs=1
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       │       └── Element@name=footnote@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=level@minOccurs=0@maxOccurs=1
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       │       └── Element@name=level@minOccurs=1@maxOccurs=1
+    │       └── Group@name=voice@minOccurs=0@maxOccurs=1
+    │           └── Sequence@minOccurs=1@maxOccurs=1
+    │               └── Element@name=voice@minOccurs=1@maxOccurs=1
                         XMLVoice
-    Element@name=type@minOccurs=0@maxOccurs=1
+    ├── Element@name=type@minOccurs=0@maxOccurs=1
         XMLType
-    Element@name=dot@minOccurs=0@maxOccurs=unbounded
-    Element@name=accidental@minOccurs=0@maxOccurs=1
-    Element@name=time-modification@minOccurs=0@maxOccurs=1
-    Element@name=stem@minOccurs=0@maxOccurs=1
-    Element@name=notehead@minOccurs=0@maxOccurs=1
-    Element@name=notehead-text@minOccurs=0@maxOccurs=1
-    Group@name=staff@minOccurs=0@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=staff@minOccurs=1@maxOccurs=1
-    Element@name=beam@minOccurs=0@maxOccurs=8
-    Element@name=notations@minOccurs=0@maxOccurs=unbounded
-    Element@name=lyric@minOccurs=0@maxOccurs=unbounded
-    Element@name=play@minOccurs=0@maxOccurs=1
-    Element@name=listen@minOccurs=0@maxOccurs=1
-"""
-        assert container.tree_representation() == expected
+    ├── Element@name=dot@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=accidental@minOccurs=0@maxOccurs=1
+    ├── Element@name=time-modification@minOccurs=0@maxOccurs=1
+    ├── Element@name=stem@minOccurs=0@maxOccurs=1
+    ├── Element@name=notehead@minOccurs=0@maxOccurs=1
+    ├── Element@name=notehead-text@minOccurs=0@maxOccurs=1
+    ├── Group@name=staff@minOccurs=0@maxOccurs=1
+    │   └── Sequence@minOccurs=1@maxOccurs=1
+    │       └── Element@name=staff@minOccurs=1@maxOccurs=1
+    ├── Element@name=beam@minOccurs=0@maxOccurs=8
+    ├── Element@name=notations@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=lyric@minOccurs=0@maxOccurs=unbounded
+    ├── Element@name=play@minOccurs=0@maxOccurs=1
+    └── Element@name=listen@minOccurs=0@maxOccurs=1
+"""     
+
+        assert container.get_tree_representation() == expected
 
     def test_copy_container(self):
         container = XMLChildContainerFactory(complex_type=XSDComplexTypeNote).get_child_container()
-        before_tree = container.tree_representation(show_force_valid)
+        before_tree = container.get_tree_representation(show_force_valid)
         container.add_element(XMLPitch())
         container.add_element(XMLDuration(2))
         container.add_element(XMLVoice('1'))
         container.add_element(XMLType('eighth'))
         copied = copy.copy(container)
-        assert before_tree == copied.tree_representation()
+        assert before_tree == copied.get_tree_representation()

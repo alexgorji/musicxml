@@ -4,7 +4,7 @@ from typing import Optional, List, Callable, Union
 
 from musicxml.exceptions import XSDWrongAttribute, XSDAttributeRequiredException, XMLElementChildrenRequired
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
-from tree.tree import Tree
+from verysimpletree.tree import Tree
 from musicxml.util.core import cap_first, replace_key_underline_with_hyphen
 from musicxml.xmlelement.containers import containers
 from musicxml.xmlelement.exceptions import XMLElementCannotHaveChildrenError
@@ -20,7 +20,7 @@ class XMLElement(Tree):
     """
 
     _PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
-                   'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check'}
+                   'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check', 'content'}
     TYPE = None
     _SEARCH_FOR_ELEMENT = ''
     XSD_TREE = None
@@ -112,7 +112,7 @@ class XMLElement(Tree):
             self._et_xml_element.text = str(self.value_)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
-        ET.indent(self._et_xml_element, space="  ", level=self.level)
+        ET.indent(self._et_xml_element, space="  ", level=self.get_level())
 
     def _final_checks(self, intelligent_choice=False):
         if self.xsd_check:
@@ -178,7 +178,7 @@ class XMLElement(Tree):
         """
         :return: A :obj:`~~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` object which is used to manage and control :obj:`~musicxml.xmlelement.xmlelement.:obj:`~musicxml.xmlelement.xmlelement.XMLElement``'s children. The nodes of a :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer`
                  have a core content property of types :obj:`~musicxml.xsd.xsdindicator.XSDSequence`, :obj:`~musicxml.xsd.xsdindicator.XSDChoice`, :obj:`~musicxml.xsd.xsdindicator.XSDGroup` or :obj:`~musicxml.xsd.xsdelement.XSDElement`. :obj:`~musicxml.xsd.xsdelement.XSDElement` is the content type of
-                 :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` leaves where one or more :obj:`~musicxml.xmlelement.xmlelement.XMLElement`\s of a single type (depending on ``maxOccur`` attribute of element)
+                 :obj:`~musicxml.xmlelement.xmlchildcontainer.XMLChildContainer` leaves where one or more :obj:`~musicxml.xmlelement.xmlelement.XMLElement`\\s of a single type (depending on ``maxOccur`` attribute of element)
                  can be added to its :obj:`~musicxml.xsd.xsdelement.XSDElement.xml_elements` list. An interaction of ``xsd indicators`` (``sequence``, ``choice`` and ``group``) with ``xsd elements``
                  makes it possible to add :obj:`~musicxml.xmlelement.xmlelement. :obj:`~musicxml.xmlelement.xmlelement.XMLElement`\'s Children in the right order and control all ``xsd rules`` which apply to MusicXML. A
                  variety of exceptions help user to control the xml structure of the exported file which they are intending to use as a MusicXML format file.
@@ -303,7 +303,7 @@ class XMLElement(Tree):
         """
 
         def remove_duplictation():
-            for node in parent_container.reversed_path_to_root():
+            for node in parent_container.get_reversed_path_to_root():
                 if node.up:
                     if isinstance(node.up.content, DuplicationXSDSequence) and len(node.up.get_children()) > 1:
                         remove_duplicate = False
@@ -417,7 +417,7 @@ class XMLAccent(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -440,7 +440,7 @@ class XMLAccidental(XMLElement):
         Permitted Values: ``'sharp'``, ``'natural'``, ``'flat'``, ``'double-sharp'``, ``'sharp-sharp'``, ``'flat-flat'``, ``'natural-sharp'``, ``'natural-flat'``, ``'quarter-flat'``, ``'quarter-sharp'``, ``'three-quarters-flat'``, ``'three-quarters-sharp'``, ``'sharp-down'``, ``'sharp-up'``, ``'natural-down'``, ``'natural-up'``, ``'flat-down'``, ``'flat-up'``, ``'double-sharp-down'``, ``'double-sharp-up'``, ``'flat-flat-down'``, ``'flat-flat-up'``, ``'arrow-down'``, ``'arrow-up'``, ``'triple-sharp'``, ``'triple-flat'``, ``'slash-quarter-sharp'``, ``'slash-sharp'``, ``'slash-flat'``, ``'double-slash-flat'``, ``'sharp-1'``, ``'sharp-2'``, ``'sharp-3'``, ``'sharp-5'``, ``'flat-1'``, ``'flat-2'``, ``'flat-3'``, ``'flat-4'``, ``'sori'``, ``'koron'``, ``'other'``
     
 
-    ``Possible attributes``: ``bracket``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``cautionary``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``editorial``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
+    ``Possible attributes``: ``bracket``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``cautionary``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``editorial``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -463,7 +463,7 @@ class XMLAccidentalMark(XMLElement):
         Permitted Values: ``'sharp'``, ``'natural'``, ``'flat'``, ``'double-sharp'``, ``'sharp-sharp'``, ``'flat-flat'``, ``'natural-sharp'``, ``'natural-flat'``, ``'quarter-flat'``, ``'quarter-sharp'``, ``'three-quarters-flat'``, ``'three-quarters-sharp'``, ``'sharp-down'``, ``'sharp-up'``, ``'natural-down'``, ``'natural-up'``, ``'flat-down'``, ``'flat-up'``, ``'double-sharp-down'``, ``'double-sharp-up'``, ``'flat-flat-down'``, ``'flat-flat-up'``, ``'arrow-down'``, ``'arrow-up'``, ``'triple-sharp'``, ``'triple-flat'``, ``'slash-quarter-sharp'``, ``'slash-sharp'``, ``'slash-flat'``, ``'double-slash-flat'``, ``'sharp-1'``, ``'sharp-2'``, ``'sharp-3'``, ``'sharp-5'``, ``'flat-1'``, ``'flat-2'``, ``'flat-3'``, ``'flat-4'``, ``'sori'``, ``'koron'``, ``'other'``
     
 
-    ``Possible attributes``: ``bracket``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
+    ``Possible attributes``: ``bracket``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
 
 ``Possible parents``::obj:`~XMLNotations`, :obj:`~XMLOrnaments`
     """
@@ -502,7 +502,7 @@ class XMLAccord(XMLElement):
     
     ``complexType``: The accord type represents the tuning of a single string in the scordatura element. It uses the same group of elements as the staff-tuning element. Strings are numbered from high to low.
 
-    ``Possible attributes``: ``string``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStringNumber`
+    ``Possible attributes``: ``string``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStringNumber`
 
     ``Possible children``:    :obj:`~XMLTuningAlter`, :obj:`~XMLTuningOctave`, :obj:`~XMLTuningStep`
 
@@ -586,7 +586,7 @@ class XMLAccordionRegistration(XMLElement):
     
     ``complexType``: The accordion-registration type is used for accordion registration symbols. These are circular symbols divided horizontally into high, middle, and low sections that correspond to 4', 8', and 16' pipes. Each accordion-high, accordion-middle, and accordion-low element represents the presence of one or more dots in the registration diagram. An accordion-registration element needs to have at least one of the child elements present.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLAccordionHigh`, :obj:`~XMLAccordionLow`, :obj:`~XMLAccordionMiddle`
 
@@ -676,7 +676,7 @@ class XMLArpeggiate(XMLElement):
     
     ``complexType``: The arpeggiate type indicates that this note is part of an arpeggiated chord. The number attribute can be used to distinguish between two simultaneous chords arpeggiated separately (different numbers) or together (same number). The direction attribute is used if there is an arrow on the arpeggio sign. By default, arpeggios go from the lowest to highest note.  The length of the sign can be determined from the position attributes for the arpeggiate elements used with the top and bottom notes of the arpeggiated chord. If the unbroken attribute is set to yes, it indicates that the arpeggio continues onto another staff within the part. This serves as a hint to applications and is not required for cross-staff arpeggios.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``direction``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDown`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``unbroken``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``direction``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDown`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``unbroken``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -694,7 +694,7 @@ class XMLArrow(XMLElement):
     
     ``complexType``: The arrow element represents an arrow used for a musical technical indication. It can represent both Unicode and SMuFL arrows. The presence of an arrowhead element indicates that only the arrowhead is displayed, not the arrow stem. The smufl attribute distinguishes different SMuFL glyphs that have an arrow appearance such as arrowBlackUp, guitarStrumUp, or handbellsSwingUp. The specified glyph should match the descriptive representation.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
     ``Possible children``:    :obj:`~XMLArrowDirection`, :obj:`~XMLArrowStyle`, :obj:`~XMLArrowhead`, :obj:`~XMLCircularArrow`
 
@@ -779,7 +779,7 @@ class XMLArticulations(XMLElement):
     
     ``complexType``: Articulations and accents are grouped together here.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
 
     ``Possible children``:    :obj:`~XMLAccent`, :obj:`~XMLBreathMark`, :obj:`~XMLCaesura`, :obj:`~XMLDetachedLegato`, :obj:`~XMLDoit`, :obj:`~XMLFalloff`, :obj:`~XMLOtherArticulation`, :obj:`~XMLPlop`, :obj:`~XMLScoop`, :obj:`~XMLSoftAccent`, :obj:`~XMLSpiccato`, :obj:`~XMLStaccatissimo`, :obj:`~XMLStaccato`, :obj:`~XMLStress`, :obj:`~XMLStrongAccent`, :obj:`~XMLTenuto`, :obj:`~XMLUnstress`
 
@@ -840,7 +840,7 @@ class XMLAssess(XMLElement):
     
     ``complexType``: By default, an assessment application should assess all notes without a cue child element, and not assess any note with a cue child element. The assess type allows this default assessment to be overridden for individual notes. The optional player and time-only attributes restrict the type to apply to a single player or set of times through a repeated section, respectively. If missing, the type applies to all players or all times through the repeated section, respectively. The player attribute references the id attribute of a player element defined within the matching score-part.
 
-    ``Possible attributes``: ``player``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`\@required
+    ``Possible attributes``: ``player``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`\\@required
 
 ``Possible parents``::obj:`~XMLListen`
     """
@@ -943,7 +943,7 @@ class XMLBarStyle(XMLElement):
         Permitted Values: ``'regular'``, ``'dotted'``, ``'dashed'``, ``'heavy'``, ``'light-light'``, ``'light-heavy'``, ``'heavy-light'``, ``'heavy-heavy'``, ``'tick'``, ``'short'``, ``'none'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`
 
 ``Possible parents``::obj:`~XMLBarline`
     """
@@ -963,7 +963,7 @@ class XMLBarline(XMLElement):
     
     Barlines have a location attribute to make it easier to process barlines independently of the other musical data in a score. It is often easier to set up measures separately from entering notes. The location attribute must match where the barline element occurs within the rest of the musical data in the score. If location is left, it should be the first element in the measure, aside from the print, bookmark, and link elements. If location is right, it should be the last element, again with the possible exception of the print, bookmark, and link elements. If no location is specified, the right barline is the default. The segno, coda, and divisions attributes work the same way as in the sound element. They are used for playback when barline elements contain segno or coda child elements.
 
-    ``Possible attributes``: ``coda``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``divisions``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRightLeftMiddle`, ``segno``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``coda``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``divisions``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRightLeftMiddle`, ``segno``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
     ``Possible children``:    :obj:`~XMLBarStyle`, :obj:`~XMLCoda`, :obj:`~XMLEnding`, :obj:`~XMLFermata`, :obj:`~XMLFootnote`, :obj:`~XMLLevel`, :obj:`~XMLRepeat`, :obj:`~XMLSegno`, :obj:`~XMLWavyLine`
 
@@ -1004,7 +1004,7 @@ class XMLBarre(XMLElement):
     
     ``complexType``: The barre element indicates placing a finger over multiple strings on a single fret. The type is "start" for the lowest pitched string (e.g., the string with the highest MusicXML number) and is "stop" for the highest pitched string.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLFrameNote`
     """
@@ -1040,7 +1040,7 @@ class XMLBass(XMLElement):
     
     ``complexType``: The bass type is used to indicate a bass note in popular music chord symbols, e.g. G/C. It is generally not used in functional harmony, as inversion is generally not used in pop chord symbols. As with root, it is divided into step and alter elements, similar to pitches. The arrangement attribute specifies where the bass is displayed relative to what precedes it.
 
-    ``Possible attributes``: ``arrangement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyArrangement`
+    ``Possible attributes``: ``arrangement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyArrangement`
 
     ``Possible children``:    :obj:`~XMLBassAlter`, :obj:`~XMLBassSeparator`, :obj:`~XMLBassStep`
 
@@ -1073,7 +1073,7 @@ class XMLBassAlter(XMLElement):
     
     ``simpleContent``: The semitones type is a number representing semitones, used for chromatic alteration. A value of -1 corresponds to a flat and a value of 1 to a sharp. Decimal values like 0.5 (quarter tone sharp) are used for microtones.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLBass`
     """
@@ -1093,7 +1093,7 @@ class XMLBassSeparator(XMLElement):
     
     ``complexType``: The style-text type represents a text element with a print-style attribute group.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLBass`
     """
@@ -1116,7 +1116,7 @@ class XMLBassStep(XMLElement):
         Permitted Values: ``'A'``, ``'B'``, ``'C'``, ``'D'``, ``'E'``, ``'F'``, ``'G'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLBass`
     """
@@ -1145,7 +1145,7 @@ class XMLBeam(XMLElement):
         Permitted Values: ``'begin'``, ``'continue'``, ``'end'``, ``'forward hook'``, ``'backward hook'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``fan``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFan`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBeamLevel`, ``repeater``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``fan``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFan`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBeamLevel`, ``repeater``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -1167,7 +1167,7 @@ class XMLBeatRepeat(XMLElement):
     
     The beat-repeat element specifies a notation style for repetitions. The actual music being repeated needs to be repeated within the MusicXML file. This element specifies the notation that indicates the repeat.
 
-    ``Possible attributes``: ``slashes``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required, ``use_dots``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``slashes``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required, ``use_dots``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLExceptVoice`, :obj:`~XMLSlashDot`, :obj:`~XMLSlashType`
 
@@ -1285,7 +1285,7 @@ class XMLBeater(XMLElement):
         Permitted Values: ``'bow'``, ``'chime hammer'``, ``'coin'``, ``'drum stick'``, ``'finger'``, ``'fingernail'``, ``'fist'``, ``'guiro scraper'``, ``'hammer'``, ``'hand'``, ``'jazz stick'``, ``'knitting needle'``, ``'metal hammer'``, ``'slide brush on gong'``, ``'snare stick'``, ``'spoon mallet'``, ``'superball'``, ``'triangle beater'``, ``'triangle beater plain'``, ``'wire brush'``
     
 
-    ``Possible attributes``: ``tip``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTipDirection`
+    ``Possible attributes``: ``tip``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTipDirection`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -1319,7 +1319,7 @@ class XMLBend(XMLElement):
     
     ``complexType``: The bend type is used in guitar notation and tablature. A single note with a bend and release will contain two bend elements: the first to represent the bend and the second to represent the release. The shape attribute distinguishes between the angled bend symbols commonly used in standard notation and the curved bend symbols commonly used in both tablature and standard notation.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``first_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBendShape`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``first_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBendShape`
 
     ``Possible children``:    :obj:`~XMLBendAlter`, :obj:`~XMLPreBend`, :obj:`~XMLRelease`, :obj:`~XMLWithBar`
 
@@ -1368,7 +1368,7 @@ class XMLBookmark(XMLElement):
     
     ``complexType``: The bookmark type serves as a well-defined target for an incoming simple XLink.
 
-    ``Possible attributes``: ``element``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\@required, ``name``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``position``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`
+    ``Possible attributes``: ``element``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\\@required, ``name``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``position``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`
 
 ``Possible parents``::obj:`~XMLCredit`, :obj:`~XMLMeasure`
     """
@@ -1404,7 +1404,7 @@ class XMLBracket(XMLElement):
     
     ``complexType``: Brackets are combined with words in a variety of modern directions. The line-end attribute specifies if there is a jog up or down (or both), an arrow, or nothing at the start or end of the bracket. If the line-end is up or down, the length of the jog can be specified using the end-length attribute. The line-type is solid if not specified.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``end_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_end``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineEnd`\@required, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``end_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_end``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineEnd`\\@required, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\\@required
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -1424,7 +1424,7 @@ class XMLBrassBend(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -1447,7 +1447,7 @@ class XMLBreathMark(XMLElement):
         Permitted Values: ``''``, ``'comma'``, ``'tick'``, ``'upbow'``, ``'salzedo'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -1470,7 +1470,7 @@ class XMLCaesura(XMLElement):
         Permitted Values: ``'normal'``, ``'thick'``, ``'short'``, ``'curved'``, ``'single'``, ``''``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -1490,7 +1490,7 @@ class XMLCancel(XMLElement):
     
     ``simpleContent``: The fifths type represents the number of flats or sharps in a traditional key signature. Negative numbers are used for flats and positive numbers for sharps, reflecting the key's placement within the circle of fifths (hence the type name).
 
-    ``Possible attributes``: ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeCancelLocation`
+    ``Possible attributes``: ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeCancelLocation`
 
 ``Possible parents``::obj:`~XMLKey`
     """
@@ -1591,7 +1591,7 @@ class XMLClef(XMLElement):
     
     Clefs appear at the start of each system unless the print-object attribute has been set to "no" or the additional attribute has been set to "yes".
 
-    ``Possible attributes``: ``additional``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``after_barline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`
+    ``Possible attributes``: ``additional``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``after_barline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`
 
     ``Possible children``:    :obj:`~XMLClefOctaveChange`, :obj:`~XMLLine`, :obj:`~XMLSign`
 
@@ -1637,7 +1637,7 @@ class XMLCoda(XMLElement):
     
     ``complexType``: The coda type is the visual indicator of a coda sign. The exact glyph can be specified with the smufl attribute. A sound element is also needed to guide playback applications reliably.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflCodaGlyphName`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflCodaGlyphName`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLDirectionType`
     """
@@ -1677,7 +1677,7 @@ class XMLCreator(XMLElement):
     
     ``complexType``: The typed-text type represents a text element with a type attribute.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
@@ -1701,7 +1701,7 @@ class XMLCredit(XMLElement):
     
     The credit-type element indicates the purpose behind a credit. Multiple types of data may be combined in a single credit, so multiple elements may be used. Standard values include page number, title, subtitle, composer, arranger, lyricist, rights, and part name.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``page``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``page``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`
 
     ``Possible children``:    :obj:`~XMLBookmark`, :obj:`~XMLCreditImage`, :obj:`~XMLCreditSymbol`, :obj:`~XMLCreditType`, :obj:`~XMLCreditWords`, :obj:`~XMLLink`
 
@@ -1760,7 +1760,7 @@ class XMLCreditSymbol(XMLElement):
     
     ``simpleContent``: The smufl-glyph-name type is used for attributes that reference a specific Standard Music Font Layout (SMuFL) character. The value is a SMuFL canonical glyph name, not a code point. For instance, the value for a standard piano pedal mark would be keyboardPedalPed, not U+E650.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dir``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``enclosure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``letter_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_height``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``rotation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dir``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``enclosure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``letter_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_height``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``rotation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLCredit`
     """
@@ -1828,7 +1828,7 @@ class XMLDamp(XMLElement):
     
     ``complexType``: The empty-print-style-align-id type represents an empty element with print-style-align and optional-unique-id attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -1848,7 +1848,7 @@ class XMLDampAll(XMLElement):
     
     ``complexType``: The empty-print-style-align-id type represents an empty element with print-style-align and optional-unique-id attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -1866,7 +1866,7 @@ class XMLDashes(XMLElement):
     
     ``complexType``: The dashes type represents dashes, used for instance with cresc. and dim. marks.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\\@required
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -1922,7 +1922,7 @@ class XMLDegree(XMLElement):
     
     A harmony of kind "other" can be spelled explicitly by using a series of degree elements together with a root.
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLDegreeAlter`, :obj:`~XMLDegreeType`, :obj:`~XMLDegreeValue`
 
@@ -1953,7 +1953,7 @@ class XMLDegreeAlter(XMLElement):
     
     ``simpleContent``: The semitones type is a number representing semitones, used for chromatic alteration. A value of -1 corresponds to a flat and a value of 1 to a sharp. Decimal values like 0.5 (quarter tone sharp) are used for microtones.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``plus_minus``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``plus_minus``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLDegree`
     """
@@ -1976,7 +1976,7 @@ class XMLDegreeType(XMLElement):
         Permitted Values: ``'add'``, ``'alter'``, ``'subtract'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLDegree`
     """
@@ -1994,7 +1994,7 @@ class XMLDegreeValue(XMLElement):
     
     ``complexType``: The content of the degree-value type is a number indicating the degree of the chord (1 for the root, 3 for third, etc). The text attribute specifies how the value of the degree should be displayed. The symbol attribute indicates that a symbol should be used in specifying the degree. If the symbol attribute is present, the value of the text attribute follows the symbol.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``symbol``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDegreeSymbolValue`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``symbol``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDegreeSymbolValue`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLDegree`
     """
@@ -2014,7 +2014,7 @@ class XMLDelayedInvertedTurn(XMLElement):
     
     ``complexType``: The horizontal-turn type represents turn elements that are horizontal rather than vertical. These are empty elements with print-style, placement, trill-sound, and slash attributes. If the slash attribute is yes, then a vertical line is used to slash the turn. It is no if not specified.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -2034,7 +2034,7 @@ class XMLDelayedTurn(XMLElement):
     
     ``complexType``: The horizontal-turn type represents turn elements that are horizontal rather than vertical. These are empty elements with print-style, placement, trill-sound, and slash attributes. If the slash attribute is yes, then a vertical line is used to slash the turn. It is no if not specified.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -2054,7 +2054,7 @@ class XMLDetachedLegato(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -2090,7 +2090,7 @@ class XMLDirection(XMLElement):
     
     By default, a series of direction-type elements and a series of child elements of a direction-type within a single direction element follow one another in sequence visually. For a series of direction-type children, non-positional formatting attributes are carried over from the previous element by default.
 
-    ``Possible attributes``: ``directive``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``system``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`
+    ``Possible attributes``: ``directive``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``system``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`
 
     ``Possible children``:    :obj:`~XMLDirectionType`, :obj:`~XMLFootnote`, :obj:`~XMLLevel`, :obj:`~XMLListening`, :obj:`~XMLOffset`, :obj:`~XMLSound`, :obj:`~XMLStaff`, :obj:`~XMLVoice`
 
@@ -2134,7 +2134,7 @@ class XMLDirectionType(XMLElement):
     
     ``complexType``: Textual direction types may have more than 1 component due to multiple fonts. The dynamics element may also be used in the notations element. Attribute groups related to print suggestions apply to the individual direction-type, not to the overall direction.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
 
     ``Possible children``:    :obj:`~XMLAccordionRegistration`, :obj:`~XMLBracket`, :obj:`~XMLCoda`, :obj:`~XMLDampAll`, :obj:`~XMLDamp`, :obj:`~XMLDashes`, :obj:`~XMLDynamics`, :obj:`~XMLEyeglasses`, :obj:`~XMLHarpPedals`, :obj:`~XMLImage`, :obj:`~XMLMetronome`, :obj:`~XMLOctaveShift`, :obj:`~XMLOtherDirection`, :obj:`~XMLPedal`, :obj:`~XMLPercussion`, :obj:`~XMLPrincipalVoice`, :obj:`~XMLRehearsal`, :obj:`~XMLScordatura`, :obj:`~XMLSegno`, :obj:`~XMLStaffDivide`, :obj:`~XMLStringMute`, :obj:`~XMLSymbol`, :obj:`~XMLWedge`, :obj:`~XMLWords`
 
@@ -2185,7 +2185,7 @@ Directives are like directions, but can be grouped together with attributes for 
 
 
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``lang``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``lang``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
@@ -2258,7 +2258,7 @@ class XMLDistance(XMLElement):
     
     Distances in a MusicXML file are measured in tenths of staff space. Tenths are then scaled to millimeters within the scaling element, used in the defaults element at the start of a score. Individual staves can apply a scaling factor to adjust staff size. When a MusicXML element or attribute refers to tenths, it means the global tenths defined by the scaling element, not the local tenths as adjusted by the staff-size element.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDistanceType`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDistanceType`\\@required
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
@@ -2296,7 +2296,7 @@ class XMLDoit(XMLElement):
     
     ``complexType``: The empty-line type represents an empty element with line-shape, line-type, line-length, dashed-formatting, print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -2316,7 +2316,7 @@ class XMLDot(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -2336,7 +2336,7 @@ class XMLDouble(XMLElement):
     
     ``complexType``: The double type indicates that the music is doubled one octave from what is currently written. If the above attribute is set to yes, the doubling is one octave above what is written, as for mixed flute / piccolo parts in band literature. Otherwise the doubling is one octave below what is written, as for mixed cello / bass parts in orchestral literature.
 
-    ``Possible attributes``: ``above``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``above``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLPartTranspose`, :obj:`~XMLTranspose`
     """
@@ -2356,7 +2356,7 @@ class XMLDoubleTongue(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -2376,7 +2376,7 @@ class XMLDownBow(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -2418,7 +2418,7 @@ class XMLDynamics(XMLElement):
     
     The placement attribute is used when the dynamics are associated with a note. It is ignored when the dynamics are associated with a direction. In that case the direction element's placement attribute is used instead.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``enclosure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_through``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``underline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``enclosure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_through``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``underline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLF`, :obj:`~XMLFf`, :obj:`~XMLFff`, :obj:`~XMLFfff`, :obj:`~XMLFffff`, :obj:`~XMLFfffff`, :obj:`~XMLFp`, :obj:`~XMLFz`, :obj:`~XMLMf`, :obj:`~XMLMp`, :obj:`~XMLN`, :obj:`~XMLOtherDynamics`, :obj:`~XMLP`, :obj:`~XMLPf`, :obj:`~XMLPp`, :obj:`~XMLPpp`, :obj:`~XMLPppp`, :obj:`~XMLPpppp`, :obj:`~XMLPppppp`, :obj:`~XMLRf`, :obj:`~XMLRfz`, :obj:`~XMLSf`, :obj:`~XMLSffz`, :obj:`~XMLSfp`, :obj:`~XMLSfpp`, :obj:`~XMLSfz`, :obj:`~XMLSfzp`
 
@@ -2476,7 +2476,7 @@ class XMLEffect(XMLElement):
         Permitted Values: ``'anvil'``, ``'auto horn'``, ``'bird whistle'``, ``'cannon'``, ``'duck call'``, ``'gun shot'``, ``'klaxon horn'``, ``'lions roar'``, ``'lotus flute'``, ``'megaphone'``, ``'police whistle'``, ``'siren'``, ``'slide whistle'``, ``'thunder sheet'``, ``'wind machine'``, ``'wind whistle'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -2512,7 +2512,7 @@ class XMLElision(XMLElement):
     
     ``complexType``: The elision type represents an elision between lyric syllables. The text content specifies the symbol used to display the elision. Common values are a no-break space (Unicode 00A0), an underscore (Unicode 005F), or an undertie (Unicode 203F). If the text content is empty, the smufl attribute is used to specify the symbol to use. Its value is a SMuFL canonical glyph name that starts with lyrics. The SMuFL attribute is ignored if the elision glyph is already specified by the text content. If neither text content nor a smufl attribute are present, the elision glyph is application-specific.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflLyricsGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflLyricsGlyphName`
 
 ``Possible parents``::obj:`~XMLLyric`
     """
@@ -2530,7 +2530,7 @@ class XMLEncoder(XMLElement):
     
     ``complexType``: The typed-text type represents a text element with a type attribute.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
@@ -2649,7 +2649,7 @@ class XMLEnding(XMLElement):
     
     The number attribute indicates which times the ending is played, similar to the time-only attribute used by other elements. While this often represents the numeric values for what is under the ending line, it can also indicate whether an ending is played during a larger dal segno or da capo repeat. Single endings such as "1" or comma-separated multiple endings such as "1,2" may be used. The ending element text is used when the text displayed in the ending is different than what appears in the number attribute. The print-object attribute is used to indicate when an ending is present but not printed, as is often the case for many parts in a full score.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``end_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEndingNumber`\@required, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``system``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`, ``text_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopDiscontinue`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``end_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEndingNumber`\\@required, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``system``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`, ``text_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopDiscontinue`\\@required
 
 ``Possible parents``::obj:`~XMLBarline`
     """
@@ -2705,7 +2705,7 @@ class XMLExtend(XMLElement):
     
     ``complexType``: The extend type represents lyric word extension / melisma lines as well as figured bass extensions. The optional type and position attributes are added in Version 3.0 to provide better formatting control.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`
 
 ``Possible parents``::obj:`~XMLFigure`, :obj:`~XMLLyric`
     """
@@ -2725,7 +2725,7 @@ class XMLEyeglasses(XMLElement):
     
     ``complexType``: The empty-print-style-align-id type represents an empty element with print-style-align and optional-unique-id attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -2761,7 +2761,7 @@ class XMLFalloff(XMLElement):
     
     ``complexType``: The empty-line type represents an empty element with line-shape, line-type, line-length, dashed-formatting, print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -2779,7 +2779,7 @@ class XMLFeature(XMLElement):
     
     ``complexType``: The feature type is a part of the grouping element used for musical analysis. The type attribute represents the type of the feature and the element content represents its value. This type is flexible to allow for different analyses.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLGrouping`
     """
@@ -2802,7 +2802,7 @@ class XMLFermata(XMLElement):
         Permitted Values: ``'normal'``, ``'angled'``, ``'square'``, ``'double-angled'``, ``'double-square'``, ``'double-dot'``, ``'half-curve'``, ``'curlew'``, ``''``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUprightInverted`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUprightInverted`
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLNotations`
     """
@@ -2954,7 +2954,7 @@ class XMLFigureNumber(XMLElement):
     
     ``complexType``: The style-text type represents a text element with a print-style attribute group.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLFigure`
     """
@@ -2974,7 +2974,7 @@ class XMLFiguredBass(XMLElement):
     
     Figures are ordered from top to bottom. The value of parentheses is "no" if not present.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_dot``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_lyric``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_dot``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_lyric``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLDuration`, :obj:`~XMLFigure`, :obj:`~XMLFootnote`, :obj:`~XMLLevel`
 
@@ -3012,7 +3012,7 @@ class XMLFingering(XMLElement):
     
     ``complexType``: Fingering is typically indicated 1,2,3,4,5. Multiple fingerings may be given, typically to substitute fingerings in the middle of a note. The substitution and alternate values are "no" if the attribute is not present. For guitar and other fretted instruments, the fingering element represents the fretting finger; the pluck element represents the plucking finger.
 
-    ``Possible attributes``: ``alternate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``alternate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
@@ -3032,7 +3032,7 @@ class XMLFingernails(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3064,7 +3064,7 @@ class XMLFirstFret(XMLElement):
     
     ``complexType``: The first-fret type indicates which fret is shown in the top space of the frame; it is fret 1 if the element is not present. The optional text attribute indicates how this is represented in the fret diagram, while the location attribute indicates whether the text appears to the left or right of the frame.
 
-    ``Possible attributes``: ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLFrame`
     """
@@ -3084,7 +3084,7 @@ class XMLFlip(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3122,7 +3122,7 @@ class XMLForPart(XMLElement):
     
     The optional number attribute refers to staff numbers, from top to bottom on the system. If absent, the child elements apply to all staves in the created part.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
 
     ``Possible children``:    :obj:`~XMLPartClef`, :obj:`~XMLPartTranspose`
 
@@ -3207,7 +3207,7 @@ class XMLFrame(XMLElement):
     
     ``complexType``: The frame type represents a frame or fretboard diagram used together with a chord symbol. The representation is based on the NIFF guitar grid with additional information. The frame type's unplayed attribute indicates what to display above a string that has no associated frame-note element. Typical values are x and the empty string. If the attribute is not present, the display of the unplayed string is application-defined.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``height``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``unplayed``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValignImage`, ``width``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``height``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``unplayed``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValignImage`, ``width``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLFirstFret`, :obj:`~XMLFrameFrets`, :obj:`~XMLFrameNote`, :obj:`~XMLFrameStrings`
 
@@ -3297,7 +3297,7 @@ class XMLFret(XMLElement):
     
     ``complexType``: The fret element is used with tablature notation and chord diagrams. Fret numbers start with 0 for an open string and 1 for the first fret.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
@@ -3317,7 +3317,7 @@ class XMLFunction(XMLElement):
     
     ``complexType``: The style-text type represents a text element with a print-style attribute group.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
@@ -3356,7 +3356,7 @@ class XMLGlass(XMLElement):
         Permitted Values: ``'glass harmonica'``, ``'glass harp'``, ``'wind chimes'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -3374,7 +3374,7 @@ class XMLGlissando(XMLElement):
     
     ``complexType``: Glissando and slide types both indicate rapidly moving from one pitch to the other so that individual notes are not discerned. A glissando sounds the distinct notes in between the two pitches and defaults to a wavy line. The optional text is printed alongside the line.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -3394,7 +3394,7 @@ class XMLGlyph(XMLElement):
     
     ``simpleContent``: The smufl-glyph-name type is used for attributes that reference a specific Standard Music Font Layout (SMuFL) character. The value is a SMuFL canonical glyph name, not a code point. For instance, the value for a standard piano pedal mark would be keyboardPedalPed, not U+E650.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeGlyphType`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeGlyphType`\\@required
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
@@ -3414,7 +3414,7 @@ class XMLGolpe(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3432,7 +3432,7 @@ class XMLGrace(XMLElement):
     
     ``complexType``: The grace type indicates the presence of a grace note. The slash attribute for a grace note is yes for slashed grace notes. The steal-time-previous attribute indicates the percentage of time to steal from the previous note for the grace note. The steal-time-following attribute indicates the percentage of time to steal from the following note for the grace note, as for appoggiaturas. The make-time attribute indicates to make time, not steal time; the units are in real-time divisions for the grace note.
 
-    ``Possible attributes``: ``make_time``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``slash``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``steal_time_following``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``steal_time_previous``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`
+    ``Possible attributes``: ``make_time``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``slash``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``steal_time_following``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``steal_time_previous``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -3466,7 +3466,7 @@ class XMLGroupAbbreviation(XMLElement):
     
     ``complexType``: The group-name type describes the name or abbreviation of a part-group element. Formatting attributes in the group-name type are deprecated in Version 2.0 in favor of the new group-name-display and group-abbreviation-display elements.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
@@ -3486,7 +3486,7 @@ class XMLGroupAbbreviationDisplay(XMLElement):
     
     ``complexType``: The name-display type is used for exact formatting of multi-font text in part and group names to the left of the system. The print-object attribute can be used to determine what, if anything, is printed at the start of each system. Enclosure for the display-text element is none by default. Language for the display-text element is Italian ("it") by default.
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLAccidentalText`, :obj:`~XMLDisplayText`
 
@@ -3520,7 +3520,7 @@ class XMLGroupBarline(XMLElement):
         Permitted Values: ``'yes'``, ``'no'``, ``'Mensurstrich'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
@@ -3554,7 +3554,7 @@ class XMLGroupName(XMLElement):
     
     ``complexType``: The group-name type describes the name or abbreviation of a part-group element. Formatting attributes in the group-name type are deprecated in Version 2.0 in favor of the new group-name-display and group-abbreviation-display elements.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
@@ -3574,7 +3574,7 @@ class XMLGroupNameDisplay(XMLElement):
     
     ``complexType``: The name-display type is used for exact formatting of multi-font text in part and group names to the left of the system. The print-object attribute can be used to determine what, if anything, is printed at the start of each system. Enclosure for the display-text element is none by default. Language for the display-text element is Italian ("it") by default.
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLAccidentalText`, :obj:`~XMLDisplayText`
 
@@ -3608,7 +3608,7 @@ class XMLGroupSymbol(XMLElement):
         Permitted Values: ``'none'``, ``'brace'``, ``'line'``, ``'bracket'``, ``'square'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLPartGroup`
     """
@@ -3646,7 +3646,7 @@ class XMLGrouping(XMLElement):
     
     This element is flexible to allow for different types of analyses. Future versions of the MusicXML format may add elements that can represent more standardized categories of analysis data, allowing for easier data sharing.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``member_of``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``member_of``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`\\@required
 
     ``Possible children``:    :obj:`~XMLFeature`
 
@@ -3675,7 +3675,7 @@ class XMLHalfMuted(XMLElement):
     
     ``complexType``: The empty-placement-smufl type represents an empty element with print-style, placement, and smufl attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3693,7 +3693,7 @@ class XMLHammerOn(XMLElement):
     
     ``complexType``: The hammer-on and pull-off elements are used in guitar and fretted instrument notation. Since a single slur can be marked over many notes, the hammer-on and pull-off elements are separate so the individual pair of notes can be specified. The element content can be used to specify how the hammer-on or pull-off should be notated. An empty element leaves this choice up to the application.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3716,7 +3716,7 @@ class XMLHandbell(XMLElement):
         Permitted Values: ``'belltree'``, ``'damp'``, ``'echo'``, ``'gyro'``, ``'hand martellato'``, ``'mallet lift'``, ``'mallet table'``, ``'martellato'``, ``'martellato lift'``, ``'muted martellato'``, ``'pluck lift'``, ``'swing'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3739,7 +3739,7 @@ class XMLHarmonClosed(XMLElement):
         Permitted Values: ``'yes'``, ``'no'``, ``'half'``
     
 
-    ``Possible attributes``: ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonClosedLocation`
+    ``Possible attributes``: ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonClosedLocation`
 
 ``Possible parents``::obj:`~XMLHarmonMute`
     """
@@ -3757,7 +3757,7 @@ class XMLHarmonMute(XMLElement):
     
     ``complexType``: The harmon-mute type represents the symbols used for harmon mutes in brass notation.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLHarmonClosed`
 
@@ -3784,7 +3784,7 @@ class XMLHarmonic(XMLElement):
     
     ``complexType``: The harmonic type indicates natural and artificial harmonics. Allowing the type of pitch to be specified, combined with controls for appearance/playback differences, allows both the notation and the sound to be represented. Artificial harmonics can add a notated touching pitch; artificial pinch harmonics will usually not notate a touching pitch. The attributes for the harmonic element refer to the use of the circular harmonic symbol, typically but not always used with natural harmonics.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLArtificial`, :obj:`~XMLBasePitch`, :obj:`~XMLNatural`, :obj:`~XMLSoundingPitch`, :obj:`~XMLTouchingPitch`
 
@@ -3821,7 +3821,7 @@ class XMLHarmony(XMLElement):
     
     The print-object attribute controls whether or not anything is printed due to the harmony element. The print-frame attribute controls printing of a frame or fretboard diagram. The print-style attribute group sets the default for the harmony, but individual elements can override this with their own print-style values. The arrangement attribute specifies how multiple harmony-chord groups are arranged relative to each other. Harmony-chords with vertical arrangement are separated by horizontal lines. Harmony-chords with diagonal or horizontal arrangement are separated by diagonal lines or slashes.
 
-    ``Possible attributes``: ``arrangement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyArrangement`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_frame``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``system``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyType`
+    ``Possible attributes``: ``arrangement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyArrangement`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_frame``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``system``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelation`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHarmonyType`
 
     ``Possible children``:    :obj:`~XMLBass`, :obj:`~XMLDegree`, :obj:`~XMLFootnote`, :obj:`~XMLFrame`, :obj:`~XMLFunction`, :obj:`~XMLInversion`, :obj:`~XMLKind`, :obj:`~XMLLevel`, :obj:`~XMLNumeral`, :obj:`~XMLOffset`, :obj:`~XMLRoot`, :obj:`~XMLStaff`
 
@@ -3870,7 +3870,7 @@ class XMLHarpPedals(XMLElement):
     
     ``complexType``: The harp-pedals type is used to create harp pedal diagrams. The pedal-step and pedal-alter elements use the same values as the step and alter elements. For easiest reading, the pedal-tuning elements should follow standard harp pedal order, with pedal-step values of D, C, B, E, F, G, and A.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLPedalTuning`
 
@@ -3899,7 +3899,7 @@ class XMLHaydn(XMLElement):
     
     ``complexType``: The empty-trill-sound type represents an empty element with print-style, placement, and trill-sound attributes.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -3917,7 +3917,7 @@ class XMLHeel(XMLElement):
     
     ``complexType``: The heel and toe elements are used with organ pedals. The substitution value is "no" if the attribute is not present.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -3935,7 +3935,7 @@ class XMLHole(XMLElement):
     
     ``complexType``: The hole type represents the symbols used for woodwind and brass fingerings as well as other notations.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLHoleClosed`, :obj:`~XMLHoleShape`, :obj:`~XMLHoleType`
 
@@ -3969,7 +3969,7 @@ class XMLHoleClosed(XMLElement):
         Permitted Values: ``'yes'``, ``'no'``, ``'half'``
     
 
-    ``Possible attributes``: ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHoleClosedLocation`
+    ``Possible attributes``: ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeHoleClosedLocation`
 
 ``Possible parents``::obj:`~XMLHole`
     """
@@ -4083,7 +4083,7 @@ class XMLInstrument(XMLElement):
     
     ``complexType``: The instrument type distinguishes between score-instrument elements in a score-part. The id attribute is an IDREF back to the score-instrument ID. If multiple score-instruments are specified in a score-part, there should be an instrument element for each note in the part. Notes that are shared between multiple score-instruments can have more than one instrument element.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\\@required
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -4117,7 +4117,7 @@ class XMLInstrumentChange(XMLElement):
     
     ``complexType``: The instrument-change element type represents a change to the virtual instrument sound for a given score-instrument. The id attribute refers to the score-instrument affected by the change. All instrument-change child elements can also be initially specified within the score-instrument element.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\\@required
 
     ``Possible children``:    :obj:`~XMLEnsemble`, :obj:`~XMLInstrumentSound`, :obj:`~XMLSolo`, :obj:`~XMLVirtualInstrument`
 
@@ -4149,7 +4149,7 @@ class XMLInstrumentLink(XMLElement):
     
     ``complexType``: Multiple part-link elements can link a condensed part within a score file to multiple MusicXML parts files. For example, a "Clarinet 1 and 2" part in a score file could link to separate "Clarinet 1" and "Clarinet 2" part files. The instrument-link type distinguish which of the score-instruments within a score-part are in which part file. The instrument-link id attribute refers to a score-instrument id attribute.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\\@required
 
 ``Possible parents``::obj:`~XMLPartLink`
     """
@@ -4215,7 +4215,7 @@ class XMLInterchangeable(XMLElement):
     
     ``complexType``: The interchangeable type is used to represent the second in a pair of interchangeable dual time signatures, such as the 6/8 in 3/4 (6/8). A separate symbol attribute value is available compared to the time element's symbol attribute, which applies to the first of the dual time signatures.
 
-    ``Possible attributes``: ``separator``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSeparator`, ``symbol``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSymbol`
+    ``Possible attributes``: ``separator``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSeparator`, ``symbol``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSymbol`
 
     ``Possible children``:    :obj:`~XMLBeatType`, :obj:`~XMLBeats`, :obj:`~XMLTimeRelation`
 
@@ -4246,7 +4246,7 @@ class XMLInversion(XMLElement):
     
     ``complexType``: The inversion type represents harmony inversions. The value is a number indicating which inversion is used: 0 for root position, 1 for first inversion, etc.  The text attribute indicates how the inversion should be displayed in a score.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
@@ -4266,7 +4266,7 @@ class XMLInvertedMordent(XMLElement):
     
     ``complexType``: The mordent type is used for both represents the mordent sign with the vertical line and the inverted-mordent sign without the line. The long attribute is "no" by default. The approach and departure attributes are used for compound ornaments, indicating how the beginning and ending of the ornament look relative to the main part of the mordent.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``approach``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``departure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``long``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``approach``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``departure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``long``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -4286,7 +4286,7 @@ class XMLInvertedTurn(XMLElement):
     
     ``complexType``: The horizontal-turn type represents turn elements that are horizontal rather than vertical. These are empty elements with print-style, placement, trill-sound, and slash attributes. If the slash attribute is yes, then a vertical line is used to slash the turn. It is no if not specified.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -4306,7 +4306,7 @@ class XMLInvertedVerticalTurn(XMLElement):
     
     ``complexType``: The empty-trill-sound type represents an empty element with print-style, placement, and trill-sound attributes.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -4342,7 +4342,7 @@ class XMLKey(XMLElement):
     
     ``complexType``: The key type represents a key signature. Both traditional and non-traditional key signatures are supported. The optional number attribute refers to staff numbers. If absent, the key signature applies to all staves in the part. Key signatures appear at the start of each system unless the print-object attribute has been set to "no".
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLCancel`, :obj:`~XMLFifths`, :obj:`~XMLKeyAccidental`, :obj:`~XMLKeyAlter`, :obj:`~XMLKeyOctave`, :obj:`~XMLKeyStep`, :obj:`~XMLMode`
 
@@ -4387,7 +4387,7 @@ class XMLKeyAccidental(XMLElement):
         Permitted Values: ``'sharp'``, ``'natural'``, ``'flat'``, ``'double-sharp'``, ``'sharp-sharp'``, ``'flat-flat'``, ``'natural-sharp'``, ``'natural-flat'``, ``'quarter-flat'``, ``'quarter-sharp'``, ``'three-quarters-flat'``, ``'three-quarters-sharp'``, ``'sharp-down'``, ``'sharp-up'``, ``'natural-down'``, ``'natural-up'``, ``'flat-down'``, ``'flat-up'``, ``'double-sharp-down'``, ``'double-sharp-up'``, ``'flat-flat-down'``, ``'flat-flat-up'``, ``'arrow-down'``, ``'arrow-up'``, ``'triple-sharp'``, ``'triple-flat'``, ``'slash-quarter-sharp'``, ``'slash-sharp'``, ``'slash-flat'``, ``'double-slash-flat'``, ``'sharp-1'``, ``'sharp-2'``, ``'sharp-3'``, ``'sharp-5'``, ``'flat-1'``, ``'flat-2'``, ``'flat-3'``, ``'flat-4'``, ``'sori'``, ``'koron'``, ``'other'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflAccidentalGlyphName`
 
 ``Possible parents``::obj:`~XMLKey`
     """
@@ -4427,7 +4427,7 @@ class XMLKeyOctave(XMLElement):
     
     ``simpleContent``: Octaves are represented by the numbers 0 to 9, where 4 indicates the octave started by middle C.
 
-    ``Possible attributes``: ``cancel``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`\@required
+    ``Possible attributes``: ``cancel``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`\\@required
 
 ``Possible parents``::obj:`~XMLKey`
     """
@@ -4532,7 +4532,7 @@ class XMLKind(XMLElement):
         Permitted Values: ``'major'``, ``'minor'``, ``'augmented'``, ``'diminished'``, ``'dominant'``, ``'major-seventh'``, ``'minor-seventh'``, ``'diminished-seventh'``, ``'augmented-seventh'``, ``'half-diminished'``, ``'major-minor'``, ``'major-sixth'``, ``'minor-sixth'``, ``'dominant-ninth'``, ``'major-ninth'``, ``'minor-ninth'``, ``'dominant-11th'``, ``'major-11th'``, ``'minor-11th'``, ``'dominant-13th'``, ``'major-13th'``, ``'minor-13th'``, ``'suspended-second'``, ``'suspended-fourth'``, ``'Neapolitan'``, ``'Italian'``, ``'French'``, ``'German'``, ``'pedal'``, ``'power'``, ``'Tristan'``, ``'other'``, ``'none'``
     
 
-    ``Possible attributes``: ``bracket_degrees``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``parentheses_degrees``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``stack_degrees``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``use_symbols``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``bracket_degrees``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``parentheses_degrees``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``stack_degrees``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``use_symbols``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLHarmony`
     """
@@ -4568,7 +4568,7 @@ class XMLLeftDivider(XMLElement):
     
     ``complexType``: The empty-print-style-align-object type represents an empty element with print-object and print-style-align attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLSystemDividers`
     """
@@ -4608,7 +4608,7 @@ class XMLLevel(XMLElement):
     
     The type attribute indicates whether the editorial information applies to the start of a series of symbols, the end of a series of symbols, or a single symbol. It is single if not specified for compatibility with earlier MusicXML versions.
 
-    ``Possible attributes``: ``bracket``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``reference``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`
+    ``Possible attributes``: ``bracket``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``reference``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`
 
 ``Possible parents``::obj:`~XMLAttributes`, :obj:`~XMLBackup`, :obj:`~XMLBarline`, :obj:`~XMLDirection`, :obj:`~XMLFigure`, :obj:`~XMLFiguredBass`, :obj:`~XMLForward`, :obj:`~XMLHarmony`, :obj:`~XMLLyric`, :obj:`~XMLNotations`, :obj:`~XMLNote`, :obj:`~XMLPartGroup`
     """
@@ -4644,7 +4644,7 @@ class XMLLineDetail(XMLElement):
     
     ``complexType``: If the staff-lines element is present, the appearance of each line may be individually specified with a line-detail type. Staff lines are numbered from bottom to top. The print-object attribute allows lines to be hidden within a staff. This is used in special situations such as a widely-spaced percussion staff where a note placed below the higher line is distinct from a note placed above the lower line. Hidden staff lines are included when specifying clef lines and determining display-step / display-octave values, but are not counted as lines for the purposes of the system-layout and staff-layout elements.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``line``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffLine`\@required, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``width``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``line``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffLine`\\@required, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``width``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
@@ -4666,7 +4666,7 @@ class XMLLineWidth(XMLElement):
     
     Distances in a MusicXML file are measured in tenths of staff space. Tenths are then scaled to millimeters within the scaling element, used in the defaults element at the start of a score. Individual staves can apply a scaling factor to adjust staff size. When a MusicXML element or attribute refers to tenths, it means the global tenths defined by the scaling element, not the local tenths as adjusted by the staff-size element.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineWidthType`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineWidthType`\\@required
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
@@ -4759,7 +4759,7 @@ class XMLLyric(XMLElement):
     
     Justification is center by default; placement is below by default. Vertical alignment is to the baseline of the text and horizontal alignment matches justification. The print-object attribute can override a note's print-lyric attribute in cases where only some lyrics on a note are printed, as when lyrics for later verses are printed in a block of text rather than with each note. The time-only attribute precisely specifies which lyrics are to be sung which time through a repeated section.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``name``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``name``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
 
     ``Possible children``:    :obj:`~XMLElision`, :obj:`~XMLEndLine`, :obj:`~XMLEndParagraph`, :obj:`~XMLExtend`, :obj:`~XMLFootnote`, :obj:`~XMLHumming`, :obj:`~XMLLaughing`, :obj:`~XMLLevel`, :obj:`~XMLSyllabic`, :obj:`~XMLText`
 
@@ -4808,7 +4808,7 @@ class XMLLyricFont(XMLElement):
     
     ``complexType``: The lyric-font type specifies the default font for a particular name and number of lyric.
 
-    ``Possible attributes``: ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``name``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`
+    ``Possible attributes``: ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``name``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
@@ -4826,7 +4826,7 @@ class XMLLyricLanguage(XMLElement):
     
     ``complexType``: The lyric-language type specifies the default language for a particular name and number of lyric.
 
-    ``Possible attributes``: ``lang``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``name``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`
+    ``Possible attributes``: ``lang``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``name``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
@@ -4842,7 +4842,7 @@ class XMLMeasure(XMLElement):
 
 
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``implicit``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``non_controlling``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMeasureText`, ``width``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``implicit``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``non_controlling``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMeasureText`, ``width``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLAttributes`, :obj:`~XMLBackup`, :obj:`~XMLBarline`, :obj:`~XMLBookmark`, :obj:`~XMLDirection`, :obj:`~XMLFiguredBass`, :obj:`~XMLForward`, :obj:`~XMLGrouping`, :obj:`~XMLHarmony`, :obj:`~XMLLink`, :obj:`~XMLListening`, :obj:`~XMLNote`, :obj:`~XMLPrint`, :obj:`~XMLSound`
 
@@ -4938,7 +4938,7 @@ class XMLMeasureNumbering(XMLElement):
         Permitted Values: ``'none'``, ``'measure'``, ``'system'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``multiple_rest_always``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``multiple_rest_range``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``staff``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``system``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelationNumber`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``multiple_rest_always``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``multiple_rest_range``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``staff``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``system``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSystemRelationNumber`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLPrint`
     """
@@ -4960,7 +4960,7 @@ class XMLMeasureRepeat(XMLElement):
     
     The measure-repeat element specifies a notation style for repetitions. The actual music being repeated needs to be repeated within each measure of the MusicXML file. This element specifies the notation that indicates the repeat.
 
-    ``Possible attributes``: ``slashes``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``slashes``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
@@ -4982,7 +4982,7 @@ class XMLMeasureStyle(XMLElement):
     
     The multiple-rest and measure-repeat elements indicate the number of measures covered in the element content. The beat-repeat and slash elements can cover partial measures. All but the multiple-rest element use a type attribute to indicate starting and stopping the use of the style. The optional number attribute specifies the staff number from top to bottom on the system, as with clef.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
 
     ``Possible children``:    :obj:`~XMLBeatRepeat`, :obj:`~XMLMeasureRepeat`, :obj:`~XMLMultipleRest`, :obj:`~XMLSlash`
 
@@ -5017,7 +5017,7 @@ class XMLMembrane(XMLElement):
         Permitted Values: ``'bass drum'``, ``'bass drum on side'``, ``'bongos'``, ``'Chinese tomtom'``, ``'conga drum'``, ``'cuica'``, ``'goblet drum'``, ``'Indo-American tomtom'``, ``'Japanese tomtom'``, ``'military drum'``, ``'snare drum'``, ``'snare drum snares off'``, ``'tabla'``, ``'tambourine'``, ``'tenor drum'``, ``'timbales'``, ``'tomtom'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -5040,7 +5040,7 @@ class XMLMetal(XMLElement):
         Permitted Values: ``'agogo'``, ``'almglocken'``, ``'bell'``, ``'bell plate'``, ``'bell tree'``, ``'brake drum'``, ``'cencerro'``, ``'chain rattle'``, ``'Chinese cymbal'``, ``'cowbell'``, ``'crash cymbals'``, ``'crotale'``, ``'cymbal tongs'``, ``'domed gong'``, ``'finger cymbals'``, ``'flexatone'``, ``'gong'``, ``'hi-hat'``, ``'high-hat cymbals'``, ``'handbell'``, ``'jaw harp'``, ``'jingle bells'``, ``'musical saw'``, ``'shell bells'``, ``'sistrum'``, ``'sizzle cymbal'``, ``'sleigh bells'``, ``'suspended cymbal'``, ``'tam tam'``, ``'tam tam with beater'``, ``'triangle'``, ``'Vietnamese hat'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -5058,7 +5058,7 @@ class XMLMetronome(XMLElement):
     
     ``complexType``: The metronome type represents metronome marks and other metric relationships. The beat-unit group and per-minute element specify regular metronome marks. The metronome-note and metronome-relation elements allow for the specification of metric modulations and other metric relationships, such as swing tempo marks where two eighths are equated to a quarter note / eighth note triplet. Tied notes can be represented in both types of metronome marks by using the beat-unit-tied and metronome-tied elements. The parentheses attribute indicates whether or not to put the metronome mark in parentheses; its value is no if not specified. The print-object attribute is set to no in cases where the metronome element represents a relationship or range that is not displayed in the music notation.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLBeatUnitDot`, :obj:`~XMLBeatUnitTied`, :obj:`~XMLBeatUnit`, :obj:`~XMLMetronomeArrows`, :obj:`~XMLMetronomeNote`, :obj:`~XMLMetronomeRelation`, :obj:`~XMLPerMinute`
 
@@ -5127,7 +5127,7 @@ class XMLMetronomeBeam(XMLElement):
         Permitted Values: ``'begin'``, ``'continue'``, ``'end'``, ``'forward hook'``, ``'backward hook'``
     
 
-    ``Possible attributes``: ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBeamLevel`
+    ``Possible attributes``: ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBeamLevel`
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
@@ -5208,7 +5208,7 @@ class XMLMetronomeTied(XMLElement):
     
     ``complexType``: The metronome-tied indicates the presence of a tie within a metric relationship mark. As with the tied element, both the start and stop of the tie should be specified, in this case within separate metronome-note elements.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLMetronomeNote`
     """
@@ -5226,7 +5226,7 @@ class XMLMetronomeTuplet(XMLElement):
     
     ``complexType``: The metronome-tuplet type uses the same element structure as the time-modification element along with some attributes from the tuplet element.
 
-    ``Possible attributes``: ``bracket``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``show_number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``bracket``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``show_number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
     ``Possible children``:    :obj:`~XMLActualNotes`, :obj:`~XMLNormalDot`, :obj:`~XMLNormalNotes`, :obj:`~XMLNormalType`
 
@@ -5330,7 +5330,7 @@ class XMLMidiDevice(XMLElement):
     
     ``complexType``: The midi-device type corresponds to the DeviceName meta event in Standard MIDI Files. The optional port attribute is a number from 1 to 16 that can be used with the unofficial MIDI 1.0 port (or cable) meta event. Unlike the DeviceName meta event, there can be multiple midi-device elements per MusicXML part. The optional id attribute refers to the score-instrument assigned to this device. If missing, the device assignment affects all score-instrument elements in the score-part.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``port``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMidi16`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``port``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMidi16`
 
 ``Possible parents``::obj:`~XMLScorePart`, :obj:`~XMLSound`
     """
@@ -5348,7 +5348,7 @@ class XMLMidiInstrument(XMLElement):
     
     ``complexType``: The midi-instrument type defines MIDI 1.0 instrument playback. The midi-instrument element can be a part of either the score-instrument element at the start of a part, or the sound element within a part. The id attribute refers to the score-instrument affected by the change.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\\@required
 
     ``Possible children``:    :obj:`~XMLElevation`, :obj:`~XMLMidiBank`, :obj:`~XMLMidiChannel`, :obj:`~XMLMidiName`, :obj:`~XMLMidiProgram`, :obj:`~XMLMidiUnpitched`, :obj:`~XMLPan`, :obj:`~XMLVolume`
 
@@ -5475,7 +5475,7 @@ class XMLMiscellaneousField(XMLElement):
     
     ``complexType``: If a program has other metadata not yet supported in the MusicXML format, each type of metadata can go in a miscellaneous-field element. The required name attribute indicates the type of metadata the element content represents.
 
-    ``Possible attributes``: ``name``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required
+    ``Possible attributes``: ``name``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required
 
 ``Possible parents``::obj:`~XMLMiscellaneous`
     """
@@ -5511,7 +5511,7 @@ class XMLMordent(XMLElement):
     
     ``complexType``: The mordent type is used for both represents the mordent sign with the vertical line and the inverted-mordent sign without the line. The long attribute is "no" by default. The approach and departure attributes are used for compound ornaments, indicating how the beginning and ending of the ornament look relative to the main part of the mordent.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``approach``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``departure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``long``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``approach``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``departure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``long``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -5577,7 +5577,7 @@ class XMLMultipleRest(XMLElement):
     
     ``complexType``: The text of the multiple-rest type indicates the number of measures in the multiple rest. Multiple rests may use the 1-bar / 2-bar / 4-bar rest symbols, or a single shape. The use-symbols attribute indicates which to use; it is no if not specified.
 
-    ``Possible attributes``: ``use_symbols``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``use_symbols``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLMeasureStyle`
     """
@@ -5595,7 +5595,7 @@ class XMLMusicFont(XMLElement):
     
     ``complexType``: The empty-font type represents an empty element with font attributes.
 
-    ``Possible attributes``: ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLDefaults`
     """
@@ -5666,7 +5666,7 @@ class XMLNonArpeggiate(XMLElement):
     
     ``complexType``: The non-arpeggiate type indicates that this note is at the top or bottom of a bracket indicating to not arpeggiate these notes. Since this does not involve playback, it is only used on the top or bottom notes, not on each note as for the arpeggiate type.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTopBottom`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTopBottom`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -5739,7 +5739,7 @@ class XMLNotations(XMLElement):
     
     ``complexType``: Notations refer to musical notations, not XML notations. Multiple notations are allowed in order to represent multiple editorial levels. The print-object attribute, added in Version 3.0, allows notations to represent details of performance technique, such as fingerings, without having them appear in the score.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLAccidentalMark`, :obj:`~XMLArpeggiate`, :obj:`~XMLArticulations`, :obj:`~XMLDynamics`, :obj:`~XMLFermata`, :obj:`~XMLFootnote`, :obj:`~XMLGlissando`, :obj:`~XMLLevel`, :obj:`~XMLNonArpeggiate`, :obj:`~XMLOrnaments`, :obj:`~XMLOtherNotation`, :obj:`~XMLSlide`, :obj:`~XMLSlur`, :obj:`~XMLTechnical`, :obj:`~XMLTied`, :obj:`~XMLTuplet`
 
@@ -5799,7 +5799,7 @@ class XMLNote(XMLElement):
     The pizzicato attribute is used when just this note is sounded pizzicato, vs. the pizzicato element which changes overall playback between pizzicato and arco.
     
 
-    ``Possible attributes``: ``attack``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dynamics``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``end_dynamics``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``pizzicato``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_dot``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_leger``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_lyric``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``release``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
+    ``Possible attributes``: ``attack``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dynamics``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``end_dynamics``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``pizzicato``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_dot``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_leger``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_lyric``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``release``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
 
     ``Possible children``:    :obj:`~XMLAccidental`, :obj:`~XMLBeam`, :obj:`~XMLChord`, :obj:`~XMLCue`, :obj:`~XMLDot`, :obj:`~XMLDuration`, :obj:`~XMLFootnote`, :obj:`~XMLGrace`, :obj:`~XMLInstrument`, :obj:`~XMLLevel`, :obj:`~XMLListen`, :obj:`~XMLLyric`, :obj:`~XMLNotations`, :obj:`~XMLNoteheadText`, :obj:`~XMLNotehead`, :obj:`~XMLPitch`, :obj:`~XMLPlay`, :obj:`~XMLRest`, :obj:`~XMLStaff`, :obj:`~XMLStem`, :obj:`~XMLTie`, :obj:`~XMLTimeModification`, :obj:`~XMLType`, :obj:`~XMLUnpitched`, :obj:`~XMLVoice`
 
@@ -5900,7 +5900,7 @@ class XMLNoteSize(XMLElement):
     
     ``simpleContent``: The non-negative-decimal type specifies a non-negative decimal value.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNoteSizeType`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNoteSizeType`\\@required
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
@@ -5935,7 +5935,7 @@ class XMLNotehead(XMLElement):
         Permitted Values: ``'slash'``, ``'triangle'``, ``'diamond'``, ``'square'``, ``'cross'``, ``'x'``, ``'circle-x'``, ``'inverted triangle'``, ``'arrow down'``, ``'arrow up'``, ``'circled'``, ``'slashed'``, ``'back slashed'``, ``'normal'``, ``'cluster'``, ``'circle dot'``, ``'left triangle'``, ``'rectangle'``, ``'none'``, ``'do'``, ``'re'``, ``'mi'``, ``'fa'``, ``'fa up'``, ``'so'``, ``'la'``, ``'ti'``, ``'other'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``filled``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``filled``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -6011,7 +6011,7 @@ class XMLNumeralAlter(XMLElement):
     
     ``simpleContent``: The semitones type is a number representing semitones, used for chromatic alteration. A value of -1 corresponds to a flat and a value of 1 to a sharp. Decimal values like 0.5 (quarter tone sharp) are used for microtones.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLNumeral`
     """
@@ -6045,7 +6045,7 @@ class XMLNumeralKey(XMLElement):
     
     ``complexType``: The numeral-key type is used when the key for the numeral is different than the key specified by the key signature. The numeral-fifths element specifies the key in the same way as the fifths element. The numeral-mode element specifies the mode similar to the mode element, but with a restricted set of values
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLNumeralFifths`, :obj:`~XMLNumeralMode`
 
@@ -6094,7 +6094,7 @@ class XMLNumeralRoot(XMLElement):
     
     ``simpleContent``: The numeral-value type represents a Roman numeral or Nashville number value as a positive integer from 1 to 7.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLNumeral`
     """
@@ -6144,7 +6144,7 @@ class XMLOctaveShift(XMLElement):
     
     ``complexType``: The octave shift type indicates where notes are shifted up or down from their true pitched values because of printing difficulty. Thus a treble clef line noted with 8va will be indicated with an octave-shift down from the pitch data indicated in the notes. A size of 8 indicates one octave; a size of 15 indicates two octaves.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDownStopContinue`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDownStopContinue`\\@required
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -6166,7 +6166,7 @@ class XMLOffset(XMLElement):
     
     ``simpleContent``: The divisions type is used to express values in terms of the musical divisions defined by the divisions element. It is preferred that these be integer values both for MIDI interoperability and to avoid roundoff errors.
 
-    ``Possible attributes``: ``sound``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``sound``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLDirection`, :obj:`~XMLHarmony`, :obj:`~XMLListening`, :obj:`~XMLSound`
     """
@@ -6186,7 +6186,7 @@ class XMLOpen(XMLElement):
     
     ``complexType``: The empty-placement-smufl type represents an empty element with print-style, placement, and smufl attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -6206,7 +6206,7 @@ class XMLOpenString(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -6240,7 +6240,7 @@ class XMLOrnaments(XMLElement):
     
     ``complexType``: Ornaments can be any of several types, followed optionally by accidentals. The accidental-mark element's content is represented the same as an accidental element, but with a different name to reflect the different musical meaning.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
 
     ``Possible children``:    :obj:`~XMLAccidentalMark`, :obj:`~XMLDelayedInvertedTurn`, :obj:`~XMLDelayedTurn`, :obj:`~XMLHaydn`, :obj:`~XMLInvertedMordent`, :obj:`~XMLInvertedTurn`, :obj:`~XMLInvertedVerticalTurn`, :obj:`~XMLMordent`, :obj:`~XMLOtherOrnament`, :obj:`~XMLSchleifer`, :obj:`~XMLShake`, :obj:`~XMLTremolo`, :obj:`~XMLTrillMark`, :obj:`~XMLTurn`, :obj:`~XMLVerticalTurn`, :obj:`~XMLWavyLine`
 
@@ -6283,7 +6283,7 @@ class XMLOtherAppearance(XMLElement):
     
     ``complexType``: The other-appearance type is used to define any graphical settings not yet in the current version of the MusicXML format. This allows extended representation, though without application interoperability.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required
 
 ``Possible parents``::obj:`~XMLAppearance`
     """
@@ -6303,7 +6303,7 @@ class XMLOtherArticulation(XMLElement):
     
     ``complexType``: The other-placement-text type represents a text element with print-style, placement, and smufl attribute groups. This type is used by MusicXML notation extension elements to allow specification of specific SMuFL glyphs without needed to add every glyph as a MusicXML element.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -6321,7 +6321,7 @@ class XMLOtherDirection(XMLElement):
     
     ``complexType``: The other-direction type is used to define any direction symbols not yet in the MusicXML format. The smufl attribute can be used to specify a particular direction symbol, allowing application interoperability without requiring every SMuFL glyph to have a MusicXML element equivalent. Using the other-direction type without the smufl attribute allows for extended representation, though without application interoperability.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -6339,7 +6339,7 @@ class XMLOtherDynamics(XMLElement):
     
     ``complexType``: The other-text type represents a text element with a smufl attribute group. This type is used by MusicXML direction extension elements to allow specification of specific SMuFL glyphs without needed to add every glyph as a MusicXML element.
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLDynamics`
     """
@@ -6357,7 +6357,7 @@ class XMLOtherListen(XMLElement):
     
     ``complexType``: The other-listening type represents other types of listening control and interaction. The required type attribute indicates the type of listening to which the element content applies. The optional player and time-only attributes restrict the element to apply to a single player or set of times through a repeated section, respectively.
 
-    ``Possible attributes``: ``player``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required
+    ``Possible attributes``: ``player``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required
 
 ``Possible parents``::obj:`~XMLListen`
     """
@@ -6375,7 +6375,7 @@ class XMLOtherListening(XMLElement):
     
     ``complexType``: The other-listening type represents other types of listening control and interaction. The required type attribute indicates the type of listening to which the element content applies. The optional player and time-only attributes restrict the element to apply to a single player or set of times through a repeated section, respectively.
 
-    ``Possible attributes``: ``player``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required
+    ``Possible attributes``: ``player``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required
 
 ``Possible parents``::obj:`~XMLListening`
     """
@@ -6393,7 +6393,7 @@ class XMLOtherNotation(XMLElement):
     
     ``complexType``: The other-notation type is used to define any notations not yet in the MusicXML format. It handles notations where more specific extension elements such as other-dynamics and other-technical are not appropriate. The smufl attribute can be used to specify a particular notation, allowing application interoperability without requiring every SMuFL glyph to have a MusicXML element equivalent. Using the other-notation type without the smufl attribute allows for extended representation, though without application interoperability.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopSingle`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -6413,7 +6413,7 @@ class XMLOtherOrnament(XMLElement):
     
     ``complexType``: The other-placement-text type represents a text element with print-style, placement, and smufl attribute groups. This type is used by MusicXML notation extension elements to allow specification of specific SMuFL glyphs without needed to add every glyph as a MusicXML element.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -6433,7 +6433,7 @@ class XMLOtherPercussion(XMLElement):
     
     ``complexType``: The other-text type represents a text element with a smufl attribute group. This type is used by MusicXML direction extension elements to allow specification of specific SMuFL glyphs without needed to add every glyph as a MusicXML element.
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -6451,7 +6451,7 @@ class XMLOtherPlay(XMLElement):
     
     ``complexType``: The other-play element represents other types of playback. The required type attribute indicates the type of playback to which the element content applies.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\@required
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`\\@required
 
 ``Possible parents``::obj:`~XMLPlay`
     """
@@ -6471,7 +6471,7 @@ class XMLOtherTechnical(XMLElement):
     
     ``complexType``: The other-placement-text type represents a text element with print-style, placement, and smufl attribute groups. This type is used by MusicXML notation extension elements to allow specification of specific SMuFL glyphs without needed to add every glyph as a MusicXML element.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -6555,7 +6555,7 @@ class XMLPageMargins(XMLElement):
     
     ``complexType``: Page margins are specified either for both even and odd pages, or via separate odd and even page number values. The type attribute is not needed when used as part of a print element. If omitted when the page-margins type is used in the defaults element, "both" is the default value.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMarginType`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMarginType`
 
     ``Possible children``:    :obj:`~XMLBottomMargin`, :obj:`~XMLLeftMargin`, :obj:`~XMLRightMargin`, :obj:`~XMLTopMargin`
 
@@ -6622,7 +6622,7 @@ class XMLPart(XMLElement):
 
 
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`\\@required
 
     ``Possible children``:    :obj:`~XMLMeasure`
 
@@ -6649,7 +6649,7 @@ class XMLPartAbbreviation(XMLElement):
     
     ``complexType``: The part-name type describes the name or abbreviation of a score-part element. Formatting attributes for the part-name element are deprecated in Version 2.0 in favor of the new part-name-display and part-abbreviation-display elements.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
@@ -6667,7 +6667,7 @@ class XMLPartAbbreviationDisplay(XMLElement):
     
     ``complexType``: The name-display type is used for exact formatting of multi-font text in part and group names to the left of the system. The print-object attribute can be used to determine what, if anything, is printed at the start of each system. Enclosure for the display-text element is none by default. Language for the display-text element is Italian ("it") by default.
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLAccidentalText`, :obj:`~XMLDisplayText`
 
@@ -6730,7 +6730,7 @@ class XMLPartGroup(XMLElement):
     
     A part-group element is not needed for a single multi-staff part. By default, multi-staff parts include a brace symbol and (if appropriate given the bar-style) common barlines. The symbol formatting for a multi-staff part can be more fully specified using the part-symbol element.
 
-    ``Possible attributes``: ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
     ``Possible children``:    :obj:`~XMLFootnote`, :obj:`~XMLGroupAbbreviationDisplay`, :obj:`~XMLGroupAbbreviation`, :obj:`~XMLGroupBarline`, :obj:`~XMLGroupNameDisplay`, :obj:`~XMLGroupName`, :obj:`~XMLGroupSymbol`, :obj:`~XMLGroupTime`, :obj:`~XMLLevel`
 
@@ -6834,7 +6834,7 @@ class XMLPartName(XMLElement):
     
     ``complexType``: The part-name type describes the name or abbreviation of a score-part element. Formatting attributes for the part-name element are deprecated in Version 2.0 in favor of the new part-name-display and part-abbreviation-display elements.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLScorePart`
     """
@@ -6852,7 +6852,7 @@ class XMLPartNameDisplay(XMLElement):
     
     ``complexType``: The name-display type is used for exact formatting of multi-font text in part and group names to the left of the system. The print-object attribute can be used to determine what, if anything, is printed at the start of each system. Enclosure for the display-text element is none by default. Language for the display-text element is Italian ("it") by default.
 
-    ``Possible attributes``: ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLAccidentalText`, :obj:`~XMLDisplayText`
 
@@ -6888,7 +6888,7 @@ class XMLPartSymbol(XMLElement):
         Permitted Values: ``'none'``, ``'brace'``, ``'line'``, ``'bracket'``, ``'square'``
     
 
-    ``Possible attributes``: ``bottom_staff``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``top_staff``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
+    ``Possible attributes``: ``bottom_staff``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``top_staff``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
 
 ``Possible parents``::obj:`~XMLAttributes`
     """
@@ -6937,7 +6937,7 @@ class XMLPedal(XMLElement):
     
     ``complexType``: The pedal type represents piano pedal marks, including damper and sostenuto pedal marks. The line attribute is yes if pedal lines are used. The sign attribute is yes if Ped, Sost, and * signs are used. For compatibility with older versions, the sign attribute is yes by default if the line attribute is no, and is no by default if the line attribute is yes. If the sign attribute is set to yes and the type is start or sostenuto, the abbreviated attribute is yes if the short P and S signs are used, and no if the full Ped and Sost signs are used. It is no by default. Otherwise the abbreviated attribute is ignored. The alignment attributes are ignored if the sign attribute is no.
 
-    ``Possible attributes``: ``abbreviated``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``sign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePedalType`\@required, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``abbreviated``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``sign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePedalType`\\@required, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -7020,7 +7020,7 @@ class XMLPerMinute(XMLElement):
     
     ``complexType``: The per-minute type can be a number, or a text description including numbers. If a font is specified, it overrides the font specified for the overall metronome element. This allows separate specification of a music font for the beat-unit and a text font for the numeric value, in cases where a single metronome font is not used.
 
-    ``Possible attributes``: ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLMetronome`
     """
@@ -7038,7 +7038,7 @@ class XMLPercussion(XMLElement):
     
     ``complexType``: The percussion element is used to define percussion pictogram symbols. Definitions for these symbols can be found in Kurt Stone's "Music Notation in the Twentieth Century" on pages 206-212 and 223. Some values are added to these based on how usage has evolved in the 30 years since Stone's book was published.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``enclosure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``enclosure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLBeater`, :obj:`~XMLEffect`, :obj:`~XMLGlass`, :obj:`~XMLMembrane`, :obj:`~XMLMetal`, :obj:`~XMLOtherPercussion`, :obj:`~XMLPitched`, :obj:`~XMLStickLocation`, :obj:`~XMLStick`, :obj:`~XMLTimpani`, :obj:`~XMLWood`
 
@@ -7123,7 +7123,7 @@ class XMLPitched(XMLElement):
         Permitted Values: ``'celesta'``, ``'chimes'``, ``'glockenspiel'``, ``'lithophone'``, ``'mallet'``, ``'marimba'``, ``'steel drums'``, ``'tubaphone'``, ``'tubular chimes'``, ``'vibraphone'``, ``'xylophone'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -7141,7 +7141,7 @@ class XMLPlay(XMLElement):
     
     ``complexType``: The play type specifies playback techniques to be used in conjunction with the instrument-sound element. When used as part of a sound element, it applies to all notes going forward in score order. In multi-instrument parts, the affected instrument should be specified using the id attribute. When used as part of a note element, it applies to the current note only.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`
 
     ``Possible children``:    :obj:`~XMLIpa`, :obj:`~XMLMute`, :obj:`~XMLOtherPlay`, :obj:`~XMLSemiPitched`
 
@@ -7172,7 +7172,7 @@ class XMLPlayer(XMLElement):
     
     ``complexType``: The player type allows for multiple players per score-part for use in listening applications. One player may play multiple instruments, while a single instrument may include multiple players in divisi sections.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\\@required
 
     ``Possible children``:    :obj:`~XMLPlayerName`
 
@@ -7217,7 +7217,7 @@ class XMLPlop(XMLElement):
     
     ``complexType``: The empty-line type represents an empty element with line-shape, line-type, line-length, dashed-formatting, print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -7237,7 +7237,7 @@ class XMLPluck(XMLElement):
     
     ``complexType``: The placement-text type represents a text element with print-style and placement attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -7355,7 +7355,7 @@ class XMLPrefix(XMLElement):
     
     ``complexType``: The style-text type represents a text element with a print-style attribute group.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLFigure`
     """
@@ -7373,7 +7373,7 @@ class XMLPrincipalVoice(XMLElement):
     
     ``complexType``: The principal-voice type represents principal and secondary voices in a score, either for analysis or for square bracket symbols that appear in a score. The element content is used for analysis and may be any text value. The symbol attribute indicates the type of symbol used. When used for analysis separate from any printed score markings, it should be set to none. Otherwise if the type is stop it should be set to plain.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``symbol``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePrincipalVoiceSymbol`\@required, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``symbol``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePrincipalVoiceSymbol`\\@required, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -7393,7 +7393,7 @@ class XMLPrint(XMLElement):
     
     Layout group elements in a print element only apply to the current page, system, or staff. Music that follows continues to take the default values from the layout determined by the defaults element.
 
-    ``Possible attributes``: ``blank_page``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``new_page``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``new_system``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``page_number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``staff_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``blank_page``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePositiveInteger`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``new_page``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``new_system``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``page_number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``staff_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
     ``Possible children``:    :obj:`~XMLMeasureLayout`, :obj:`~XMLMeasureNumbering`, :obj:`~XMLPageLayout`, :obj:`~XMLPartAbbreviationDisplay`, :obj:`~XMLPartNameDisplay`, :obj:`~XMLStaffLayout`, :obj:`~XMLSystemLayout`
 
@@ -7428,7 +7428,7 @@ class XMLPullOff(XMLElement):
     
     ``complexType``: The hammer-on and pull-off elements are used in guitar and fretted instrument notation. Since a single slur can be marked over many notes, the hammer-on and pull-off elements are separate so the individual pair of notes can be specified. The element content can be used to specify how the hammer-on or pull-off should be notated. An empty element leaves this choice up to the application.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -7466,7 +7466,7 @@ class XMLRelation(XMLElement):
     
     ``complexType``: The typed-text type represents a text element with a type attribute.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
@@ -7484,7 +7484,7 @@ class XMLRelease(XMLElement):
     
     ``complexType``: The release type indicates that a bend is a release rather than a normal bend or pre-bend. The offset attribute specifies where the release starts in terms of divisions relative to the current note. The first-beat and last-beat attributes of the parent bend element are relative to the original note position, not this offset value.
 
-    ``Possible attributes``: ``offset``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`
+    ``Possible attributes``: ``offset``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`
 
 ``Possible parents``::obj:`~XMLBend`
     """
@@ -7502,7 +7502,7 @@ class XMLRepeat(XMLElement):
     
     ``complexType``: The repeat type represents repeat marks. The start of the repeat has a forward direction while the end of the repeat has a backward direction. The times and after-jump attributes are only used with backward repeats that are not part of an ending. The times attribute indicates the number of times the repeated section is played. The after-jump attribute indicates if the repeats are played after a jump due to a da capo or dal segno.
 
-    ``Possible attributes``: ``after_jump``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``direction``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBackwardForward`\@required, ``times``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeInteger`, ``winged``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeWinged`
+    ``Possible attributes``: ``after_jump``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``direction``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeBackwardForward`\\@required, ``times``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeInteger`, ``winged``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeWinged`
 
 ``Possible parents``::obj:`~XMLBarline`
     """
@@ -7520,7 +7520,7 @@ class XMLRest(XMLElement):
     
     ``complexType``: The rest element indicates notated rests or silences. Rest elements are usually empty, but placement on the staff can be specified using display-step and display-octave elements. If the measure attribute is set to yes, this indicates this is a complete measure rest.
 
-    ``Possible attributes``: ``measure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``measure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLDisplayOctave`, :obj:`~XMLDisplayStep`
 
@@ -7582,7 +7582,7 @@ class XMLRightDivider(XMLElement):
     
     ``complexType``: The empty-print-style-align-object type represents an empty element with print-object and print-style-align attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLSystemDividers`
     """
@@ -7620,7 +7620,7 @@ class XMLRights(XMLElement):
     
     ``complexType``: The typed-text type represents a text element with a type attribute.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLIdentification`
     """
@@ -7668,7 +7668,7 @@ class XMLRootAlter(XMLElement):
     
     ``simpleContent``: The semitones type is a number representing semitones, used for chromatic alteration. A value of -1 corresponds to a flat and a value of 1 to a sharp. Decimal values like 0.5 (quarter tone sharp) are used for microtones.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``location``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftRight`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLRoot`
     """
@@ -7691,7 +7691,7 @@ class XMLRootStep(XMLElement):
         Permitted Values: ``'A'``, ``'B'``, ``'C'``, ``'D'``, ``'E'``, ``'F'``, ``'G'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``text``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLRoot`
     """
@@ -7737,7 +7737,7 @@ class XMLSchleifer(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -7757,7 +7757,7 @@ class XMLScoop(XMLElement):
     
     ``complexType``: The empty-line type represents an empty element with line-shape, line-type, line-length, dashed-formatting, print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``line_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineLength`, ``line_shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -7775,7 +7775,7 @@ class XMLScordatura(XMLElement):
     
     ``complexType``: Scordatura string tunings are represented by a series of accord elements, similar to the staff-tuning elements. Strings are numbered from high to low.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
 
     ``Possible children``:    :obj:`~XMLAccord`
 
@@ -7806,7 +7806,7 @@ class XMLScoreInstrument(XMLElement):
     
     The score-instrument element can also distinguish multiple instruments of the same type that are on the same part, such as Clarinet 1 and Clarinet 2 instruments within a Clarinets 1 and 2 part.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\\@required
 
     ``Possible children``:    :obj:`~XMLEnsemble`, :obj:`~XMLInstrumentAbbreviation`, :obj:`~XMLInstrumentName`, :obj:`~XMLInstrumentSound`, :obj:`~XMLSolo`, :obj:`~XMLVirtualInstrument`
 
@@ -7843,7 +7843,7 @@ class XMLScorePart(XMLElement):
     
     ``complexType``: The score-part type collects part-wide information for each part in a score. Often, each MusicXML part corresponds to a track in a Standard MIDI Format 1 file. In this case, the midi-device element is used to make a MIDI device or port assignment for the given track or specific MIDI instruments. Initial midi-instrument assignments may be made here as well. The score-instrument elements are used when there are multiple instruments per track.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\@required
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`\\@required
 
     ``Possible children``:    :obj:`~XMLGroup`, :obj:`~XMLIdentification`, :obj:`~XMLMidiDevice`, :obj:`~XMLMidiInstrument`, :obj:`~XMLPartAbbreviationDisplay`, :obj:`~XMLPartAbbreviation`, :obj:`~XMLPartLink`, :obj:`~XMLPartNameDisplay`, :obj:`~XMLPartName`, :obj:`~XMLPlayer`, :obj:`~XMLScoreInstrument`
 
@@ -7881,7 +7881,7 @@ The score-partwise element is the root element for a partwise MusicXML score. It
 
 
 
-    ``Possible attributes``: ``version``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``version``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
     ``Possible children``:    :obj:`~XMLCredit`, :obj:`~XMLDefaults`, :obj:`~XMLIdentification`, :obj:`~XMLMovementNumber`, :obj:`~XMLMovementTitle`, :obj:`~XMLPartList`, :obj:`~XMLPart`, :obj:`~XMLWork`
 
@@ -7941,7 +7941,7 @@ class XMLSegno(XMLElement):
     
     ``complexType``: The segno type is the visual indicator of a segno sign. The exact glyph can be specified with the smufl attribute. A sound element is also needed to guide playback applications reliably.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflSegnoGlyphName`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflSegnoGlyphName`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLDirectionType`
     """
@@ -8092,7 +8092,7 @@ class XMLShake(XMLElement):
     
     ``complexType``: The empty-trill-sound type represents an empty element with print-style, placement, and trill-sound attributes.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -8133,7 +8133,7 @@ class XMLSlash(XMLElement):
     
     ``complexType``: The slash type is used to indicate that slash notation is to be used. If the slash is on every beat, use-stems is no (the default). To indicate rhythms but not pitches, use-stems is set to yes. The type attribute indicates whether this is the start or stop of a slash notation style. The use-dots attribute works as for the beat-repeat element, and only has effect if use-stems is no.
 
-    ``Possible attributes``: ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required, ``use_dots``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``use_stems``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required, ``use_dots``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``use_stems``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
     ``Possible children``:    :obj:`~XMLExceptVoice`, :obj:`~XMLSlashDot`, :obj:`~XMLSlashType`
 
@@ -8203,7 +8203,7 @@ class XMLSlide(XMLElement):
     
     ``complexType``: Glissando and slide types both indicate rapidly moving from one pitch to the other so that individual notes are not discerned. A slide is continuous between the two pitches and defaults to a solid line. The optional text for a is printed alongside the line.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``first_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``first_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -8221,7 +8221,7 @@ class XMLSlur(XMLElement):
     
     ``complexType``: Slur types are empty. Most slurs are represented with two elements: one with a start type, and one with a stop type. Slurs can add more elements using a continue type. This is typically used to specify the formatting of cross-system slurs, or to specify the shape of very complex slurs.
 
-    ``Possible attributes``: ``bezier_offset2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_offset``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_x2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``orientation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOverUnder`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\@required
+    ``Possible attributes``: ``bezier_offset2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_offset``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_x2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``orientation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOverUnder`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -8241,7 +8241,7 @@ class XMLSmear(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -8261,7 +8261,7 @@ class XMLSnapPizzicato(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -8281,7 +8281,7 @@ class XMLSoftAccent(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8357,7 +8357,7 @@ class XMLSound(XMLElement):
     
     The offset element is used to indicate that the sound takes place offset from the current score position. If the sound element is a child of a direction element, the sound offset element overrides the direction offset element if both elements are present. Note that the offset reflects the intended musical position for the change in sound. It should not be used to compensate for latency issues in particular hardware configurations.
 
-    ``Possible attributes``: ``coda``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``dacapo``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``dalsegno``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``damper_pedal``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``divisions``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``dynamics``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``elevation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``fine``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``forward_repeat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``pan``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``pizzicato``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``segno``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``soft_pedal``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``sostenuto_pedal``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``tempo``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``tocoda``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``coda``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``dacapo``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``dalsegno``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``damper_pedal``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``divisions``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``dynamics``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``elevation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``fine``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``forward_repeat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``pan``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``pizzicato``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``segno``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`, ``soft_pedal``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``sostenuto_pedal``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNoNumber`, ``tempo``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``tocoda``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
     ``Possible children``:    :obj:`~XMLInstrumentChange`, :obj:`~XMLMidiDevice`, :obj:`~XMLMidiInstrument`, :obj:`~XMLOffset`, :obj:`~XMLPlay`, :obj:`~XMLSwing`
 
@@ -8426,7 +8426,7 @@ class XMLSpiccato(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8446,7 +8446,7 @@ class XMLStaccatissimo(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8466,7 +8466,7 @@ class XMLStaccato(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8502,7 +8502,7 @@ class XMLStaffDetails(XMLElement):
     
     ``complexType``: The staff-details element is used to indicate different types of staves. The optional number attribute specifies the staff number from top to bottom on the system, as with clef. The print-object attribute is used to indicate when a staff is not printed in a part, usually in large scores where empty parts are omitted. It is yes by default. If print-spacing is yes while print-object is no, the score is printed in cutaway format where vertical space is left for the empty part.
 
-    ``Possible attributes``: ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``show_frets``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowFrets`
+    ``Possible attributes``: ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``print_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``show_frets``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowFrets`
 
     ``Possible children``:    :obj:`~XMLCapo`, :obj:`~XMLLineDetail`, :obj:`~XMLStaffLines`, :obj:`~XMLStaffSize`, :obj:`~XMLStaffTuning`, :obj:`~XMLStaffType`
 
@@ -8553,7 +8553,7 @@ class XMLStaffDivide(XMLElement):
     
     ``complexType``: The staff-divide element represents the staff division arrow symbols found at SMuFL code points U+E00B, U+E00C, and U+E00D.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffDivideSymbol`\@required, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffDivideSymbol`\\@required, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -8573,7 +8573,7 @@ class XMLStaffLayout(XMLElement):
     
     When used in the defaults element, the values apply to all systems in all parts. When used in the print element, the values apply to the current system only. This value is ignored for the first staff in a system.
 
-    ``Possible attributes``: ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
+    ``Possible attributes``: ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
 
     ``Possible children``:    :obj:`~XMLStaffDistance`
 
@@ -8620,7 +8620,7 @@ class XMLStaffSize(XMLElement):
     
     ``simpleContent``: The non-negative-decimal type specifies a non-negative decimal value.
 
-    ``Possible attributes``: ``scaling``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`
+    ``Possible attributes``: ``scaling``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNonNegativeDecimal`
 
 ``Possible parents``::obj:`~XMLStaffDetails`
     """
@@ -8638,7 +8638,7 @@ class XMLStaffTuning(XMLElement):
     
     ``complexType``: The staff-tuning type specifies the open, non-capo tuning of the lines on a tablature staff.
 
-    ``Possible attributes``: ``line``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffLine`\@required
+    ``Possible attributes``: ``line``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffLine`\\@required
 
     ``Possible children``:    :obj:`~XMLTuningAlter`, :obj:`~XMLTuningOctave`, :obj:`~XMLTuningStep`
 
@@ -8708,7 +8708,7 @@ class XMLStem(XMLElement):
         Permitted Values: ``'down'``, ``'up'``, ``'double'``, ``'none'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -8745,7 +8745,7 @@ class XMLStick(XMLElement):
     
     ``complexType``: The stick type represents pictograms where the material of the stick, mallet, or beater is included.The parentheses and dashed-circle attributes indicate the presence of these marks around the round beater part of a pictogram. Values for these attributes are "no" if not present.
 
-    ``Possible attributes``: ``dashed_circle``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``parentheses``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``tip``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTipDirection`
+    ``Possible attributes``: ``dashed_circle``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``parentheses``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``tip``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTipDirection`
 
     ``Possible children``:    :obj:`~XMLStickMaterial`, :obj:`~XMLStickType`
 
@@ -8832,7 +8832,7 @@ class XMLStopped(XMLElement):
     
     ``complexType``: The empty-placement-smufl type represents an empty element with print-style, placement, and smufl attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -8868,7 +8868,7 @@ class XMLStress(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8888,7 +8888,7 @@ class XMLString(XMLElement):
     
     ``simpleContent``: The string-number type indicates a string number. Strings are numbered from high to low, with 1 being the highest pitched full-length string.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLFrameNote`, :obj:`~XMLTechnical`
     """
@@ -8906,7 +8906,7 @@ class XMLStringMute(XMLElement):
     
     ``complexType``: The string-mute type represents string mute on and mute off symbols.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOnOff`\@required, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOnOff`\\@required, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -8926,7 +8926,7 @@ class XMLStrongAccent(XMLElement):
     
     ``complexType``: The strong-accent type indicates a vertical accent mark. The type attribute indicates if the point of the accent is down or up.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDown`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeUpDown`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -8946,7 +8946,7 @@ class XMLSuffix(XMLElement):
     
     ``complexType``: The style-text type represents a text element with a print-style attribute group.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLFigure`
     """
@@ -8964,7 +8964,7 @@ class XMLSupports(XMLElement):
     
     ``complexType``: The supports type indicates if a MusicXML encoding supports a particular MusicXML element. This is recommended for elements like beam, stem, and accidental, where the absence of an element is ambiguous if you do not know if the encoding supports that element. For Version 2.0, the supports element is expanded to allow programs to indicate support for particular attributes or particular values. This lets applications communicate, for example, that all system and/or page breaks are contained in the MusicXML file.
 
-    ``Possible attributes``: ``attribute``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``element``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`\@required, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`\@required, ``value``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
+    ``Possible attributes``: ``attribute``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`, ``element``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNMTOKEN`\\@required, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`\\@required, ``value``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeToken`
 
 ``Possible parents``::obj:`~XMLEncoding`
     """
@@ -9079,7 +9079,7 @@ class XMLSymbol(XMLElement):
     
     ``simpleContent``: The smufl-glyph-name type is used for attributes that reference a specific Standard Music Font Layout (SMuFL) character. The value is a SMuFL canonical glyph name, not a code point. For instance, the value for a standard piano pedal mark would be keyboardPedalPed, not U+E650.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dir``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``enclosure``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``letter_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_height``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``rotation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``dir``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``enclosure``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeEnclosureShape`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``justify``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``letter_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_height``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``rotation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -9099,7 +9099,7 @@ class XMLSync(XMLElement):
     
     The optional latency attribute specifies a time in milliseconds that the listening application should expect from the performer. The optional player and time-only attributes restrict the element to apply to a single player or set of times through a repeated section, respectively.
 
-    ``Possible attributes``: ``latency``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMilliseconds`, ``player``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSyncType`\@required
+    ``Possible attributes``: ``latency``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeMilliseconds`, ``player``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSyncType`\\@required
 
 ``Possible parents``::obj:`~XMLListening`
     """
@@ -9224,7 +9224,7 @@ class XMLTap(XMLElement):
     
     ``complexType``: The tap type indicates a tap on the fretboard. The text content allows specification of the notation; + and T are common choices. If the element is empty, the hand attribute is used to specify the symbol to use. The hand attribute is ignored if the tap glyph is already specified by the text content. If neither text content nor the hand attribute are present, the display is application-specific.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``hand``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTapHand`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``hand``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTapHand`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -9242,7 +9242,7 @@ class XMLTechnical(XMLElement):
     
     ``complexType``: Technical indications give performance information for individual instruments.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`
 
     ``Possible children``:    :obj:`~XMLArrow`, :obj:`~XMLBend`, :obj:`~XMLBrassBend`, :obj:`~XMLDoubleTongue`, :obj:`~XMLDownBow`, :obj:`~XMLFingering`, :obj:`~XMLFingernails`, :obj:`~XMLFlip`, :obj:`~XMLFret`, :obj:`~XMLGolpe`, :obj:`~XMLHalfMuted`, :obj:`~XMLHammerOn`, :obj:`~XMLHandbell`, :obj:`~XMLHarmonMute`, :obj:`~XMLHarmonic`, :obj:`~XMLHeel`, :obj:`~XMLHole`, :obj:`~XMLOpenString`, :obj:`~XMLOpen`, :obj:`~XMLOtherTechnical`, :obj:`~XMLPluck`, :obj:`~XMLPullOff`, :obj:`~XMLSmear`, :obj:`~XMLSnapPizzicato`, :obj:`~XMLStopped`, :obj:`~XMLString`, :obj:`~XMLTap`, :obj:`~XMLThumbPosition`, :obj:`~XMLToe`, :obj:`~XMLTripleTongue`, :obj:`~XMLUpBow`
 
@@ -9319,7 +9319,7 @@ class XMLTenuto(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -9337,7 +9337,7 @@ class XMLText(XMLElement):
     
     ``complexType``: The text-element-data type represents a syllable or portion of a syllable for lyric text underlay. A hyphen in the string content should only be used for an actual hyphenated word. Language names for text elements come from ISO 639, with optional country subcodes from ISO 3166.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dir``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``lang``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``letter_spacing``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``rotation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dir``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTextDirection`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``lang``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLanguage`, ``letter_spacing``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOrNormal`, ``line_through``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``overline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`, ``rotation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeRotationDegrees`, ``underline``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberOfLines`
 
 ``Possible parents``::obj:`~XMLLyric`
     """
@@ -9357,7 +9357,7 @@ class XMLThumbPosition(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -9375,7 +9375,7 @@ class XMLTie(XMLElement):
     
     ``complexType``: The tie element indicates that a tie begins or ends with this note. If the tie element applies only particular times through a repeat, the time-only attribute indicates which times to apply it. The tie element indicates sound; the tied element indicates notation.
 
-    ``Possible attributes``: ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -9401,7 +9401,7 @@ class XMLTied(XMLElement):
     
     Ties that are visually attached to only one note, other than undamped ties, should be specified with two tied elements on the same note, first type="start" then type="stop". This can be used to represent ties into or out of repeated sections or codas.
 
-    ``Possible attributes``: ``bezier_offset2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_offset``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_x2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y2``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``orientation``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOverUnder`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTiedType`\@required
+    ``Possible attributes``: ``bezier_offset2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_offset``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeDivisions`, ``bezier_x2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y2``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``bezier_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``orientation``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeOverUnder`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTiedType`\\@required
 
 ``Possible parents``::obj:`~XMLNotations`
     """
@@ -9423,7 +9423,7 @@ class XMLTime(XMLElement):
     
     The print-object attribute allows a time signature to be specified but not printed, as is the case for excerpts from the middle of a score. The value is "yes" if not present. The optional number attribute refers to staff numbers within the part. If absent, the time signature applies to all staves in the part.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``separator``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSeparator`, ``symbol``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSymbol`, ``valign``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``halign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLeftCenterRight`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`, ``print_object``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``separator``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSeparator`, ``symbol``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeSymbol`, ``valign``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeValign`
 
     ``Possible children``:    :obj:`~XMLBeatType`, :obj:`~XMLBeats`, :obj:`~XMLInterchangeable`, :obj:`~XMLSenzaMisura`
 
@@ -9504,7 +9504,7 @@ class XMLTimpani(XMLElement):
     
     ``complexType``: The timpani type represents the timpani pictogram. The smufl attribute is used to distinguish different SMuFL stylistic alternates.
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -9522,7 +9522,7 @@ class XMLToe(XMLElement):
     
     ``complexType``: The heel and toe elements are used with organ pedals. The substitution value is "no" if the attribute is not present.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``substitution``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -9596,7 +9596,7 @@ class XMLTranspose(XMLElement):
     
     ``complexType``: The transpose type represents what must be added to a written pitch to get a correct sounding pitch. The optional number attribute refers to staff numbers, from top to bottom on the system. If absent, the transposition applies to all staves in the part. Per-staff transposition is most often used in parts that represent multiple instruments.
 
-    ``Possible attributes``: ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
+    ``Possible attributes``: ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStaffNumber`
 
     ``Possible children``:    :obj:`~XMLChromatic`, :obj:`~XMLDiatonic`, :obj:`~XMLDouble`, :obj:`~XMLOctaveChange`
 
@@ -9635,7 +9635,7 @@ class XMLTremolo(XMLElement):
     
     ``simpleContent``: The number of tremolo marks is represented by a number from 0 to 8: the same as beam-level with 0 added.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTremoloType`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflGlyphName`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTremoloType`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -9655,7 +9655,7 @@ class XMLTrillMark(XMLElement):
     
     ``complexType``: The empty-trill-sound type represents an empty element with print-style, placement, and trill-sound attributes.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -9675,7 +9675,7 @@ class XMLTripleTongue(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -9754,7 +9754,7 @@ class XMLTuplet(XMLElement):
     
     The show-number attribute is used to display either the number of actual notes, the number of both actual and normal notes, or neither. It is actual by default. The show-type attribute is used to display either the actual type, both the actual and normal types, or neither. It is none by default.
 
-    ``Possible attributes``: ``bracket``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_shape``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``show_number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``show_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\@required
+    ``Possible attributes``: ``bracket``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_shape``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineShape`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``show_number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``show_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeShowTuplet`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStop`\\@required
 
     ``Possible children``:    :obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
 
@@ -9811,7 +9811,7 @@ class XMLTupletDot(XMLElement):
     
     ``complexType``: The tuplet-dot type is used to specify dotted tuplet types.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
@@ -9858,7 +9858,7 @@ class XMLTupletNumber(XMLElement):
     
     ``complexType``: The tuplet-number type indicates the number of notes for this portion of the tuplet.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
@@ -9881,7 +9881,7 @@ class XMLTupletType(XMLElement):
         Permitted Values: ``'1024th'``, ``'512th'``, ``'256th'``, ``'128th'``, ``'64th'``, ``'32nd'``, ``'16th'``, ``'eighth'``, ``'quarter'``, ``'half'``, ``'whole'``, ``'breve'``, ``'long'``, ``'maxima'``
     
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLTupletActual`, :obj:`~XMLTupletNormal`
     """
@@ -9901,7 +9901,7 @@ class XMLTurn(XMLElement):
     
     ``complexType``: The horizontal-turn type represents turn elements that are horizontal rather than vertical. These are empty elements with print-style, placement, trill-sound, and slash attributes. If the slash attribute is yes, then a vertical line is used to slash the turn. It is no if not specified.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``slash``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -9924,7 +9924,7 @@ class XMLType(XMLElement):
         Permitted Values: ``'1024th'``, ``'512th'``, ``'256th'``, ``'128th'``, ``'64th'``, ``'32nd'``, ``'16th'``, ``'eighth'``, ``'quarter'``, ``'half'``, ``'whole'``, ``'breve'``, ``'long'``, ``'maxima'``
     
 
-    ``Possible attributes``: ``size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`
+    ``Possible attributes``: ``size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSymbolSize`
 
 ``Possible parents``::obj:`~XMLNote`
     """
@@ -9972,7 +9972,7 @@ class XMLUnstress(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLArticulations`
     """
@@ -9992,7 +9992,7 @@ class XMLUpBow(XMLElement):
     
     ``complexType``: The empty-placement type represents an empty element with print-style and placement attributes.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLTechnical`
     """
@@ -10012,7 +10012,7 @@ class XMLVerticalTurn(XMLElement):
     
     ``complexType``: The empty-trill-sound type represents an empty element with print-style, placement, and trill-sound attributes.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`
 
 ``Possible parents``::obj:`~XMLOrnaments`
     """
@@ -10120,7 +10120,7 @@ class XMLWait(XMLElement):
     
     ``complexType``: The wait type specifies a point where the accompaniment should wait for a performer event before continuing. This typically happens at the start of new sections or after a held note or indeterminate music. These waiting points cannot always be inferred reliably from the contents of the displayed score. The optional player and time-only attributes restrict the type to apply to a single player or set of times through a repeated section, respectively.
 
-    ``Possible attributes``: ``player``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
+    ``Possible attributes``: ``player``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeIDREF`, ``time_only``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTimeOnly`
 
 ``Possible parents``::obj:`~XMLListen`
     """
@@ -10138,7 +10138,7 @@ class XMLWavyLine(XMLElement):
     
     ``complexType``: Wavy lines are one way to indicate trills and vibrato. When used with a barline element, they should always have type="continue" set. The smufl attribute specifies a particular wavy line glyph from the SMuFL Multi-segment lines range.
 
-    ``Possible attributes``: ``accelerate``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``last_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflWavyLineGlyphName`, ``start_note``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\@required
+    ``Possible attributes``: ``accelerate``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``beats``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillBeats`, ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``last_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``second_beat``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypePercent`, ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflWavyLineGlyphName`, ``start_note``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartNote`, ``trill_step``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTrillStep`, ``two_note_turn``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTwoNoteTurn`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeStartStopContinue`\\@required
 
 ``Possible parents``::obj:`~XMLBarline`, :obj:`~XMLOrnaments`
     """
@@ -10156,7 +10156,7 @@ class XMLWedge(XMLElement):
     
     ``complexType``: The wedge type represents crescendo and diminuendo wedge symbols. The type attribute is crescendo for the start of a wedge that is closed at the left side, and diminuendo for the start of a wedge that is closed on the right side. Spread values are measured in tenths; those at the start of a crescendo wedge or end of a diminuendo wedge are ignored. The niente attribute is yes if a circle appears at the point of the wedge, indicating a crescendo from nothing or diminuendo to nothing. It is no by default, and used only when the type is crescendo, or the type is stop for a wedge that began with a diminuendo type. The line-type is solid if not specified.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``niente``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``spread``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeWedgeType`\@required
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``dash_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``id``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeID`, ``line_type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeLineType`, ``niente``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeYesNo`, ``number``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeNumberLevel`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``space_length``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``spread``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``type``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeWedgeType`\\@required
 
 ``Possible parents``::obj:`~XMLDirectionType`
     """
@@ -10176,7 +10176,7 @@ class XMLWithBar(XMLElement):
     
     ``complexType``: The placement-text type represents a text element with print-style and placement attribute groups.
 
-    ``Possible attributes``: ``color``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
+    ``Possible attributes``: ``color``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeColor`, ``default_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``default_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`, ``placement``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeAboveBelow`, ``relative_x``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`, ``relative_y``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeTenths`
 
 ``Possible parents``::obj:`~XMLBend`
     """
@@ -10199,7 +10199,7 @@ class XMLWood(XMLElement):
         Permitted Values: ``'bamboo scraper'``, ``'board clapper'``, ``'cabasa'``, ``'castanets'``, ``'castanets with handle'``, ``'claves'``, ``'football rattle'``, ``'guiro'``, ``'log drum'``, ``'maraca'``, ``'maracas'``, ``'quijada'``, ``'rainstick'``, ``'ratchet'``, ``'reco-reco'``, ``'sandpaper blocks'``, ``'slit drum'``, ``'temple block'``, ``'vibraslap'``, ``'whip'``, ``'wood block'``
     
 
-    ``Possible attributes``: ``smufl``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
+    ``Possible attributes``: ``smufl``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeSmuflPictogramGlyphName`
 
 ``Possible parents``::obj:`~XMLPercussion`
     """
@@ -10217,7 +10217,7 @@ class XMLWordFont(XMLElement):
     
     ``complexType``: The empty-font type represents an empty element with font attributes.
 
-    ``Possible attributes``: ``font_family``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
+    ``Possible attributes``: ``font_family``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontFamily`, ``font_size``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontSize`, ``font_style``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontStyle`, ``font_weight``\\@ :obj:`~musicxml.xsd.xsdsimpletype.XSDSimpleTypeFontWeight`
 
 ``Possible parents``::obj:`~XMLDefaults`
     """

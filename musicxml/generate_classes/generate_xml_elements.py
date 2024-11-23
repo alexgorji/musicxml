@@ -105,12 +105,12 @@ def element_class_as_string(element_name_type):
                         repr_ += f"``{'_'.join(att.name.split('-'))}``"
                     if att.type_:
                         try:
-                            repr_ += f"\@ :obj:`~musicxml.xsd.xsdsimpletype.{att.type_.__name__}`"
+                            repr_ += f"\\@ :obj:`~musicxml.xsd.xsdsimpletype.{att.type_.__name__}`"
                         except AttributeError:
                             breakpoint()
                             pass
                     if att.is_required:
-                        repr_ += '\@required'
+                        repr_ += '\\@required'
 
                     if repr_ != '':
                         string_possible_attributes.append(repr_)
@@ -167,7 +167,7 @@ def element_class_as_string(element_name_type):
                 output += get_attributes_doc()
             try:
                 container = containers[xsd_type]
-                container_tree_representation = copy.copy(container).tree_representation(tab=lambda x: (x.level * '    ') + '       ')
+                container_tree_representation = copy.copy(container).get_tree_representation(tab=lambda x: (x.level * '    ') + '       ')
                 container_tree_representation = container_tree_representation[:-1]
                 if output != "":
                     output += '\n'

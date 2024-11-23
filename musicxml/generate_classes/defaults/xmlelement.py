@@ -3,12 +3,11 @@
 # -----------------------------------------------------
 import copy
 import xml.etree.ElementTree as ET
-# import lxml.etree as ET
 from typing import Optional, List, Callable, Union
 
 from musicxml.exceptions import XSDWrongAttribute, XSDAttributeRequiredException, XMLElementChildrenRequired
 from musicxml.generate_classes.utils import musicxml_xsd_et_root, ns
-from tree.tree import Tree
+from verysimpletree.tree import Tree
 from musicxml.util.core import cap_first, replace_key_underline_with_hyphen
 from musicxml.xmlelement.containers import containers
 from musicxml.xmlelement.exceptions import XMLElementCannotHaveChildrenError
@@ -22,7 +21,7 @@ class XMLElement(Tree):
     """
     Parent class of all xml elements.
     """
-    _PROPERTIES = {'compact_repr', 'is_leaf', 'level', 'attributes', 'child_container_tree', 'possible_children_names',
+    _PROPERTIES = {'compact_repr', 'is_leaf', 'attributes', 'child_container_tree', 'possible_children_names',
                    'et_xml_element', 'name', 'type_', 'value_', 'parent_xsd_element', 'xsd_check'}
     TYPE = None
     _SEARCH_FOR_ELEMENT = ''
@@ -113,7 +112,7 @@ class XMLElement(Tree):
             self._et_xml_element.text = str(self.value_)
         for child in self.get_children():
             self._et_xml_element.append(child.et_xml_element)
-        ET.indent(self._et_xml_element, space="  ", level=self.level)
+        ET.indent(self._et_xml_element, space="  ", level=self.get_level())
 
     def _final_checks(self, intelligent_choice=False):
         self._check_required_value()

@@ -6,7 +6,8 @@ from musicxml.xmlelement.exceptions import XMLChildContainerFactoryError, XMLChi
 from musicxml.xsd.xsdelement import XSDElement
 from musicxml.xsd.xsdindicator import *
 from musicxml.xsd.xsdtree import XSDTree
-from tree.tree import Tree
+from verysimpletree.tree import Tree
+
 
 
 def _convert_xsd_child_to_xsd_container(xsd_child):
@@ -128,15 +129,15 @@ class DuplicationXSDSequence(XSDSequence):
 
 class XMLChildContainer(Tree):
     def __init__(self, content, min_occurrences=None, max_occurrences=None, populate_children=True, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._content = None
+        super().__init__(content=content, *args, **kwargs)
+        # self._content = None
         self._chosen_child = None
         self._required_element_names = None
         self._requirements_fulfilled = None
         self.min_occurrences = 1 if min_occurrences is None else int(min_occurrences)
         self.max_occurrences = 1 if max_occurrences is None else 'unbounded' if max_occurrences == 'unbounded' else int(
             max_occurrences)
-        self.content = content
+        # self.content = content
         self._force_validate = None
         self._parent_xml_element = None
         if populate_children:
@@ -245,7 +246,7 @@ class XMLChildContainer(Tree):
         return XMLChildContainer(copied_content, self.min_occurrences, self.max_occurrences)
 
     def _duplicate_parent_in_path(self):
-        for node in list(self.reversed_path_to_root())[:-1]:
+        for node in list(self.get_reversed_path_to_root())[:-1]:
             if node.get_parent().max_occurrences == 'unbounded':
                 return node.get_parent().duplicate()
         return None
@@ -256,7 +257,7 @@ class XMLChildContainer(Tree):
         if self.max_is_reached:
             self.requirements_fulfilled = True
         if self.content.xml_elements:
-            for node in self.reversed_path_to_root():
+            for node in self.get_reversed_path_to_root():
                 if node.get_parent():
                     if isinstance(node.get_parent().content, XSDChoice):
                         if node.get_parent().chosen_child:
@@ -307,6 +308,12 @@ class XMLChildContainer(Tree):
         """
         :return: A compact representation of :obj:`~content`.
         """
+        def get_indentation() -> str:
+            indentation = ''
+            for i in range(self.get_level()):
+                indentation += '    '
+            return indentation
+
         if isinstance(self.content, XSDSequence):
             type_ = 'Sequence'
             return f"{type_}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
@@ -316,7 +323,7 @@ class XMLChildContainer(Tree):
             output = f"{type_}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
             if self.requirements_fulfilled is False:
                 output += '\n'
-                output += self.get_indentation() + '    '
+                output += get_indentation() + '    '
                 output += '!Required!'
             return output
 
@@ -329,11 +336,11 @@ class XMLChildContainer(Tree):
             output = f"{type_}@name={self.content.name}@minOccurs={self.min_occurrences}@maxOccurs={self.max_occurrences}"
             for xml_element in self.content.xml_elements:
                 output += '\n'
-                output += self.get_indentation() + '    '
+                output += get_indentation() + '    '
                 output += xml_element.__class__.__name__
             if self.requirements_fulfilled is False:
                 output += '\n'
-                output += self.get_indentation() + '    '
+                output += get_indentation() + '    '
                 output += '!Required!'
             return output
 
@@ -344,7 +351,7 @@ class XMLChildContainer(Tree):
         """
         return self._content
 
-    @content.setter
+    @Tree.content.setter
     def content(self, val):
         self._check_content_type(val)
         self._content = val
@@ -352,7 +359,7 @@ class XMLChildContainer(Tree):
 
     @property
     def choices_in_reversed_path(self):
-        return [node for node in list(self.reversed_path_to_root())[1:] if isinstance(node.content, XSDChoice)]
+        return [node for node in list(self.get_reversed_path_to_root())[1:] if isinstance(node.content, XSDChoice)]
 
     @property
     def chosen_child(self):
@@ -405,7 +412,7 @@ class XMLChildContainer(Tree):
             output = []
             choice_with_chosen_child = None
             for index, leaf in enumerate(leaves):
-                for n in leaf.reversed_path_to_root():
+                for n in leaf.get_reversed_path_to_root():
                     if n.get_parent() and isinstance(n.get_parent().content, XSDChoice) and n.get_parent().chosen_child:
                         choice_with_chosen_child = n.get_parent()
                         if n == choice_with_chosen_child.chosen_child:
@@ -595,8 +602,11 @@ class XMLChildContainer(Tree):
                     n._force_validate = val
 
     def __repr__(self):
-        return f"XMLChildContainer:{self.compact_repr} {self.get_coordinates_in_tree()}"
+        return f"XMLChildContainer:{self.compact_repr} {self.get_position_in_tree()}"
 
+    def __str__(self):
+        return self.compact_repr
+    
     def __copy__(self):
         copied = self.__class__(content=self.content.__copy__(), min_occurrences=self.min_occurrences,
                                 max_occurrences=self.max_occurrences,

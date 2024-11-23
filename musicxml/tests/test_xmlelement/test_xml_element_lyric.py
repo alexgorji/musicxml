@@ -10,32 +10,32 @@ class TestXMLLyric(TestCase):
         Test that xml lyric has an empty children container tree corresponding to its xsd complex type for managing its children.
         """
         lyric = XMLLyric()
-        expected = """Sequence@minOccurs=1@maxOccurs=1
-    Choice@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Element@name=syllabic@minOccurs=0@maxOccurs=1
-            Element@name=text@minOccurs=1@maxOccurs=1
-            Sequence@minOccurs=0@maxOccurs=unbounded
-                Sequence@minOccurs=0@maxOccurs=1
-                    Element@name=elision@minOccurs=1@maxOccurs=1
-                    Element@name=syllabic@minOccurs=0@maxOccurs=1
-                Element@name=text@minOccurs=1@maxOccurs=1
-            Element@name=extend@minOccurs=0@maxOccurs=1
-        Element@name=extend@minOccurs=1@maxOccurs=1
-        Element@name=laughing@minOccurs=1@maxOccurs=1
-        Element@name=humming@minOccurs=1@maxOccurs=1
-    Element@name=end-line@minOccurs=0@maxOccurs=1
-    Element@name=end-paragraph@minOccurs=0@maxOccurs=1
-    Group@name=editorial@minOccurs=1@maxOccurs=1
-        Sequence@minOccurs=1@maxOccurs=1
-            Group@name=footnote@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=footnote@minOccurs=1@maxOccurs=1
-            Group@name=level@minOccurs=0@maxOccurs=1
-                Sequence@minOccurs=1@maxOccurs=1
-                    Element@name=level@minOccurs=1@maxOccurs=1
+        expected="""└── Sequence@minOccurs=1@maxOccurs=1
+    ├── Choice@minOccurs=1@maxOccurs=1
+    │   ├── Sequence@minOccurs=1@maxOccurs=1
+    │   │   ├── Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   ├── Element@name=text@minOccurs=1@maxOccurs=1
+    │   │   ├── Sequence@minOccurs=0@maxOccurs=unbounded
+    │   │   │   ├── Sequence@minOccurs=0@maxOccurs=1
+    │   │   │   │   ├── Element@name=elision@minOccurs=1@maxOccurs=1
+    │   │   │   │   └── Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   │   └── Element@name=text@minOccurs=1@maxOccurs=1
+    │   │   └── Element@name=extend@minOccurs=0@maxOccurs=1
+    │   ├── Element@name=extend@minOccurs=1@maxOccurs=1
+    │   ├── Element@name=laughing@minOccurs=1@maxOccurs=1
+    │   └── Element@name=humming@minOccurs=1@maxOccurs=1
+    ├── Element@name=end-line@minOccurs=0@maxOccurs=1
+    ├── Element@name=end-paragraph@minOccurs=0@maxOccurs=1
+    └── Group@name=editorial@minOccurs=1@maxOccurs=1
+        └── Sequence@minOccurs=1@maxOccurs=1
+            ├── Group@name=footnote@minOccurs=0@maxOccurs=1
+            │   └── Sequence@minOccurs=1@maxOccurs=1
+            │       └── Element@name=footnote@minOccurs=1@maxOccurs=1
+            └── Group@name=level@minOccurs=0@maxOccurs=1
+                └── Sequence@minOccurs=1@maxOccurs=1
+                    └── Element@name=level@minOccurs=1@maxOccurs=1
 """
-        assert lyric.child_container_tree.tree_representation() == expected
+        assert lyric.child_container_tree.get_tree_representation() == expected
         with self.assertRaises(XMLElementChildrenRequired) as err:
             lyric.to_string()
         assert err.exception.args[0] == "XMLLyric requires at least following children: ('XMLText', 'XMLExtend', 'XMLLaughing', " \
@@ -65,5 +65,5 @@ class TestXMLLyric(TestCase):
   <footnote>some footnote</footnote>
   <level>3</level>
 </lyric>
-"""
+"""     
         assert lyric.to_string() == expected

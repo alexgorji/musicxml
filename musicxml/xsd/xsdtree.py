@@ -10,7 +10,7 @@ from musicxml.util.core import cap_first, convert_to_xsd_class_name
 from musicxml.util.helprervariables import xml_name_first_character_without_colon, name_character_without_colon, \
     name_character, \
     xml_name_first_character
-from tree.tree import Tree
+from verysimpletree.tree import Tree
 
 """
 XSD = XML Schema Definition

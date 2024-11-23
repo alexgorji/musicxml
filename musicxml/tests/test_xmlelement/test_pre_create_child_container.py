@@ -9,4 +9,4 @@ class TestPrecreatingXMLChildContainer(TestCase):
     def test_xml_note(self):
         container = copy.deepcopy(containers['XSDComplexTypeNote'])
         manually = XMLChildContainerFactory(XSDComplexTypeNote).get_child_container()
-        assert manually.tree_representation() == container.tree_representation()
+        assert manually.get_tree_representation() == container.get_tree_representation()
