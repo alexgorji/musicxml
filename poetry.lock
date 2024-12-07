@@ -301,16 +301,16 @@ files = [
 
 [[package]]
 name = "verysimpletree"
-version = "0.1.6b0"
-description = "lightweight tree data structure for musicxml and musicscor"
+version = "1.0"
+description = "lightweight tree data structure for musicxml and musicscore"
 optional = false
 python-versions = "<3.13,>=3.9"
 files = [
-    {file = "verysimpletree-0.1.6b0-py3-none-any.whl", hash = "sha256:3b1f373b766c9a999213441bfb51388c1ecb7e56ae111d0228b3dfbda3c2a840"},
-    {file = "verysimpletree-0.1.6b0.tar.gz", hash = "sha256:b1db279aa2ea2dfec68e10dc1f6694ade7da5033978c5b4de62d1d72da97d10c"},
+    {file = "verysimpletree-1.0-py3-none-any.whl", hash = "sha256:8b7a1f37abb1a0ba55385afb5f7995e2d668c00825357d931cee459065065a9c"},
+    {file = "verysimpletree-1.0.tar.gz", hash = "sha256:6d33cc10e9ab7ade0a58a76c1f74f18fe2407f251cf125f2d129912577950e29"},
 ]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "d6feeacf7e6dd8dde627968369112affc5d1082cb942724ae9921bbfb7b3c897"
+content-hash = "7ece20976a133aec6807cdfc30e0d3c8b4180e7f81d31fd80c72ad3a836b287b"

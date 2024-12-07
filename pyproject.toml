@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "musicxml"
-version = "1.5"
+version = "1.5.1"
 description = "generating musicxml"
 authors = ["Alex Gorji <aligorji@hotmail.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-verysimpletree = "^0.1.6b0"
+verysimpletree = "^1.0"
 
 [tool.poetry.group.test.dependencies]
 mypy = "^1.13.0"
