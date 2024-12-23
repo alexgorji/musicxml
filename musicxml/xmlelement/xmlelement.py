@@ -26,6 +26,7 @@ class XMLElement(Tree):
     XSD_TREE = None
 
     def __init__(self, value_='', xsd_check=True, **kwargs):
+        self._kwargs = kwargs
         self._fill_xsd_tree()
         self._type = None
         super().__init__()
@@ -401,7 +402,15 @@ class XMLElement(Tree):
                         return None
                 raise AttributeError(self._get_attributes_error_message(item))
 
-
+    def __deepcopy__(self, memo):
+        copied = self.__class__(value_=self.value_, xsd_check=self.xsd_check, **self._kwargs)
+        copied._type = copy.deepcopy(self._type)
+        self._attributes = copy.deepcopy(self._attributes)
+        self._et_xml_element = copy.deepcopy(self._et_xml_element)
+        for child in self.get_children():
+            copied.add_child(copy.deepcopy(child))
+        return copied
+    
 # -----------------------------------------------------
 # AUTOMATICALLY GENERATED WITH generate_xml_elements.py
 # -----------------------------------------------------
