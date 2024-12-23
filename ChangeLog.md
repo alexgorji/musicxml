@@ -118,3 +118,7 @@ avoid warnings
 # Version 1.5
 Using verysimpletree library
 !!generating classes still not tested!!
+
+# Version 1.6
+add __deepcopy__ to XMLElement
+!!generating classes still not tested!!
