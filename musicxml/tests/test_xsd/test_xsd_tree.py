@@ -5,12 +5,10 @@ from pathlib import Path
 from musicxml.tests.util import MusicXmlTestCase
 from musicxml.xsd.xsdtree import XSDTree
 
-
 class TestXSDTree(MusicXmlTestCase):
     """
     XSDTree is a representation of all needed information for creating an XSD Class.
     """
-
     def test_write_all_tags(self):
         """
         Write the summary of all music xml nodes in a files (musicxml_4_0_summary.txt)

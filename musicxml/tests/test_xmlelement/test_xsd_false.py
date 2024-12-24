@@ -71,4 +71,3 @@ class TestXSDFalse(TestCase):
         xml_part_list = XMLPartList(xsd_check=False)
         xml_score.add_child(xml_part_list)
         assert xml_part_list.to_string() == '<part-list />\n'
-        print(xml_score.to_string())

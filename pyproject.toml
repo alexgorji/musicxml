@@ -16,7 +16,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-verysimpletree = "^0.1.6b0"
+verysimpletree = "^1.2"
 
 [tool.poetry.group.test.dependencies]
 mypy = "^1.13.0"

@@ -36,6 +36,7 @@ class XSDTree(Tree):
         self._type = 'notset'
         self._name = 'notset'
         self.xml_element_tree_element = xml_element_tree_element
+        self._populate_children()
 
     # ------------------
     # private properties
@@ -172,10 +173,8 @@ class XSDTree(Tree):
             #         self._attributes.pop('maxOccurs')
         return self._attributes
 
-    def get_children(self):
-        if not self._children:
-            self._populate_children()
-        return self._children
+    # def get_children(self):
+    #     return self._children
 
     def get_complex_content(self):
         for node in self.get_children():
