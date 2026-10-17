@@ -154,8 +154,7 @@ class XMLChildContainer(Tree):
             index = self.get_parent().get_children().index(self)
             parent = self.get_parent()
             parent.remove(self)
-            parent.get_children().insert(index, parent_container)
-            parent_container._parent = parent
+            parent.insert_child(index, parent_container)
             parent_container.add_child(self)
             if isinstance(parent.content, XSDChoice) and parent.chosen_child == self:
                 parent.chosen_child = parent_container
@@ -529,7 +528,6 @@ class XMLChildContainer(Tree):
         self._add_duplication_parent()
 
         copied_self = self._create_empty_copy()
-        copied_self._parent = self.get_parent()
         self.get_parent().add_child(copied_self)
         return copied_self
 

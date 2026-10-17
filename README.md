@@ -4,7 +4,7 @@ musicxml is also a part of library: musicscore. Feel free to check out under: [h
 
 INSTALLATION
 
-1. Check the version of python on your computer: `python --version`. This library has been developed with python 3.9. Possibly you have to
+1. Check the version of python on your computer: `python --version`. This library requires Python 3.11 or later. Possibly you have to
    install this version (for example via Homebrew or whatever way you choose.)
 
 2. Make a new folder and create a virtual environment for your project and install musicxml via pip:

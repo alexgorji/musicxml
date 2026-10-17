@@ -502,13 +502,13 @@ class TestChildContainer(TestCase):
     │   │   ├── Element@name=text@minOccurs=1@maxOccurs=1
                 XMLText
     │   │   ├── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-    │   │   ├── Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
-    │   │   │   ├── Sequence@minOccurs=0@maxOccurs=1: !!!FORCED!!!
-    │   │   │   │   ├── Element@name=elision@minOccurs=1@maxOccurs=1
+    │   │   │   ├── Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
+    │   │   │   │   ├── Sequence@minOccurs=0@maxOccurs=1: !!!FORCED!!!
+    │   │   │   │   │   ├── Element@name=elision@minOccurs=1@maxOccurs=1
                             XMLElision
-    │   │   │   │   └── Element@name=syllabic@minOccurs=0@maxOccurs=1
+    │   │   │   │   │   └── Element@name=syllabic@minOccurs=0@maxOccurs=1
                             XMLSyllabic
-    │   │   │   └── Element@name=text@minOccurs=1@maxOccurs=1
+    │   │   │   │   └── Element@name=text@minOccurs=1@maxOccurs=1
                         XMLText
     │   │   │   └── Sequence@minOccurs=0@maxOccurs=unbounded: !!!FORCED!!!
     │   │   │       ├── Sequence@minOccurs=0@maxOccurs=1
@@ -807,13 +807,13 @@ class TestDuplication(TestCase):
     │   │       ├── Element@name=fifths@minOccurs=1@maxOccurs=1
     │   │       └── Element@name=mode@minOccurs=0@maxOccurs=1
     │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-    │   ├── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
-    │   │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
-    │   │       ├── Element@name=key-step@minOccurs=1@maxOccurs=1
+    │       ├── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
+    │       │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
+    │       │       ├── Element@name=key-step@minOccurs=1@maxOccurs=1
                         !Required!
-    │   │       ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
+    │       │       ├── Element@name=key-alter@minOccurs=1@maxOccurs=1
                         !Required!
-    │   │       └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
+    │       │       └── Element@name=key-accidental@minOccurs=0@maxOccurs=1
                         XMLKeyAccidental
     │       ├── Group@name=non-traditional-key@minOccurs=0@maxOccurs=unbounded
     │       │   └── Sequence@minOccurs=1@maxOccurs=1: !!!FORCED!!!
