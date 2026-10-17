@@ -447,10 +447,11 @@ class XMLChildContainer(Tree):
             if forward is None and intelligent_choice is True:
                 copy_with_intelligence = self._check_choices_intelligently(xml_element)
                 if copy_with_intelligence:
-                    for old_child, new_child in zip(self.get_children(), copy_with_intelligence.get_children()):
+                    for old_child, new_child in zip(self.get_children(), copy_with_intelligence.get_children()[:]):
+                        copy_with_intelligence.remove(new_child)
                         self.replace_child(old_child, new_child)
                     return \
-                        [l for l in copy_with_intelligence.iterate_leaves() if xml_element in l.content.xml_elements][0]
+                        [l for l in self.iterate_leaves() if xml_element in l.content.xml_elements][0]
 
             if not intelligently_selected:
                 msg = f"{self} By adding {xml_element.__class__.__name__} to {self.get_parent_xml_element().__class__.__name__}" if \
@@ -509,7 +510,8 @@ class XMLChildContainer(Tree):
                 return requirements_exist
             copy_with_intelligence = self._check_choices_intelligently()
             if copy_with_intelligence:
-                for old_child, new_child in zip(self.get_children(), copy_with_intelligence.get_children()):
+                for old_child, new_child in zip(self.get_children(), copy_with_intelligence.get_children()[:]):
+                    copy_with_intelligence.remove(new_child)
                     self.replace_child(old_child, new_child)
                 return False
 

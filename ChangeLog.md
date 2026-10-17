@@ -129,3 +129,7 @@ use verysimpletree v 1.2
 
 # Version 1.6.2
 Upgrade to verysimpletree 2.0 and require Python 3.11 or newer.
+
+# Version 1.6.3
+Detach temporary choice containers before replacing children for verysimpletree 2.0 compatibility.
+Fix adding cue and grace elements after a note's pitch has already been set.
