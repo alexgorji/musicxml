@@ -126,3 +126,6 @@ add __deepcopy__ to XMLElement
 # Version 1.6.1
 use verysimpletree v 1.2
 !!generating classes still not tested!!
+
+# Version 1.6.2
+Upgrade to verysimpletree 2.0 and require Python 3.11 or newer.
