@@ -1,4 +1,4 @@
-**musicxml** is a python library for reading and writing musicxml files.
+**musicxml** is a Python library for creating MusicXML files.
 
 **musicxml** is also a part of library: **musicscore**. Feel free to check out:
 

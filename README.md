@@ -1,90 +1,76 @@
-musicxml is a python library for creating musicxml files. It is largely based on xsd definitions of MusicXML 4.0.
+# musicxml
 
-musicxml is also a part of library: musicscore. Feel free to check out under: [https://github.com/alexgorji/musicscore](https://github.com/alexgorji/musicscore) & [https://musicscore.readthedocs.io](https://musicscore.readthedocs.io)
+`musicxml` is a Python library for creating MusicXML data. Its
+element classes are based on the MusicXML 4.0 XML schema, providing an
+object-oriented way to build and inspect MusicXML trees.
 
-INSTALLATION
+The library is also a dependency of [musicscore](https://github.com/alexgorji/musicscore),
+which offers a higher-level API for creating scores.
 
-1. Check the version of python on your computer: `python --version`. This library requires Python 3.11 or later. Possibly you have to
-   install this version (for example via Homebrew or whatever way you choose.)
+## Features
 
-2. Make a new folder and create a virtual environment for your project and install musicxml via pip:
-    * mkdir <project>
-    * cd <project>
-    * python3 -m venv venv
-    * source venv/bin/activate
-    * pip install --upgrade pip
-    * pip install musicxml
+- Create MusicXML elements, attributes, and child elements as Python objects.
+- Check element structure and order children using MusicXML schema definitions.
+- Serialize elements to XML.
 
-The SOURCECODE can be found on Github: https://github.com/alexgorji/musicxml
+## Installation
 
-Each musicxml element can be created as an instance of a class which behaves (hopefully exactly!) as the musicxml schema
-(version 4, see musicxml_4_0.xsd in musicxml.generate_classes) specifies, e.g.:
+Requires Python 3.11 or newer:
 
+```console
+python -m pip install musicxml
 ```
+
+## Quick start
+
+Create a pitch with a step and an octave:
+
+```python
+from musicxml.xmlelement.xmlelement import XMLOctave, XMLPitch, XMLStep
+
 pitch = XMLPitch()
+pitch.add_child(XMLStep("G"))
+pitch.add_child(XMLOctave(4))
+
+print(pitch.to_string())
 ```
 
-Children can be added with method add_child(<xmlelement>):
+This prints:
 
-```
-pitch.add_child(XMLStep('G'))
-```
-
-As a shortcut it is possible to add, remove or change child with a dot operator:
-
-```
-pitch.xml_step = 'G'
+```xml
+<pitch>
+  <step>G</step>
+  <octave>4</octave>
+</pitch>
 ```
 
-is equivalent to:
+You can also access or update children using attributes:
 
-```
-pitch.xml_step = XMLStep('G')
-```
-
-change:
-
-```
-pitch.xml_step = 'F'
+```python
+pitch.xml_step = "F"
+print(pitch.xml_step.value_)
 ```
 
-or remove:
+`to_string()` checks required children and attributes before serialization.
+Schema choices can be complex, so this should not be treated as a guarantee
+that every possible MusicXML document is handled correctly.
 
-```
-pitch.xml_step = None
-```
+## Documentation
 
-Dot operator can also be used as a shortcut to get a child:
+See the [documentation source](docs/source/index.rst) and the
+[MusicXML 4.0 specification](https://www.w3.org/2021/06/musicxml40/).
+For a higher-level score-building API, see the
+[musicscore documentation](https://musicscore.readthedocs.io).
 
-```
-print(pitch.xml_step.value)
-```
+## Development
 
-The value of an element (which be translated to text of xml element) can be set during or after creation:
+Install the test dependencies and run the test suite with Poetry:
 
-```
-octave = pitch.add_child(XMLOctave())
-octave.value = 3
-```
-
-Attributes also can be added during or after creation:
-
-```
-font = XMLFont(font_family='Arial')
-font.font_size = 17.2
+```console
+poetry install --with test
+poetry run pytest
 ```
 
-A variety of errors are thrown during creating an object (for example if you try to add a child of a wrong type or to add a wrong attribute)
-. The method to_string() calls an intern final check before exporting the xml element to a string to be sure you didn't forget any required
-children and attributes.
+## License
 
-An existing musicxml file can be parsed easily with parser's parse_musicxml(file_path) function.
-
-Each element creates a rather complicated tree format container with xsd indicator objects (XSDSequence, XSDChoice, XSDGroup, XSDElement)
-which represent their counterparts in a xsd structure to validate and order its children (take a peek inside the file musicxml_4_0.xsd in
-musicxml.generate_classes to get a feeling for its complexity). If a child is going to be added to an element it tries to 'hook' this child
-inside a XSDElement leaf of this container tree which has the same name as the child. For elements which use a choice indicator (XSDChoice)
-it can happen, that the current chosen path throws an error since this particular path does not have a XSDElement leaf with child's name, or
-it could for example require another not existing child in the final check. It these cases the parent element tries to attach its children
-to another choice path and see if the problem can be solved. On this account although some thorough testings have been done, there is yet no
-guaranty that in some cases the library does not behave as it should. Please let me know if you discover a bug!
+MIT. See [LICENSE](LICENSE).

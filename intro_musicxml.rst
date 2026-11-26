@@ -52,7 +52,7 @@ Dot operator can also be used as a shortcut to get a child:
 
 ..  code:: Python
 
-    print(pitch.xml_step.value)
+    print(pitch.xml_step.value_)
 
 
 The value of an element (which be translated to text of xml element) can be set during or after creation:
@@ -61,7 +61,7 @@ octave = pitch.add_child(XMLOctave())
 
 ..  code:: Python
 
-    octave.value = 3
+    octave.value_ = 3
 
 Attributes also can be added during or after creation:
 
@@ -70,8 +70,6 @@ Attributes also can be added during or after creation:
     font = XMLFont(font_family='Arial')
     font.font_size = 17.2
 
-
-An existing musicxml file can be parsed easily with parser's ``parse_musicxml(file_path)`` function.
 
 Each element creates a rather complicated tree format container with xsd indicator objects (XSDSequence, XSDChoice, XSDGroup, XSDElement)
 which represent their counterparts in a xsd structure to validate and order its children (take a peek inside the file musicxml_4_0.xsd in

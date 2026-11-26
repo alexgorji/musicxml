@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
 
-project = 'musicscore'
+project = 'musicxml'
 copyright = '2023, Alex Gorji'
 author = 'Alex Gorji'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0beta'
+release = '1.6.3'
 
 musicxml_path = Path(__file__).parent.parent.parent.resolve().as_posix()
 sys.path.insert(0, musicxml_path)
